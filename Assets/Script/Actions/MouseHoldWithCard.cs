@@ -53,13 +53,13 @@ namespace GH.GameStates
                         CardInstance c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
                         if(c != null)
                         {
+                            Debug.Log("find card to block");
                             //c is card that can block
                             bool block = c.CanBeBlocked(currentCard.value);
                             currentCard.value = null;
 
                             Setting.gameController.SetState(playerBlockState);
                             onPlayerControlState.Raise();
-                            Debug.Log("find card to block");
                             break;
                         }
 

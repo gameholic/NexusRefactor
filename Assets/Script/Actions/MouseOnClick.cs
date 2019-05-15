@@ -29,7 +29,11 @@ namespace GH.GameStates
                     check = Setting.gameController.checkObjOwner.CheckPlayer(hit.transform.gameObject);
                     //Debug.Log("Check Obj Owner: " + check);
                     if (!check)//break when the gameObject is unclickable (other player's gameObject);
+                    {
+                        Debug.Log("This isn't your control");
                         break;
+
+                    }
 
                     if (c != null)
                     {
