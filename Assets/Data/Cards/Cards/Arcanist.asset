@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77dfd3f70ccea6648bde7adf54518ea1, type: 3}
+  m_Name: Arcanist
+  m_EditorClassIdentifier: 
+  cardType: {fileID: 11400000, guid: e25c4b9a397215f4bb568c82379670fd, type: 2}
+  properties:
+  - stringValue: Arcanist
+    intValue: 0
+    sprite: {fileID: 0}
+    element: {fileID: 11400000, guid: 0bed7a25b5ff2cb43847014df8c920bd, type: 2}
+  - stringValue: Draw 1 card from deck
+    intValue: 0
+    sprite: {fileID: 0}
+    element: {fileID: 11400000, guid: 8a7b7b2c17d7b1a4d920e3b534438b6d, type: 2}
+  - stringValue: 
+    intValue: 1
+    sprite: {fileID: 0}
+    element: {fileID: 11400000, guid: c0d1fa25ce595e74eab7c64ddd9fadb6, type: 2}
+  - stringValue: 
+    intValue: 1
+    sprite: {fileID: 0}
+    element: {fileID: 11400000, guid: 53c97bee58bf3d34d8676099f908d2ed, type: 2}
+  - stringValue: 
+    intValue: 3
+    sprite: {fileID: 0}
+    element: {fileID: 11400000, guid: 876444c86d82be94e88c398eb0fb7d5c, type: 2}
+  - stringValue: 
+    intValue: 0
+    sprite: {fileID: 21300000, guid: 2cec5518eb851a44689ae9d34d9182ae, type: 3}
+    element: {fileID: 11400000, guid: 9545a8e8f4862d942836c433acd8e15f, type: 2}
+  cardCost: 1

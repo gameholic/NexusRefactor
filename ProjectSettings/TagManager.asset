@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Gamefield
+  - CardOnField
+  - CardAtHand
+  - CardSelected
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3736871037
+    locked: 0
+  - name: BattleField
+    uniqueID: 603051009
+    locked: 0
+  - name: UIOfBackground
+    uniqueID: 2803218361
+    locked: 0
+  - name: CardsOnField
+    uniqueID: 2046279033
+    locked: 0
+  - name: CardsOnHand
+    uniqueID: 2311510919
+    locked: 0
+  - name: 6
+    uniqueID: 177896511
+    locked: 0
+  - name: 7
+    uniqueID: 2842596325
+    locked: 0
