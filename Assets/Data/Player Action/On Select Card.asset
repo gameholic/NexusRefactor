@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b879e4a106d63d4e987e1f4c41b6a5e, type: 3}
   m_Name: On Select Card
   m_EditorClassIdentifier: 
+  onCurrentCardSelected: {fileID: 11400000, guid: 19005ce4462ee5e4b85c8d1ae80e2ef8,
+    type: 2}
   currentCard: {fileID: 11400000, guid: 5026788fca2ff8445a806055cbc47dc7, type: 2}
   holdingCard: {fileID: 11400000, guid: 4737eefef8e0a0948935c4628806e9a0, type: 2}

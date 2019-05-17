@@ -56,28 +56,28 @@ namespace GH
                 Setting.RegisterLog("Attacking cards error", Color.black);
 
             else
+            {
                 result = owner.attackingCards.Contains(this);
+                Debug.Log("check1");
+                Debug.Log("Result = " + result);
 
-            Debug.Log(result);
-            //Error point.
-            //result is false and it doesn't go into if statement below.
-            //owner.AttackingCards need some change
+            }
+
+         
             if (result && viz.card.cardType.canAttack)
             {
-                Debug.Log("Check1");
                 result = true;
                 //if a card has flying that can be blocked by non flying, you can check it here
                 //Or cases like that should be here
                 if (result)
                 {
-                    Debug.Log("Check2");
+                    Debug.Log("check2");
                     Setting.gameController.AddBlockInstance(this, block);
                 }
                 return result;
             }
             else
             {
-                Debug.Log("check3");
                 return false;
             }
 

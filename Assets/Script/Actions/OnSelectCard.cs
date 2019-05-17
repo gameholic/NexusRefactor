@@ -9,6 +9,7 @@ namespace GH.GameStates
     [CreateAssetMenu(menuName = "Actions/OnSelectedCard")]
     public class OnSelectCard : Action
     {
+        public GH.GameEvent onCurrentCardSelected;
         public CardVariables currentCard;
         public GameStates.State holdingCard;
 
@@ -25,13 +26,17 @@ namespace GH.GameStates
                     RaycastHit hit = results[i];
                     c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
                     PlayerHolder enemy = gc.GetOpponentOf(gc.currentPlayer);
+
+
                     if (c != null)
                     {
                         if(c.owner == enemy)
                         {
                             Debug.Log(c.viz.name);
                             currentCard.value = c;
+                            //c.OnClick();
                             gc.SetState(holdingCard);
+                            onCurrentCardSelected.Raise();
                         }
                         return;
                     }

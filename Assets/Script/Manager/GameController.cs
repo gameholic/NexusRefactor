@@ -59,6 +59,7 @@ namespace GH
 
         public void AddBlockInstance(CardInstance attk, CardInstance def)
         {
+
             BlockInstance b = null;
             b = GetBlockInstanceOfAttacker(attk);
             if (b == null)

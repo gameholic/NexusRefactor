@@ -43,7 +43,6 @@ namespace GH.GameStates
                     currentCard.value = null;
                     Setting.gameController.SetState(playerControlState);
                     onPlayerControlState.Raise();
-                    return;
                 }
                 else
                 {
@@ -53,18 +52,21 @@ namespace GH.GameStates
                         CardInstance c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
                         if(c != null)
                         {
-                            Debug.Log("find card to block");
                             //c is card that can block
                             bool block = c.CanBeBlocked(currentCard.value);
-                            currentCard.value = null;
-
                             Setting.gameController.SetState(playerBlockState);
+
+                            Setting.SetParentForCard(currentCard.value.transform, c.transform);
+                            currentCard.value.gameObject.SetActive(true);
+
+                            currentCard.value = null;
                             onPlayerControlState.Raise();
                             break;
                         }
 
                     } 
                 }
+                    return;
             }
 
             return;

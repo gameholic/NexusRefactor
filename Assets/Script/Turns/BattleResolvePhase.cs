@@ -17,6 +17,9 @@ namespace GH
             PlayerHolder p = Setting.gameController.currentPlayer;
             PlayerHolder e = Setting.gameController.GetOpponentOf(p);
 
+
+            if (p == e)
+                Debug.LogError("p = = e ");
             if (p.attackingCards.Count == 0)
             {
                 //Debug.Log("BattleResolvePhase forceExit");
