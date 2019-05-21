@@ -61,6 +61,7 @@ namespace GH
 
                         if(def.intValue <= attackValue)
                         {
+                            Debug.Log("defendcard dead");
                             //defend card Die
                             bi.defenders[i].CardInstanceToGrave();
                         }
@@ -73,12 +74,14 @@ namespace GH
                     attackValue = 0;
                     inst.CardInstanceToGrave();
                 }
+                else
+                {
+                    p.DropCardOnField(inst, false);
+                    p.currentCardHolder.SetCardDown(inst);
+                    inst.SetIsJustPlaced(true);
 
-                p.DropCardOnField(inst, false);
-                p.currentCardHolder.SetCardDown(inst);
-
+                }
                 ////////
-                inst.SetIsJustPlaced(true);
                 Setting.RegisterLog("Attack damage is "+ attackValue, Color.red);
                 e.DoDamage(attackValue);
             }
@@ -87,7 +90,12 @@ namespace GH
 
             foreach (CardInstance c in blockInstances.Keys)
             {
-                Debug.Log("Blocked card :" + c.viz.card);
+                //Debug.Log("Blocked card :" + c.viz.card);
+                if (c.dead)
+                {
+                    Debug.Log("this card is dead");
+                    break;
+                }
                 c.SetIsJustPlaced(false);
                 Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
             }

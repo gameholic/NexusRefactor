@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using GH.GameElements;
 
 namespace GH
@@ -10,8 +11,8 @@ namespace GH
         public GH.TransformVariable handGrid;
         public GH.TransformVariable[] fieldGrid;
         public GH.TransformVariable battleLine;
-
         public PlayerHolder thisPlayer;
+
 
 
         public void SetCardOnBattleLine(CardInstance card)
@@ -61,6 +62,7 @@ namespace GH
                 GameObject cardParentObj;
                 GameObject headObj;
                 //Card is on attack
+
                 if (c.gameObject.GetComponentInParent<Area>() == null || c.transform.parent.name.Contains("BattleLine"))
                 {
 
@@ -68,18 +70,18 @@ namespace GH
                     //string str = null;
                     cardParentObj = c.transform.parent.gameObject; //BattleLine
                     headObj = cardParentObj.transform.parent.gameObject;// BattleLineObjs
-                    
+
                     //if(str!=null)
                     //Setting.SetParentForCard(c.viz.gameObject.transform, headObj.transform.FindChild(str).transform);
 
                 }
-                    
+
                 else
                 {
 
                     //Below codes find current card's field area and relocate to same area of other side.
-                    
-                    cardParentObj = c.gameObject.GetComponentInParent<Area>().gameObject;     
+
+                    cardParentObj = c.gameObject.GetComponentInParent<Area>().gameObject;
 
                     headObj = cardParentObj.transform.parent.gameObject;
                     for (int t = 0; t < headObj.transform.childCount; t++)
@@ -90,9 +92,8 @@ namespace GH
                     }
                     Setting.SetParentForCard(c.viz.gameObject.transform, fieldGrid[i].value.transform);
                 }
-
+            }             
             
-            }
 
             ///This function is to arrange cards on player's handgrid.
             ///However I have 'CardH andOrder' function for card arrangement.

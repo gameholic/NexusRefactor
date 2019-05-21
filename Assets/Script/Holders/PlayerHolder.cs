@@ -30,6 +30,8 @@ namespace GH
         [System.NonSerialized]
         public List<CardInstance> attackingCards = new List<CardInstance>();
         [System.NonSerialized]
+        public List<CardInstance> graveyard = new List<CardInstance>();
+        [System.NonSerialized]
         public List<string> allCards = new List<string>();
         [System.NonSerialized]
         public ManaManager manaResourceManager = new ManaManager();

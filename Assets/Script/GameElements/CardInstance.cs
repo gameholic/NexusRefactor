@@ -10,7 +10,7 @@ namespace GH
         public GH.GameElements.Instance_logic currentLogic;
         public CardViz viz;
         public bool canAttack; //Indicates that card is just placed and can't attak this turn.
-
+        public bool dead;
         [System.NonSerialized]
         public bool isOnAttack = false;
 
@@ -47,7 +47,9 @@ namespace GH
         {
             //Card die
             canAttack = false;
-            Setting.RegisterLog("Card die", Color.black);
+            Setting.gameController.PutCardToGrave(this);
+            Setting.RegisterLog(this.viz.card + "Card die", Color.black);
+
         }
         public bool CanBeBlocked(CardInstance block, ref int count)
         {

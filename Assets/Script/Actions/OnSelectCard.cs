@@ -32,7 +32,7 @@ namespace GH.GameStates
                     {
                         if(c.owner == enemy)
                         {
-                            Debug.Log(c.viz.name);
+                            //Debug.Log(c.viz.name);
                             currentCard.value = c;
                             //c.OnClick();
                             gc.SetState(holdingCard);

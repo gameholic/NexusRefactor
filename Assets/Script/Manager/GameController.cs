@@ -10,7 +10,6 @@ namespace GH
         public CardHolders bottomCardHolder;
         public CardHolders topCardHolder;
         public State currentState;
-        public Phase currentPhase;
         public Turn[] turns;
 
         //public AssignPlayer[] gameobjPlayerAssigned;
@@ -21,7 +20,7 @@ namespace GH
         public GH.GameEvent OnPhaseChanged;
         public GH.StringVariable turnText;
         public GH.StringVariable turnCountTextVariable;//Count the turn. When both player plays, it increases by 1
-
+        public GH.TransformVariable[] graveyard_transform;
 
         public GameObject cardPrefab;
         public GameObject[] manaObj;
@@ -72,7 +71,6 @@ namespace GH
 
             if(!b.defenders.Contains(def))
             {
-                Debug.Log("ADD blocker");
                 b.defenders.Add(def);
             }
             count = b.defenders.Count;
@@ -111,7 +109,7 @@ namespace GH
 
             SetupPlayers();
 
-            CreateStartingCards(); //Each player gets their starting cards
+            //CreateStartingCards(); //Each player gets their starting cards
 
             turnText.value = turns[turnIndex].player.ToString(); // Visualize whose turn is now
 
@@ -393,5 +391,55 @@ namespace GH
         
         }
 
+
+        public void PutCardToGrave(CardInstance c)
+        {
+            PlayerHolder cardOwner = c.owner;
+            GameObject graveyardObj =null;
+            cardOwner.graveyard.Add(c);
+
+           for(int i=0;i<allPlayers.Length; i++)
+            {
+                if(allPlayers[i] == cardOwner)
+                {
+                    Debug.Log("check  " + cardOwner);
+                    allPlayers[i] = cardOwner;
+                }
+            }
+            if (c.owner.player == "Player1")
+                graveyardObj = graveyard_transform[0].value.gameObject;
+            else if (c.owner.player == "Player2")
+                graveyardObj = graveyard_transform[1].value.gameObject;
+
+           
+            if(graveyardObj == null)
+            {
+                Debug.Log("Failed to check obj");
+            }
+            else
+            {
+                Debug.Log("Found graveyardOBj : " + graveyardObj.transform);
+                Setting.SetParentForCard(c.transform, graveyardObj.transform);
+            }
+
+            if (cardOwner.fieldCard.Contains(c))
+            {
+                cardOwner.fieldCard.Remove(c);
+            }
+
+            if (cardOwner.handCards.Contains(c))
+            {
+                cardOwner.handCards.Remove(c);
+            }
+
+            if (cardOwner.attackingCards.Contains(c))
+            {
+                cardOwner.attackingCards.Remove(c);
+            }
+            c.dead = true;
+            c.gameObject.SetActive(false);
+            c.gameObject.GetComponentInChildren<CardInstance>().enabled = false;
+            c.currentLogic = null;
+        }
     }
 }

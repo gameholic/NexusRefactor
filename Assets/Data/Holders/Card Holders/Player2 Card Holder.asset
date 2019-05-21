@@ -19,5 +19,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 65d26e25e2756644cae47af940721160, type: 2}
   - {fileID: 11400000, guid: 0704584fbf8b6f34c8f19205ceb91ebb, type: 2}
   - {fileID: 11400000, guid: 674abe0beeba54f4d8a123faa2cd7cf7, type: 2}
-  battleLine: {fileID: 11400000, guid: f5b0c88b5ae1cc04f8650080bff8a8a5, type: 2}
+  battleLine: {fileID: 11400000, guid: f31cb9fff3e5402439e7968a520568da, type: 2}
   thisPlayer: {fileID: 11400000, guid: 2054d3257d1d4c24fab3bcf94d45fd66, type: 2}
