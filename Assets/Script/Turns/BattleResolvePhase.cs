@@ -77,9 +77,26 @@ namespace GH
                 p.DropCardOnField(inst, false);
                 p.currentCardHolder.SetCardDown(inst);
 
+                ////////
                 inst.SetIsJustPlaced(true);
                 Setting.RegisterLog("Attack damage is "+ attackValue, Color.red);
                 e.DoDamage(attackValue);
+            }
+            Dictionary <CardInstance, BlockInstance> blockInstances = Setting.gameController.GetBlockInstances();
+
+
+            foreach (CardInstance c in blockInstances.Keys)
+            {
+                Debug.Log("Blocked card :" + c.viz.card);
+                c.SetIsJustPlaced(false);
+                Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
+            }
+
+            foreach (CardInstance c in e.fieldCard)
+            {
+                //Bug: Defender's card should go into blockdic.
+                Debug.Log("enemy player's attacking card :" + c.viz.card);
+                Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
             }
 
             Setting.gameController.ClearBlockInstances();

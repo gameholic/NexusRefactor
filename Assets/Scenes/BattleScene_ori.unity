@@ -1844,7 +1844,7 @@ GameObject:
   - component: {fileID: 518248919}
   - component: {fileID: 518248921}
   m_Layer: 0
-  m_Name: CardsOnField
+  m_Name: CardsOnField_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2790,6 +2790,7 @@ MonoBehaviour:
   bottomCardHolder: {fileID: 11400000, guid: de8c454d3de231243b2cce449a5de728, type: 2}
   topCardHolder: {fileID: 11400000, guid: 38b61d5496fcf0a4ca0d556d1c15a2ee, type: 2}
   currentState: {fileID: 0}
+  currentPhase: {fileID: 0}
   turns:
   - {fileID: 11400000, guid: e94118c3b2e20844ea4a9f8b4f7fc591, type: 2}
   - {fileID: 11400000, guid: aaf2e573b34e5b84691a71485a172c93, type: 2}
@@ -2807,6 +2808,7 @@ MonoBehaviour:
   - {fileID: 1624317818}
   switchPlayer: 0
   turnIndex: 0
+  allPlayers: []
 --- !u!1 &755100762
 GameObject:
   m_ObjectHideFlags: 0
@@ -2884,7 +2886,7 @@ GameObject:
   - component: {fileID: 782692665}
   - component: {fileID: 782692664}
   m_Layer: 0
-  m_Name: CardsOnField
+  m_Name: CardsOnField_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

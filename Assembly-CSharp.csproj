@@ -152,7 +152,6 @@
     <Compile Include="Assets\Script\Turns\BlockPhase.cs" />
     <Compile Include="Assets\Script\Turns\ControlPhase_Player.cs" />
     <Compile Include="Assets\Script\Turns\Phase.cs" />
-    <Compile Include="Assets\Script\Turns\RecoverJustPlacedCards.cs" />
     <Compile Include="Assets\Script\Turns\Turn.cs" />
     <Compile Include="Assets\Script\Utilities\CurrentSelected.cs" />
     <Compile Include="Assets\spriterender.cs" />

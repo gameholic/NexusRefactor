@@ -46,20 +46,23 @@ namespace GH
         public void CardInstanceToGrave()
         {
             //Card die
+            canAttack = false;
             Setting.RegisterLog("Card die", Color.black);
         }
-        public bool CanBeBlocked(CardInstance block)
+        public bool CanBeBlocked(CardInstance block, ref int count)
         {
             bool result =  false;
 
             if (owner.attackingCards == null)
+            {
                 Setting.RegisterLog("Attacking cards error", Color.black);
+                Debug.Log("CanbeBlockedErr");
+                return false;
 
+            }
             else
             {
                 result = owner.attackingCards.Contains(this);
-                Debug.Log("check1");
-                Debug.Log("Result = " + result);
 
             }
 
@@ -71,8 +74,7 @@ namespace GH
                 //Or cases like that should be here
                 if (result)
                 {
-                    Debug.Log("check2");
-                    Setting.gameController.AddBlockInstance(this, block);
+                    Setting.gameController.AddBlockInstance(this, block, ref count);
                 }
                 return result;
             }
@@ -105,12 +107,14 @@ namespace GH
         {
             return isOnAttack;
         }
+
+
         public void SetOriginFieldLocation(Transform t)
         {
             originFieldTransform = t;
         }
         public Transform GetOriginFieldLocation()
-        { return originFieldTransform; }
+        {return originFieldTransform; }
 
     }
 

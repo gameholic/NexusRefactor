@@ -52,15 +52,18 @@ namespace GH.GameStates
                         CardInstance c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
                         if(c != null)
                         {
-                            //c is card that can block
-                            bool block = c.CanBeBlocked(currentCard.value);
-                            Setting.gameController.SetState(playerBlockState);
+                            int count = 0;                        
+                            bool block = c.CanBeBlocked(currentCard.value, ref count);
 
-                            Setting.SetParentForCard(currentCard.value.transform, c.transform);
+                            if(block)
+                            {
+                                Setting.SetCardForblock(currentCard.value.transform, c.transform, count);                                 
+                            }
+
                             currentCard.value.gameObject.SetActive(true);
-
                             currentCard.value = null;
                             onPlayerControlState.Raise();
+                            Setting.gameController.SetState(playerBlockState);
                             break;
                         }
 

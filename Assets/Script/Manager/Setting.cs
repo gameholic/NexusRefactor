@@ -66,6 +66,28 @@ namespace GH
             c.localPosition = Vector3.zero;
             c.localScale = p.localScale;
         }
+
+        public static void SetParentForCard(Transform c, Transform p, Vector3 newLocalPosition, Vector3 newEuler)
+        /// Move card 'c' to 'p'
+        {
+
+            c.SetParent(p.parent);
+            //c.rotation = Quaternion.Euler(newEuler);
+            c.rotation = p.rotation;
+            c.localPosition = newLocalPosition;
+            c.localScale = p.localScale;
+        }
+
+       
+        public static void SetCardForblock(Transform c, Transform p, int count)
+        {
+            //Change numbers that looks good to player
+            Vector3 blockPosition = Vector3.zero;
+            blockPosition.x += 2 * count;
+            blockPosition.y -= 2;
+            SetParentForCard(c, p, blockPosition, Vector3.zero);
+
+        }
     }
 
 }

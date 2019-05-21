@@ -57,7 +57,7 @@ namespace GH
             blockInstDic.Clear();
         }
 
-        public void AddBlockInstance(CardInstance attk, CardInstance def)
+        public void AddBlockInstance(CardInstance attk, CardInstance def, ref int count)
         {
 
             BlockInstance b = null;
@@ -72,9 +72,10 @@ namespace GH
 
             if(!b.defenders.Contains(def))
             {
+                Debug.Log("ADD blocker");
                 b.defenders.Add(def);
             }
-            b.defenders.Add(def); 
+            count = b.defenders.Count;
         }
 
         BlockInstance GetBlockInstanceOfAttacker(CardInstance attck)
@@ -315,7 +316,7 @@ namespace GH
             //    switchPlayer = false;
             //}        
 
-            currentPhase = turns[turnIndex].phases[turns[turnIndex].index];
+
             UpdateMana();
             if (startTurn)
             {
