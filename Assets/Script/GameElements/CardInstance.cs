@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 using GH.GameStates;
+using GH.GameElements;
 
-namespace GH
+namespace GH.GameCard
 {
     public class CardInstance : MonoBehaviour, IClickable
     {
         public PlayerHolder owner;
-        public GH.GameElements.Instance_logic currentLogic;
+        public Instance_logic currentLogic;
         public CardViz viz;
         public bool canAttack; //Indicates that card is just placed and can't attak this turn.
         public bool dead;
-        [System.NonSerialized]
-        public bool isOnAttack = false;
+        private bool _isOnAttack = false;
 
         private Transform originFieldTransform;
         void Start()
@@ -26,23 +26,25 @@ namespace GH
                 return;
             currentLogic.OnClick(this);
         }
-
         public void OnHighlight()
         {
             if (currentLogic == null)
                 return;
             currentLogic.OnHighlight(this);
         }
-
-        public void SetIsJustPlaced(bool isPlaced)
+        /// <summary>
+        /// This function need changes 
+        /// Color of the card should automatically changed based on canAttack.
+        /// I suggest move this method to 'GameController.cs" -- 190524 Hwan
+        /// </summary>
+        /// <param name="justPlaced"></param>
+        public void ColorCard(bool justPlaced)
         {
-
-            if (isPlaced)
+            if (justPlaced)
                 viz.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.cyan;            
             else
                 viz.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;          
-        }
-        
+        }        
         public void CardInstanceToGrave()
         {
             //Card die
@@ -86,12 +88,9 @@ namespace GH
             }
 
         }
-        public bool CanAttack()
+        public bool GetCanAttack()
         {
             bool result = true;
-
-            //Debug.Log(canAttack);
-
             if(viz.card.cardType.TypeAllowsAttack(this))
             {
                 result = true;
@@ -100,17 +99,24 @@ namespace GH
                 result = false;
             return result;
         }
-
-        public void SetIsOnAttackTrue()
+        public void SetCanAttack(bool available)
         {
-            isOnAttack = true;
+            canAttack = available;
         }
-        public bool GetIsOnAttack()
+        //public void SetIsOnAttack()
+        //{
+        //    isOnAttack = true;
+        //}
+        //public bool GetIsOnAttack()
+        //{
+        //    return isOnAttack;
+        //}
+
+        public bool IsOnAttack
         {
-            return isOnAttack;
+            get { return _isOnAttack;}
+            set { _isOnAttack = value;}
         }
-
-
         public void SetOriginFieldLocation(Transform t)
         {
             originFieldTransform = t;

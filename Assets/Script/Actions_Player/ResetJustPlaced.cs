@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using GH.GameCard;
 
 namespace GH
 {
@@ -13,10 +13,10 @@ namespace GH
         {
             foreach(CardInstance c in p.fieldCard)
             {
-                if (!c.canAttack)
+                if (!c.GetCanAttack())
                 {
-                    c.canAttack = true;
-                    c.SetIsJustPlaced(false);
+                    c.SetCanAttack(true);
+                    c.ColorCard(false);
                     //Debug.Log(c.viz.card.name + " can attack now");
                 }
             }

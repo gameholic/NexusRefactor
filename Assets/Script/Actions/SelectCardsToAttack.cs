@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using GH.GameStates;
-
+using GH.GameCard;  
 namespace GH
 {
     [CreateAssetMenu(menuName = "Actions/SelectCardsToAttack")]
@@ -38,11 +38,11 @@ namespace GH
                         return;
 
                     }
-                    if (!inst.CanAttack() || inst.GetIsOnAttack())
+                    if (!inst.GetCanAttack() || inst.IsOnAttack)
                     {
-                        if (!inst.CanAttack())
+                        if (!inst.GetCanAttack())
                             Setting.RegisterLog("This card can't attack. ", Color.black);
-                        else if (inst.GetIsOnAttack())
+                        else if (inst.IsOnAttack)
                             Setting.RegisterLog("This card is already on attack", Color.black);
                         return;
                       

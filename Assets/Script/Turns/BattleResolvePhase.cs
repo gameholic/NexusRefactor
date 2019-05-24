@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GH.GameCard;
 
-namespace GH
+namespace GH.GameTurn
 {
     [CreateAssetMenu(menuName ="Turns/Battle Resolve")]
     public class BattleResolvePhase : Phase
@@ -78,7 +79,7 @@ namespace GH
                 {
                     p.DropCardOnField(inst, false);
                     p.currentCardHolder.SetCardDown(inst);
-                    inst.SetIsJustPlaced(true);
+                    inst.ColorCard(true);
 
                 }
                 ////////
@@ -96,7 +97,7 @@ namespace GH
                     Debug.Log("this card is dead");
                     break;
                 }
-                c.SetIsJustPlaced(false);
+                c.ColorCard(false);
                 Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
             }
 

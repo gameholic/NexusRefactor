@@ -1,23 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GH;
+using GH.GameCard;
+using GH.GameStates;
 
 namespace GH.GameElements
 {
     [CreateAssetMenu(menuName = "GameElements/My Field")]
     public class Card_Myfield : Instance_logic
     {
-        public GH.GameStates.State battlephase;
-        public GH.GameEvent oncurrentcardselected;
-        public GH.BattlePhaseStartCheck startbattle;
+        public State battlephase;
+        public GameEvent onCurrentCardSelected;
+        public BattlePhaseStartCheck startBattle;
 
-        public CardVariables currentcard;
+        public CardVariables currentCard;
         public override void OnClick(CardInstance inst)
         {
-            if (startbattle.IsValid())
+            if (startBattle.IsValid())
             {
-                currentcard.Set(inst);
+                currentCard.Set(inst);
                 Setting.gameController.SetState(battlephase);
-                oncurrentcardselected.Raise();
+                onCurrentCardSelected.Raise();
             }
             else
             {

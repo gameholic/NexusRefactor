@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using GH.GameCard;
+
 namespace GH
 {
     public class BlockInstance

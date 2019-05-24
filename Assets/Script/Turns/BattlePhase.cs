@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace GH
+namespace GH.GameTurn
 {
     [CreateAssetMenu(menuName = "Turns/Battle Phase_Player")]
     public class BattlePhase : Phase
     {
+        public GameStates.State battlePhaseControl;
+        public Condition isBattleValid;
         public override bool IsComplete()
         {
             if (forceExit)
@@ -22,16 +24,15 @@ namespace GH
             {
                 Setting.gameController.SetState(null);
                 isInit = false;
-            }
-
-
+            }            
         }
 
         public override void OnStartPhase()
         {
             if (!isInit)
             {
-                Setting.gameController.SetState(null);
+                forceExit = !isBattleValid.IsValid();
+                Setting.gameController.SetState((!forceExit)? battlePhaseControl : null);
                 Setting.gameController.OnPhaseChanged.Raise();
                 isInit = true;
             }

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GH.GameCard;
+
 
 namespace GH.GameElements
 {

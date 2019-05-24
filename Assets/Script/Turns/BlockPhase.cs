@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace GH
+namespace GH.GameTurn
 {
     [CreateAssetMenu(menuName ="Turns/BlockPhase")]
     public class BlockPhase : Phase

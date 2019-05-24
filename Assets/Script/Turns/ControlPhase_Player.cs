@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-namespace GH
+namespace GH.GameTurn
 {
     [CreateAssetMenu(menuName ="Turns/Control Phase_Player")]
     public class ControlPhase_Player : Phase

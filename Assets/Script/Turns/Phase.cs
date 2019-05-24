@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-namespace GH
+namespace GH.GameTurn
 {
 
     [CreateAssetMenu(menuName = "Turns/phase")]
@@ -17,3 +17,4 @@ namespace GH
         public abstract void OnEndPhase();
     }
 }
+    

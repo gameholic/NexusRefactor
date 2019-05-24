@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GH
+namespace GH.GameCard
 {
+
+    //It is more likely to be called as Card manager
     [CreateAssetMenu(menuName = "Manager/Resource manager")]
     public class ResourceManager : ScriptableObject
     {
@@ -21,7 +23,7 @@ namespace GH
         }
 
 
-        public Card GetCardInstance(string id)
+        public Card GetCardFromDict(string id)
         {
             Card originCard = GetCard(id);
             if (originCard == null)

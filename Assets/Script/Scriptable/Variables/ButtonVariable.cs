@@ -5,7 +5,7 @@ using UnityEditor;
 namespace GH
 {
     [CreateAssetMenu(menuName ="Variable/Button Variable")]
-    public class ButtonVariablwe : ScriptableObject
+    public class ButtonVariable : ScriptableObject
     {
 
         public Button_Instance value;

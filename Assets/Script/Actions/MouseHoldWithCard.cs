@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using GH.GameTurn;
+using GH.GameCard;
 
 namespace GH.GameStates
 {

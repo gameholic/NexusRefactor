@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GH
+
+namespace GH.GameCard
 {
     [CreateAssetMenu(menuName ="Card")]
     public class Card : ScriptableObject

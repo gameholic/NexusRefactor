@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GH.GameElements;
+using GH.GameCard;
 
 namespace GH
 {

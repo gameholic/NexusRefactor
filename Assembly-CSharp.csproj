@@ -83,15 +83,15 @@
     <Compile Include="Assets\Script\Cards\Card.cs" />
     <Compile Include="Assets\Script\Cards\CardProperties.cs" />
     <Compile Include="Assets\Script\Cards\CardType.cs" />
+    <Compile Include="Assets\Script\Cards\CardType\Creature.cs" />
+    <Compile Include="Assets\Script\Cards\CardType\Spell.cs" />
+    <Compile Include="Assets\Script\Cards\CardType\WeaponCard.cs" />
     <Compile Include="Assets\Script\Cards\CardViz.cs" />
     <Compile Include="Assets\Script\Cards\CardVizProperties.cs" />
     <Compile Include="Assets\Script\Cards\Element.cs" />
     <Compile Include="Assets\Script\Cards\ElementImage.cs" />
     <Compile Include="Assets\Script\Cards\ElementInt.cs" />
     <Compile Include="Assets\Script\Cards\ElementText.cs" />
-    <Compile Include="Assets\Script\Cards\WeaponCard.cs" />
-    <Compile Include="Assets\Script\CardType\Creature.cs" />
-    <Compile Include="Assets\Script\CardType\Spell.cs" />
     <Compile Include="Assets\Script\ConsoleLog\ConsoleHook.cs" />
     <Compile Include="Assets\Script\ConsoleLog\ConsoleManager.cs" />
     <Compile Include="Assets\Script\GameElements\Area.cs" />
@@ -106,7 +106,6 @@
     <Compile Include="Assets\Script\Helpers\AssignTransform.cs" />
     <Compile Include="Assets\Script\Helpers\CheckPlayerCanUse.cs" />
     <Compile Include="Assets\Script\Holders\CardHolders.cs" />
-    <Compile Include="Assets\Script\Holders\ManaHolder.cs" />
     <Compile Include="Assets\Script\Holders\PlayerHolder.cs" />
     <Compile Include="Assets\Script\Holders\PositionHolder.cs" />
     <Compile Include="Assets\Script\Interfaces\IClickable.cs" />
@@ -147,7 +146,6 @@
     <Compile Include="Assets\Script\Scriptable\Variables\Vector3Variable.cs" />
     <Compile Include="Assets\Script\State\State.cs" />
     <Compile Include="Assets\Script\Turns\BattlePhase.cs" />
-    <Compile Include="Assets\Script\Turns\BattlePhaseTest.cs" />
     <Compile Include="Assets\Script\Turns\BattleResolvePhase.cs" />
     <Compile Include="Assets\Script\Turns\BlockPhase.cs" />
     <Compile Include="Assets\Script\Turns\ControlPhase_Player.cs" />

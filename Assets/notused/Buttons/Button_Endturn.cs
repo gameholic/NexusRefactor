@@ -6,7 +6,7 @@ namespace GH.GameElements
     [CreateAssetMenu(menuName ="Button/End Button")]
     public class Button_Endturn : Button_InstanceLogic
     {
-        public ButtonVariablwe currentButton;
+        public ButtonVariable currentButton;
         public GH.GameEvent buttonPushed;
         public override void OnClick(GameObject buttonObj)
         {

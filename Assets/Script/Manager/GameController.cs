@@ -1,6 +1,8 @@
 ﻿using GH.GameStates;
 using System.Collections.Generic;
 using UnityEngine;
+using GH.GameCard;
+using GH.GameTurn;
 
 namespace GH
 {
@@ -32,20 +34,18 @@ namespace GH
         public static GameController singleton;
 
 
-        public  PlayerHolder[] allPlayers; // Don't modify ever
+        public PlayerHolder[] allPlayers; // Don't modify ever
         [System.NonSerialized]
         public bool isComplete = false;
         [System.NonSerialized]
         public CheckPlayerCanUse checkObjOwner = new CheckPlayerCanUse();
 
 
-        private readonly ManaHolder tempManaHolder;
-
         private bool startTurn = true; //Check the start of the turn
         private int turnCounter; //Count the turn. When both player plays, it increases by 1
 
         Dictionary<CardInstance, BlockInstance> blockInstDic = new Dictionary<CardInstance, BlockInstance>();
-        
+
         public Dictionary<CardInstance, BlockInstance> GetBlockInstances()
         {
             return blockInstDic;
@@ -69,7 +69,7 @@ namespace GH
                 blockInstDic.Add(attk, b);
             }
 
-            if(!b.defenders.Contains(def))
+            if (!b.defenders.Contains(def))
             {
                 b.defenders.Add(def);
             }
@@ -90,17 +90,17 @@ namespace GH
             switchPlayer = false;
             singleton = this;
             allPlayers = new PlayerHolder[turns.Length];
-            for(int i =0; i< turns.Length; i++)
+            for (int i = 0; i < turns.Length; i++)
             {
-                allPlayers[i] = turns[i].player;
+                allPlayers[i] = turns[i].GetPlayer();
                 if (allPlayers[i].player == "Player1")
                     allPlayers[i].isBottomPos = true;
                 else
                     allPlayers[i].isBottomPos = false;
 
-                Setting.RegisterLog(allPlayers[i].name+" joined the game successfully", allPlayers[i].playerColor);
+                Setting.RegisterLog(allPlayers[i].name + " joined the game successfully", allPlayers[i].playerColor);
             }
-            currentPlayer = turns[0].player;
+            currentPlayer = turns[0].GetPlayer();
         }
 
         private void Start()
@@ -111,13 +111,13 @@ namespace GH
 
             //CreateStartingCards(); //Each player gets their starting cards
 
-            turnText.value = turns[turnIndex].player.ToString(); // Visualize whose turn is now
+            turnText.value = turns[turnIndex].GetPlayer().ToString(); // Visualize whose turn is now
 
-            turnCounter = 1; 
+            turnCounter = 1;
             turnCountTextVariable.value = turnCounter.ToString();
 
             OnTurnChanged.Raise();
-            for(int i=0;i<allPlayers.Length;i++)
+            for (int i = 0; i < allPlayers.Length; i++)
             {
                 allPlayers[i].statsUI = playerStats[i];
                 allPlayers[i].manaResourceManager.InitManaZero();
@@ -130,11 +130,11 @@ namespace GH
 
             }
 
-        }              
+        }
 
         private void SetupPlayers()
         {
-            for(int i=0;i<allPlayers.Length;i++)
+            for (int i = 0; i < allPlayers.Length; i++)
             {
                 allPlayers[i].Init();
                 if (i == 0)
@@ -142,10 +142,10 @@ namespace GH
                 else
                     allPlayers[i].currentCardHolder = topCardHolder;  // Player 2 is top card holder
 
-                if (i<2)
+                if (i < 2)
                 {
                     allPlayers[i].statsUI = playerStats[i];
-                    playerStats[i].player.LoadPlayerOnStatsUI();                   
+                    playerStats[i].player.LoadPlayerOnStatsUI();
                 }
             }
         }
@@ -155,8 +155,8 @@ namespace GH
             //At first run, bottomcardholder is player1, topCardHolder is player2
             PlayerHolder prevPlayer = topCardHolder.thisPlayer;
 
-            
-            if(loadedPlayer == topCardHolder.thisPlayer)
+
+            if (loadedPlayer == topCardHolder.thisPlayer)
             //It is run when player turn(or position) is changed
             {
                 //playerStats[0] = UIs at bottom / playerStats[1] = UIs at top
@@ -172,25 +172,25 @@ namespace GH
                 //loaded Player is "player1" *** TopPlayer = "player1" *** BottomPlayer = "player2"
                 //in this case, line 171,172 don't have meaning except moving cards in its origninal place.
                 ///////////////////////////////////////
-                
-                if(turns[turnIndex].index != 2) // 3rd Phase is blockphase___ On block phase, infinite loop exists.
+
+                if (turns[turnIndex].index != 2) // 3rd Phase is blockphase___ On block phase, infinite loop exists.
                 {
                     topCardHolder = prevPlayer.currentCardHolder;
                     bottomCardHolder = loadedPlayer.currentCardHolder;
                 }
-               /* else
-                    Debug.Log("CHECK");*/
+                /* else
+                     Debug.Log("CHECK");*/
             }
             else if (loadedPlayer == bottomCardHolder.thisPlayer && loadedPlayer.player == "Player2")
             //It is only run at battle phase
             {
-                Debug.Log("Loop2 + loadedPlayer is "+loadedPlayer);
+                Debug.Log("Loop2 + loadedPlayer is " + loadedPlayer);
                 prevPlayer = topCardHolder.thisPlayer;
                 LoadPlayerOnHolder(prevPlayer, bottomCardHolder, playerStats[1]); // move bottom player's UI, cards to top
                 LoadPlayerOnHolder(loadedPlayer, topCardHolder, playerStats[0]);
 
             }
-            else if(loadedPlayer != topCardHolder.thisPlayer && loadedPlayer != bottomCardHolder.thisPlayer)
+            else if (loadedPlayer != topCardHolder.thisPlayer && loadedPlayer != bottomCardHolder.thisPlayer)
             {
                 Debug.LogError("loaded player isn't at bottom nor top");
             }
@@ -212,11 +212,11 @@ namespace GH
             //}
         }
 
-        public void PickNewCardFromDeck(PlayerHolder p )
+        public void PickNewCardFromDeck(PlayerHolder p)
         {
             ResourceManager rm = Setting.GetResourceManager();
 
-            if (p.allCards.Count==0)
+            if (p.allCards.Count == 0)
             {
                 Setting.RegisterLog(p + " don't have card in deck", Color.black);
                 return;
@@ -225,7 +225,7 @@ namespace GH
             p.allCards.RemoveAt(0);
             GameObject go = Instantiate(cardPrefab) as GameObject;
             CardViz v = go.GetComponent<CardViz>();
-            v.LoadCard(rm.GetCardInstance(cardId));
+            v.LoadCard(rm.GetCardFromDict(cardId));
 
             CardInstance inst = go.GetComponent<CardInstance>();
             inst.owner = p;
@@ -238,13 +238,13 @@ namespace GH
             if (p.handCards.Count <= 7)
                 p.handCards.Add(inst);
             else
-                Setting.RegisterLog("Can't add card. Next card is deleted",Color.black);
+                Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
             //LoadPlayerOnHolder(p, p.currentCardHolder, p.statsUI);
         }
-       
+
 
         // Move targetPlayer, targetUI's position to destCardHolder's position
-        public void LoadPlayerOnHolder(PlayerHolder targetPlayer, CardHolders destCardHolder,PlayerStatsUI targetUI)
+        public void LoadPlayerOnHolder(PlayerHolder targetPlayer, CardHolders destCardHolder, PlayerStatsUI targetUI)
         {
             destCardHolder.LoadPlayer(targetPlayer, targetUI);
         }
@@ -273,7 +273,7 @@ namespace GH
             //    Setting.RegisterLog("Card Created for " + allPlayers[p].name, allPlayers[p].playerColor);
             //}
         }
-             
+
         private void UpdateMana()
         {
             //int playerIndex = -1;
@@ -282,7 +282,7 @@ namespace GH
             //{
             //    tempManaHolder = manaObj[i].GetComponent<ManaHolder>();
             //    PlayerHolder thisPlayer = manaObj[i].GetComponentInParent<AssignPlayer>().GetPlayer();
-                
+
             //    if (currentPlayer == thisPlayer)
             //    {
             //        playerIndex = i;
@@ -296,9 +296,9 @@ namespace GH
             //tempManaHolder.maxMana.text = currentPlayer.manaResourceManager.getMaxMana().ToString();       
 
 
-            for(int i =0;i<playerStats.Length;i++)
+            for (int i = 0; i < playerStats.Length; i++)
             {
-                if(currentPlayer == playerStats[i].player)
+                if (currentPlayer == playerStats[i].player)
                 {
                     playerStats[i].UpdateMana();
                 }
@@ -334,19 +334,19 @@ namespace GH
                 Vector3 m = manaObj[0].gameObject.transform.position;
                 manaObj[0].gameObject.transform.position = manaObj[1].gameObject.transform.position;
                 manaObj[1].gameObject.transform.position = m;
-                               
+
                 switchPlayer = false;
             }
-        
+
             turnCountTextVariable.value = turnCounter.ToString();
 
-            
+
             isComplete = turns[turnIndex].Execute();
 
             if (isComplete)
             {
                 turnIndex++;
-                if (turnIndex > turns.Length -1)
+                if (turnIndex > turns.Length - 1)
                 {
                     turnIndex = 0;
                     turns[turnIndex].firstTime = startTurn;
@@ -354,32 +354,32 @@ namespace GH
                 }
 
                 startTurn = true;
-                currentPlayer = turns[turnIndex].player;
-                turnText.value = turns[turnIndex].player.ToString();
+                currentPlayer = turns[turnIndex].GetPlayer();
+                turnText.value = turns[turnIndex].GetPlayer().ToString();
 
                 switchPlayer = true;
                 OnTurnChanged.Raise();
 
             }
 
-            if (currentState !=null)
+            if (currentState != null)
                 currentState.Tick(Time.deltaTime);
-            
-           
+
+
         }
 
         public void SetState(State state)
         {
             currentState = state;
         }
-        
+
         public void EndPhase()
         {
             Setting.RegisterLog(currentPlayer.name + " finished phase: " + turns[turnIndex].currentPhase.value, currentPlayer.playerColor);
             turns[turnIndex].EndCurrentPhase();
-            currentPlayer = turns[turnIndex].player;
+            currentPlayer = turns[turnIndex].GetPlayer();
         }
-        
+
         public PlayerHolder GetOpponentOf(PlayerHolder p)
         {
             for (int i = 0; i < allPlayers.Length; i++)
@@ -388,19 +388,19 @@ namespace GH
                     return allPlayers[i];
             }
             return null;
-        
+
         }
 
 
         public void PutCardToGrave(CardInstance c)
         {
             PlayerHolder cardOwner = c.owner;
-            GameObject graveyardObj =null;
+            GameObject graveyardObj = null;
             cardOwner.graveyard.Add(c);
 
-           for(int i=0;i<allPlayers.Length; i++)
+            for (int i = 0; i < allPlayers.Length; i++)
             {
-                if(allPlayers[i] == cardOwner)
+                if (allPlayers[i] == cardOwner)
                 {
                     Debug.Log("check  " + cardOwner);
                     allPlayers[i] = cardOwner;
@@ -411,8 +411,8 @@ namespace GH
             else if (c.owner.player == "Player2")
                 graveyardObj = graveyard_transform[1].value.gameObject;
 
-           
-            if(graveyardObj == null)
+
+            if (graveyardObj == null)
             {
                 Debug.Log("Failed to check obj");
             }

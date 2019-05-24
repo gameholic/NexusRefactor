@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.EventSystems;
-
+using GH.GameCard;
 
 namespace GH.GameStates
 {

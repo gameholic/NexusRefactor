@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using GH.GameCard;
 
 namespace GH
 {
@@ -39,7 +40,7 @@ namespace GH
             //inst.isJustPlaced = true;
             //if card w/ special ability is placed, change to true
             SetParentForCard(c, p);
-            inst.SetIsJustPlaced(true);
+            inst.ColorCard(true);
             gameController.currentPlayer.PayMana(card);
             gameController.currentPlayer.DropCardOnField(inst);
 

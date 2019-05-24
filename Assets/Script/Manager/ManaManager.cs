@@ -9,14 +9,14 @@ namespace GH
         public int maxMana;
 
         
-        public void UpdateMaxMana(int variation)
+        public void UpdateMaxMana(int chnages)
         {
-            maxMana = maxMana + variation;
+            maxMana = maxMana + chnages;
         }
 
-        public void UpdateCurrentMana(int variation)
+        public void UpdateCurrentMana(int changes)
         {
-            currentMana = currentMana + variation;
+            currentMana = currentMana + changes;
         }
 
         public void InitMana()

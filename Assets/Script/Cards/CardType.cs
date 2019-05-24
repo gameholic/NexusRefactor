@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace GH
+namespace GH.GameCard
 {
     public abstract class CardType : ScriptableObject
     {
@@ -17,7 +17,6 @@ namespace GH
             CardVizProperties type = viz.GetProperty(t);
             type.text.text = typeName;
         }
-
         public bool TypeAllowsAttack(CardInstance inst)
         {
             ///Cards with charge ability are allowed to attack even their 'isJustPlaced' is true;
@@ -26,8 +25,6 @@ namespace GH
             ///if(inst,isJustPlaced)
             ///     inst.isJustPlaced = false 
             ///return true;
-
-
             if (canAttack)
             {
                 return true;

@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GH
+namespace GH.GameTurn
 {
 
     [CreateAssetMenu(menuName = "Turns/Turn")]
     public class Turn : ScriptableObject
     {
 
-        public PlayerHolder player;
+        [SerializeField]
+        private PlayerHolder _thisTurnPlayer;
         public PhaseVariable currentPhase; 
         public Phase[] phases;
         public PlayerAction[] turnStartActions;
@@ -31,14 +32,14 @@ namespace GH
             
             for (int i = 0; i < turnStartActions.Length; i++)
             {
-                turnStartActions[i].Execute(player);
+                turnStartActions[i].Execute(_thisTurnPlayer);
             }
 
             ///If current player has less than 10 mana resources, add 1. Nor, just initialise it.
-            if (player.manaResourceManager.GetMaxMana() < 10)
-                player.manaResourceManager.UpdateMaxMana(1);
-            player.manaResourceManager.InitMana();
-            Setting.RegisterLog(player.name + " turn starts ", player.playerColor);
+            if (_thisTurnPlayer.manaResourceManager.GetMaxMana() < 10)
+                _thisTurnPlayer.manaResourceManager.UpdateMaxMana(1);
+            _thisTurnPlayer.manaResourceManager.InitMana();
+            Setting.RegisterLog(_thisTurnPlayer.name + " turn starts ", _thisTurnPlayer.playerColor);
         }
         public bool Execute()
         {
@@ -53,22 +54,17 @@ namespace GH
                 TurnStart();
                 firstTime = false;
             }
-
             if (IsComplete)
-            {
-                
+            {                
                 phases[index].OnEndPhase();
                 index++;
                 if(index>phases.Length-1)
                 {
                     index = 0;
-
                     firstTime = true;
                     result = true;
                 }
-
             }
-
             return result;
         }
 
@@ -78,6 +74,11 @@ namespace GH
             phases[index].forceExit = true;
         }
         
+
+        public PlayerHolder GetPlayer()
+        {
+            return _thisTurnPlayer;
+        }
     }
 }
 

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GH.GameElements;
-
+using GH.GameCard;
 namespace GH
 {
     [CreateAssetMenu(menuName ="Holders/Card Holder")]
@@ -23,8 +23,8 @@ namespace GH
             position.z = card.viz.gameObject.transform.position.z;
             position.y = card.viz.gameObject.transform.position.y;
             card.viz.gameObject.transform.position = position;
-            card.SetIsOnAttackTrue();
-
+           // card.SetIsOnAttack();
+            card.IsOnAttack = true;
             
         }
 

@@ -1,33 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-namespace GH
+namespace GH.GameCard
 { 
+    /// <summary>
+    /// This class is responsible of card visualization
+    /// </summary>
     public class CardViz : MonoBehaviour
     {         
         public Card card;
         public CardVizProperties[] properties;
-        public GameObject statsHolder;
-        [System.NonSerialized]
-        public GameObject weaponHolder; 
-
-        
-        //private void Start()
-        //{
-        //    LoadCard(card);
-        //}
-
+        public GameObject statsHolder;      
 
         public void LoadCard(Card c)
         {
             if (c == null)
                 return;
             card = c;
-
             c.cardType.OnSetType(this);
-
             CloseAll();
-
 
             for(int i=0; i<c.properties.Length; i++)
             {
@@ -54,7 +45,6 @@ namespace GH
             }
 
         }
-
         public void CloseAll()
         {
             foreach(CardVizProperties p in properties)
@@ -78,9 +68,11 @@ namespace GH
                     break;
                 }
             }
-
-
             return result;
+        }
+        public GameObject GetStatsHolder()
+        {
+            return statsHolder;
         }
     }
 }
