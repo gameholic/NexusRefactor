@@ -27,7 +27,7 @@ namespace GH.GameStates
                 GameController gc = Setting.gameController;
                 RaycastHit[] results = Setting.GetUIObjs();
 
-                if (gc.turns[gc.turnIndex].currentPhase.value != blockPhase)
+                if (gc.turns[gc.turnIndex].CurrentPhase.value != blockPhase)
                 {
                     for (int i = 0; i < results.Length; i++)
                     {
@@ -48,6 +48,7 @@ namespace GH.GameStates
                 }
                 else
                 {
+                    Debug.Log("Check");
                     for (int i = 0; i < results.Length; i++)
                     {
                         RaycastHit hit = results[i];

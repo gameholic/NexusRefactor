@@ -62,8 +62,7 @@ namespace GH.GameTurn
 
                         if(def.intValue <= attackValue)
                         {
-                            Debug.Log("defendcard dead");
-                            //defend card Die
+                            //Debug.Log("defendcard dead");
                             bi.defenders[i].CardInstanceToGrave();
                         }
                     }
@@ -71,7 +70,7 @@ namespace GH.GameTurn
 
                 if(attackValue <= 0)
                 {
-                    //Attack Card Die
+                    //Debug.Log("AttackCard dead");
                     attackValue = 0;
                     inst.CardInstanceToGrave();
                 }

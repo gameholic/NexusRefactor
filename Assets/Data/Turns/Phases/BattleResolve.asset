@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf92aff97e3f9b499f83f4ed2f6ace4, type: 3}
   m_Name: BattleResolve
   m_EditorClassIdentifier: 
-  forceExit: 0
-  phaseName: BattleResolve
+  _PhaseForceExit: 0
+  _PhaseName: Battle Resolve Phase
   elementAttack: {fileID: 11400000, guid: 53c97bee58bf3d34d8676099f908d2ed, type: 2}
   elementHealth: {fileID: 11400000, guid: 876444c86d82be94e88c398eb0fb7d5c, type: 2}

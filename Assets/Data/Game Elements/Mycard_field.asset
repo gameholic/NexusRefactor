@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd7ca56302f8f9140a9544e650f8e14d, type: 3}
   m_Name: Mycard_field
   m_EditorClassIdentifier: 
-  battlephase: {fileID: 11400000, guid: 75d7e9696a56d74479641978850be195, type: 2}
-  oncurrentcardselected: {fileID: 11400000, guid: 19005ce4462ee5e4b85c8d1ae80e2ef8,
+  battlephase: {fileID: 11400000, guid: fe7a11eec0c03664b8e2fa3d4f4b7eb6, type: 2}
+  onCurrentCardSelected: {fileID: 11400000, guid: 19005ce4462ee5e4b85c8d1ae80e2ef8,
     type: 2}
-  startbattle: {fileID: 11400000, guid: a205c5e6156dc174d91303d64750c7f9, type: 2}
-  currentcard: {fileID: 11400000, guid: 5026788fca2ff8445a806055cbc47dc7, type: 2}
+  startBattle: {fileID: 11400000, guid: 90701d3e456e71d4190c151c89802e35, type: 2}
+  currentCard: {fileID: 11400000, guid: 5026788fca2ff8445a806055cbc47dc7, type: 2}

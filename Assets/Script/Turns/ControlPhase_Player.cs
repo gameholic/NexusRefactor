@@ -11,9 +11,9 @@ namespace GH.GameTurn
         public GameStates.State playerControlState;
         public override bool IsComplete()
         {
-            if (forceExit)
+            if (_PhaseForceExit)
             {
-                forceExit = false;
+                _PhaseForceExit = false;
                 return true;
             }
             return false;

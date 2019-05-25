@@ -10,9 +10,9 @@ namespace GH.GameTurn
         public GameStates.State playerControlState;
         public override bool IsComplete()
         {
-            if (forceExit)
+            if (_PhaseForceExit)
             {
-                forceExit = false;
+                _PhaseForceExit = false;
                 return true;
             }
             return false;
@@ -41,8 +41,7 @@ namespace GH.GameTurn
             
             if(gc.currentPlayer.attackingCards.Count == 0)
             {
-                //Debug.Log("BlockPhase attackingCard");
-                forceExit = true;
+                _PhaseForceExit = true;
                 return; 
             }
             if(gc.topCardHolder.thisPlayer.isHumanPlayer /*&& forceExit == true*/)

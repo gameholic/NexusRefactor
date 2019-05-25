@@ -11,15 +11,18 @@ namespace GH.GameTurn
 
         [SerializeField]
         private PlayerHolder _thisTurnPlayer;
-        public PhaseVariable currentPhase; 
-        public Phase[] phases;
-        public PlayerAction[] turnStartActions;
+        [SerializeField]
+        private PhaseVariable _currentPhase;
+        [SerializeField]
+        private Phase[] _phases;
+        [SerializeField]
+        private PlayerAction[] _turnStartActions;
 
 
         [System.NonSerialized]
-        public int index = 0;
+        private int _TurnIndex = 0;
         [System.NonSerialized]
-        public bool firstTime = true; 
+        private bool _TurnBegin = true; 
         // Somehow, this is initialised different as I initialise. 
         // If I initialise as True, it becomes False
         // If I initialise as False, it becomes True;
@@ -27,12 +30,12 @@ namespace GH.GameTurn
 
         public void TurnStart()
         {
-            if (turnStartActions == null)
+            if (_turnStartActions == null)
                 return;
             
-            for (int i = 0; i < turnStartActions.Length; i++)
+            for (int i = 0; i < _turnStartActions.Length; i++)
             {
-                turnStartActions[i].Execute(_thisTurnPlayer);
+                _turnStartActions[i].Execute(_thisTurnPlayer);
             }
 
             ///If current player has less than 10 mana resources, add 1. Nor, just initialise it.
@@ -44,40 +47,51 @@ namespace GH.GameTurn
         public bool Execute()
         {
             bool result = false;
-            currentPhase.value = phases[index];
-            phases[index].OnStartPhase();
+            _currentPhase.value = _phases[_TurnIndex];
+            _phases[_TurnIndex].OnStartPhase();
             
-            bool IsComplete = phases[index].IsComplete();
-            if (firstTime && index == 0)
+            bool IsComplete = _phases[_TurnIndex].IsComplete();
+            if (_TurnBegin && _TurnIndex == 0)
             {
                 //Debug.Log("This is the problem");
                 TurnStart();
-                firstTime = false;
+                _TurnBegin = false;
             }
             if (IsComplete)
             {                
-                phases[index].OnEndPhase();
-                index++;
-                if(index>phases.Length-1)
+                _phases[_TurnIndex].OnEndPhase();
+                _TurnIndex++;
+                if(_TurnIndex>_phases.Length-1)
                 {
-                    index = 0;
-                    firstTime = true;
+                    _TurnIndex = 0;
+                    _TurnBegin = true;
                     result = true;
                 }
             }
             return result;
         }
-
-
         public void EndCurrentPhase()
         {
-            phases[index].forceExit = true;
-        }
-        
-
-        public PlayerHolder GetPlayer()
+            _phases[_TurnIndex].PhaseForceExit = true;
+        }       
+        public PlayerHolder ThisTurnPlayer
         {
-            return _thisTurnPlayer;
+            set { _thisTurnPlayer = value; }
+            get{ return _thisTurnPlayer; }
+        }
+        public bool TurnBegin
+        {
+            set { _TurnBegin = value;}
+            get { return _TurnBegin; }
+        }
+        public int TurnIndex
+        {
+            get { return _TurnIndex; }
+        }
+        public PhaseVariable CurrentPhase
+        {
+            set { _currentPhase = value; }
+            get { return _currentPhase; }
         }
     }
 }

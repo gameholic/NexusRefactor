@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6600ac6f21975f4f9cf13d5b00b1439, type: 3}
   m_Name: Battle Phase
   m_EditorClassIdentifier: 
-  forceExit: 0
-  phaseName: BattlePhase
-  battlePhaseControl: {fileID: 11400000, guid: 75d7e9696a56d74479641978850be195, type: 2}
-  isBattleValid: {fileID: 11400000, guid: a205c5e6156dc174d91303d64750c7f9, type: 2}
+  _PhaseForceExit: 0
+  _PhaseName: Battle Phase
+  battlePhaseControl: {fileID: 11400000, guid: fe7a11eec0c03664b8e2fa3d4f4b7eb6, type: 2}
+  isBattleValid: {fileID: 11400000, guid: 90701d3e456e71d4190c151c89802e35, type: 2}

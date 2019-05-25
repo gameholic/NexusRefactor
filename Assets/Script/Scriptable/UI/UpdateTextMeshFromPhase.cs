@@ -16,7 +16,7 @@ namespace GH
         /// </summary>
         public override void Raise()
         {
-            targetText.text = currentPhase.value.phaseName;
+            targetText.text = currentPhase.value.PhaseName;
         }
 
     }

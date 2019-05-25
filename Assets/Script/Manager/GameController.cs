@@ -92,7 +92,7 @@ namespace GH
             allPlayers = new PlayerHolder[turns.Length];
             for (int i = 0; i < turns.Length; i++)
             {
-                allPlayers[i] = turns[i].GetPlayer();
+                allPlayers[i] = turns[i].ThisTurnPlayer;
                 if (allPlayers[i].player == "Player1")
                     allPlayers[i].isBottomPos = true;
                 else
@@ -100,7 +100,7 @@ namespace GH
 
                 Setting.RegisterLog(allPlayers[i].name + " joined the game successfully", allPlayers[i].playerColor);
             }
-            currentPlayer = turns[0].GetPlayer();
+            currentPlayer = turns[0].ThisTurnPlayer;
         }
 
         private void Start()
@@ -111,7 +111,7 @@ namespace GH
 
             //CreateStartingCards(); //Each player gets their starting cards
 
-            turnText.value = turns[turnIndex].GetPlayer().ToString(); // Visualize whose turn is now
+            turnText.value = turns[turnIndex].ThisTurnPlayer.ToString(); // Visualize whose turn is now
 
             turnCounter = 1;
             turnCountTextVariable.value = turnCounter.ToString();
@@ -173,7 +173,7 @@ namespace GH
                 //in this case, line 171,172 don't have meaning except moving cards in its origninal place.
                 ///////////////////////////////////////
 
-                if (turns[turnIndex].index != 2) // 3rd Phase is blockphase___ On block phase, infinite loop exists.
+                if (turns[turnIndex].TurnIndex != 2) // 3rd Phase is blockphase___ On block phase, infinite loop exists.
                 {
                     topCardHolder = prevPlayer.currentCardHolder;
                     bottomCardHolder = loadedPlayer.currentCardHolder;
@@ -318,7 +318,7 @@ namespace GH
             UpdateMana();
             if (startTurn)
             {
-                turns[turnIndex].firstTime = startTurn;
+                turns[turnIndex].TurnBegin = startTurn;
                 startTurn = false;
             }
 
@@ -349,13 +349,13 @@ namespace GH
                 if (turnIndex > turns.Length - 1)
                 {
                     turnIndex = 0;
-                    turns[turnIndex].firstTime = startTurn;
+                    turns[turnIndex].TurnBegin = startTurn;
                     turnCounter++;
                 }
 
                 startTurn = true;
-                currentPlayer = turns[turnIndex].GetPlayer();
-                turnText.value = turns[turnIndex].GetPlayer().ToString();
+                currentPlayer = turns[turnIndex].ThisTurnPlayer;
+                turnText.value = turns[turnIndex].ThisTurnPlayer.ToString();
 
                 switchPlayer = true;
                 OnTurnChanged.Raise();
@@ -375,9 +375,9 @@ namespace GH
 
         public void EndPhase()
         {
-            Setting.RegisterLog(currentPlayer.name + " finished phase: " + turns[turnIndex].currentPhase.value, currentPlayer.playerColor);
+            Setting.RegisterLog(currentPlayer.name + " finished phase: " + turns[turnIndex].CurrentPhase.value.name, currentPlayer.playerColor);
             turns[turnIndex].EndCurrentPhase();
-            currentPlayer = turns[turnIndex].GetPlayer();
+            currentPlayer = turns[turnIndex].ThisTurnPlayer;
         }
 
         public PlayerHolder GetOpponentOf(PlayerHolder p)

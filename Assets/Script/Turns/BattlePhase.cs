@@ -10,9 +10,9 @@ namespace GH.GameTurn
         public Condition isBattleValid;
         public override bool IsComplete()
         {
-            if (forceExit)
+            if (_PhaseForceExit)
             {
-                forceExit = false;
+                _PhaseForceExit = false;
                 return true;
             }
             return false;
@@ -31,12 +31,13 @@ namespace GH.GameTurn
         {
             if (!isInit)
             {
-                forceExit = !isBattleValid.IsValid();
-                Setting.gameController.SetState((!forceExit)? battlePhaseControl : null);
+                _PhaseForceExit = !isBattleValid.IsValid();
+                Setting.gameController.SetState((!_PhaseForceExit)? battlePhaseControl : null);
                 Setting.gameController.OnPhaseChanged.Raise();
                 isInit = true;
             }
         }
+
     }
 
 

@@ -2792,7 +2792,7 @@ MonoBehaviour:
   currentState: {fileID: 0}
   turns:
   - {fileID: 11400000, guid: e94118c3b2e20844ea4a9f8b4f7fc591, type: 2}
-  - {fileID: 11400000, guid: aaf2e573b34e5b84691a71485a172c93, type: 2}
+  - {fileID: 11400000, guid: ff18a98f12121e647ac4801d2c7a13fc, type: 2}
   playerStats:
   - {fileID: 1443482414}
   - {fileID: 755100765}

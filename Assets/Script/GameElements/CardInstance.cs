@@ -66,6 +66,7 @@ namespace GH.GameCard
             }
             else
             {
+                Debug.Log("Can block");
                 result = owner.attackingCards.Contains(this);
 
             }

@@ -22,9 +22,9 @@ namespace GH
         public override void Execute(GameElements.Area a)
         {
             PlayerHolder p = Setting.gameController.currentPlayer;
-            bool isPlaced = false;
-            if (a.transform.childCount != 0)
-                isPlaced = true;
+            //bool isPlaced = false;
+            //if (a.transform.childCount != 0)
+            //    isPlaced = true;
             bool checkOwner = Setting.gameController.checkObjOwner.CheckPlayer(a.gameObject);
             if (!checkOwner)
             {
@@ -36,10 +36,11 @@ namespace GH
             ///this need to be changed.
             ///isPlaced isn't initialised which means, eventhough creature card that is placed on field get removed, still it thinks area isn't empty.
             ////////////////
-            if (cardVar.value == null || isPlaced==true)
+            if (cardVar.value == null /*|| isPlaced==true*/)
                 return;
 
             Card currentCard = cardVar.value.viz.card;
+            CardInstance c = cardVar.value;
             if (currentCard.cardType == creature)
             {
                 bool canUse = p.PayMana(currentCard); // Check current mana cost.
@@ -56,15 +57,16 @@ namespace GH
                     cardVar.value.currentLogic = cardOnFieldLogic;
                     //currentCard.value.gameObject.layer = 9;
 
-                    isPlaced = true; // Set isPlace to true so another card can't be placed in this area. 
+                    //isPlaced = true; // Set isPlace to true so another card can't be placed in this area. 
                     BoxCollider box =a.GetComponent<BoxCollider>();
                     box.enabled = false;
                     p.manaResourceManager.UpdateCurrentMana(-(currentCard.cardCost));
 
 
-                    cardVar.value.SetOriginFieldLocation(a.transform);
+                    c.SetOriginFieldLocation(a.transform);
+                    c.SetCanAttack(false);
                 }
-                cardVar.value.gameObject.SetActive(true);
+                c.gameObject.SetActive(true);
             }
 
             else if(currentCard.cardType == spell)
