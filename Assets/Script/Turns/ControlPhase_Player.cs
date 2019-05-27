@@ -11,7 +11,7 @@ namespace GH.GameTurn
         public GameStates.State playerControlState;
         public override bool IsComplete()
         {
-            if (_PhaseForceExit)
+            if (_PhaseForceExit )
             {
                 _PhaseForceExit = false;
                 return true;
@@ -21,21 +21,21 @@ namespace GH.GameTurn
 
         public override void OnEndPhase()
         {
-            if (isInit)
+            if (_IsInit)
             {
                 Setting.gameController.SetState(null);
-                isInit = false;
+                _IsInit = false;
             }
 
         }
 
         public override void OnStartPhase()
         {
-            if (!isInit)
+            if (!_IsInit)
             {
                 Setting.gameController.SetState(playerControlState);
                 Setting.gameController.OnPhaseChanged.Raise();
-                isInit = true;
+                _IsInit = true;
             }
 
             if(OnStartAction!= null)

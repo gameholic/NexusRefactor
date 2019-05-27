@@ -61,9 +61,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\notused\Buttons\Button_Endturn.cs" />
-    <Compile Include="Assets\notused\Buttons\Button_Instance.cs" />
-    <Compile Include="Assets\notused\Buttons\Button_InstanceLogic.cs" />
     <Compile Include="Assets\notused\OrderCardsOnHand.cs" />
     <Compile Include="Assets\notused\RotateAxis.cs" />
     <Compile Include="Assets\notused\RotateInfo.cs" />
@@ -73,7 +70,7 @@
     <Compile Include="Assets\Script\Actions\MouseHoldWithCard.cs" />
     <Compile Include="Assets\Script\Actions\MouseOnClick.cs" />
     <Compile Include="Assets\Script\Actions\MouseOverDetection.cs" />
-    <Compile Include="Assets\Script\Actions\OnSelectCard.cs" />
+    <Compile Include="Assets\Script\Actions\SelectBlockCard.cs" />
     <Compile Include="Assets\Script\Actions\SelectCardsToAttack.cs" />
     <Compile Include="Assets\Script\Actions_Player\LoadOnActiveHolder.cs" />
     <Compile Include="Assets\Script\Actions_Player\PickCardFromDeck.cs" />
@@ -132,7 +129,6 @@
     <Compile Include="Assets\Script\Scriptable\UI\UpdateTextMeshFromPhase.cs" />
     <Compile Include="Assets\Script\Scriptable\UI\UpdateToggle.cs" />
     <Compile Include="Assets\Script\Scriptable\Variables\BoolVariable.cs" />
-    <Compile Include="Assets\Script\Scriptable\Variables\ButtonVariable.cs" />
     <Compile Include="Assets\Script\Scriptable\Variables\CardVariables.cs" />
     <Compile Include="Assets\Script\Scriptable\Variables\FloatVariable.cs" />
     <Compile Include="Assets\Script\Scriptable\Variables\GameObjectVariable.cs" />
@@ -152,7 +148,6 @@
     <Compile Include="Assets\Script\Turns\Phase.cs" />
     <Compile Include="Assets\Script\Turns\Turn.cs" />
     <Compile Include="Assets\Script\Utilities\CurrentSelected.cs" />
-    <Compile Include="Assets\spriterender.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82941ca3cb92ccc4bba7876a7926d5fd, type: 3}
+  m_Name: P1FieldAreaLogic
+  m_EditorClassIdentifier: 
+  _CardVar: {fileID: 11400000, guid: 5026788fca2ff8445a806055cbc47dc7, type: 2}
+  _CreatureType: {fileID: 11400000, guid: e25c4b9a397215f4bb568c82379670fd, type: 2}
+  _SpellType: {fileID: 11400000, guid: 53627be42dea65f449fe338924a385f7, type: 2}
+  _CardOnFieldLogic: {fileID: 11400000, guid: e5493222b1cc06546bacc56bb9c7b13a, type: 2}

@@ -1,6 +1,19 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Assets",
+    "\\Assets\\Script",
+    "\\Assets\\Script\\Actions_Player",
+    "\\Assets\\Script\\CardDeck",
+    "\\Assets\\Script\\CardDeck\\HandDeck",
+    "\\Assets\\Script\\Cards",
+    "\\Assets\\Script\\Cards\\CardType",
+    "\\Assets\\Script\\Helpers",
+    "\\Assets\\Script\\Holders",
+    "\\Assets\\Script\\Manager",
+    "\\Assets\\Script\\Utilities",
+    "\\Assets\\Shader"
   ],
+  "SelectedNode": "\\G-card.sln",
   "PreviewInSolutionExplorer": false
 }

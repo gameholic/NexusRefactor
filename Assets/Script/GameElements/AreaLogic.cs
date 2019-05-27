@@ -1,7 +1,7 @@
 ﻿ using UnityEngine;
 using System.Collections;
 
-namespace GH
+namespace GH.GameElements
 {
     public abstract class AreaLogic : ScriptableObject
     {

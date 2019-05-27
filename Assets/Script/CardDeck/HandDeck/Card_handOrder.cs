@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GH
+namespace GH.GameElements
 {
     /*
      * Arrange cards on hand

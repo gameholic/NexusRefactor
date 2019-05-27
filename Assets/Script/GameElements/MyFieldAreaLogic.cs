@@ -9,15 +9,19 @@ using GH.GameCard;
 /// 
 /// It checks what sort of the card is and can this card be placed in area. If not, return error message and stop running.
 /// </summary>
-namespace GH
+namespace GH.GameElements
 {
     [CreateAssetMenu(menuName ="Areas/MyCardsHolding")]
     public class MyFieldAreaLogic : AreaLogic
     {
-        public CardVariables cardVar;
-        public CardType creature;
-        public CardType spell;
-        public GameElements.Instance_logic cardOnFieldLogic;
+        [SerializeField]
+        private CardVariables _CardVar;
+        [SerializeField]
+        private CardType _CreatureType;
+        [SerializeField]
+        private CardType _SpellType;
+        [SerializeField]
+        private Instance_logic _CardOnFieldLogic;
 
         public override void Execute(GameElements.Area a)
         {
@@ -36,12 +40,12 @@ namespace GH
             ///this need to be changed.
             ///isPlaced isn't initialised which means, eventhough creature card that is placed on field get removed, still it thinks area isn't empty.
             ////////////////
-            if (cardVar.value == null /*|| isPlaced==true*/)
+            if (_CardVar.value == null /*|| isPlaced==true*/)
                 return;
 
-            Card currentCard = cardVar.value.viz.card;
-            CardInstance c = cardVar.value;
-            if (currentCard.cardType == creature)
+            Card currentCard = _CardVar.value.viz.card;
+            CardInstance c = _CardVar.value;
+            if (currentCard.cardType == _CreatureType)
             {
                 bool canUse = p.PayMana(currentCard); // Check current mana cost.
 
@@ -49,12 +53,12 @@ namespace GH
                 if (canUse)
                 {
                     //Send card transform, area transform, current card viz and variables to Setting.
-                    Setting.DropCreatureCard(cardVar.value.transform
+                    Setting.DropCreatureCard(_CardVar.value.transform
                         ,a.transform
                         ,currentCard
-                        ,cardVar.value);
+                        ,_CardVar.value);
 
-                    cardVar.value.currentLogic = cardOnFieldLogic;
+                    _CardVar.value.currentLogic = _CardOnFieldLogic;
                     //currentCard.value.gameObject.layer = 9;
 
                     //isPlaced = true; // Set isPlace to true so another card can't be placed in this area. 
@@ -69,7 +73,7 @@ namespace GH
                 c.gameObject.SetActive(true);
             }
 
-            else if(currentCard.cardType == spell)
+            else if(currentCard.cardType == _SpellType)
             {
                 Debug.Log("This is spell Card");
             }

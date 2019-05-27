@@ -20,21 +20,21 @@ namespace GH.GameTurn
 
         public override void OnEndPhase()
         {
-            if (isInit)
+            if (_IsInit)
             {
                 Setting.gameController.SetState(null);
-                isInit = false;
+                _IsInit = false;
             }            
         }
 
         public override void OnStartPhase()
         {
-            if (!isInit)
+            if (!_IsInit)
             {
                 _PhaseForceExit = !isBattleValid.IsValid();
                 Setting.gameController.SetState((!_PhaseForceExit)? battlePhaseControl : null);
                 Setting.gameController.OnPhaseChanged.Raise();
-                isInit = true;
+                _IsInit = true;
             }
         }
 

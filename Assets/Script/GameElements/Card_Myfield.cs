@@ -9,18 +9,22 @@ namespace GH.GameElements
     [CreateAssetMenu(menuName = "GameElements/My Field")]
     public class Card_Myfield : Instance_logic
     {
-        public State battlephase;
-        public GameEvent onCurrentCardSelected;
-        public BattlePhaseStartCheck startBattle;
+        [SerializeField]
+        private State _BattleState;
+        [SerializeField]
+        private GameEvent _OnCurrentCardSelected;
+        [SerializeField]
+        private BattlePhaseStartCheck _StartBattle;
 
-        public CardVariables currentCard;
+        [SerializeField]
+        private CardVariables _CurrentSelectedCard;
         public override void OnClick(CardInstance inst)
         {
-            if (startBattle.IsValid())
+            if (_StartBattle.IsValid())
             {
-                currentCard.Set(inst);
-                Setting.gameController.SetState(battlephase);
-                onCurrentCardSelected.Raise();
+                _CurrentSelectedCard.Set(inst);
+                Setting.gameController.SetState(_BattleState);
+                _OnCurrentCardSelected.Raise();
             }
             else
             {

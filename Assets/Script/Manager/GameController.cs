@@ -212,6 +212,11 @@ namespace GH
             //}
         }
 
+        /// <summary>
+        /// Pick top card from deck
+        /// Issue: Does this function should be at Gamecontroller?
+        /// </summary>
+        /// <param name="p"></param>
         public void PickNewCardFromDeck(PlayerHolder p)
         {
             ResourceManager rm = Setting.GetResourceManager();

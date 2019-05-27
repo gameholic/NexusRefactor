@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: Player1
   userID: Kaisa
-  isBottomPos: 1
+  isBottomPos: 0
   isHumanPlayer: 1
   playerColor: {r: 1, g: 0.16996826, b: 0, a: 1}
   playerAvatar: {fileID: 21300000, guid: e8535282c36abfa44ba2d47dc4073771, type: 3}

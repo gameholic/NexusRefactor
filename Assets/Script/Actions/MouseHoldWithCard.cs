@@ -11,11 +11,16 @@ namespace GH.GameStates
     [CreateAssetMenu(menuName = "Actions/MouseHoldWithCard")]
     public class MouseHoldWithCard : Action
     {
-        public CardVariables currentCard;
-        public State playerControlState;
-        public State playerBlockState;
-        public GH.GameEvent onPlayerControlState;
-        public Phase blockPhase;
+        [SerializeField]
+        private CardVariables _SelectedCard;
+        [SerializeField]
+        private State _PlayerControlState;
+        [SerializeField]
+        private State _PlayerBlockState;
+        [SerializeField]
+        private GameEvent _OnPlayerControlState;
+        [SerializeField]
+        private Phase blockPhase;
 
 
         public override void Execute(float d)
@@ -41,10 +46,10 @@ namespace GH.GameStates
                             break;
                         }
                     }
-                    currentCard.value.gameObject.SetActive(true);
-                    currentCard.value = null;
-                    Setting.gameController.SetState(playerControlState);
-                    onPlayerControlState.Raise();
+                    _SelectedCard.value.gameObject.SetActive(true);
+                    _SelectedCard.value = null;
+                    Setting.gameController.SetState(_PlayerControlState);
+                    _OnPlayerControlState.Raise();
                 }
                 else
                 {
@@ -56,17 +61,17 @@ namespace GH.GameStates
                         if(c != null)
                         {
                             int count = 0;                        
-                            bool block = c.CanBeBlocked(currentCard.value, ref count);
+                            bool block = c.CanBeBlocked(_SelectedCard.value, ref count);
 
                             if(block)
                             {
-                                Setting.SetCardForblock(currentCard.value.transform, c.transform, count);                                 
+                                Setting.SetCardForblock(_SelectedCard.value.transform, c.transform, count);                                 
                             }
 
-                            currentCard.value.gameObject.SetActive(true);
-                            currentCard.value = null;
-                            onPlayerControlState.Raise();
-                            Setting.gameController.SetState(playerBlockState);
+                            _SelectedCard.value.gameObject.SetActive(true);
+                            _SelectedCard.value = null;
+                            _OnPlayerControlState.Raise();
+                            Setting.gameController.SetState(_PlayerBlockState);
                             break;
                         }
 

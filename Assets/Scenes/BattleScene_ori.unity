@@ -2269,7 +2269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb051799cdcd33d45bec89835fe9ea5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logic: {fileID: 11400000, guid: dfc2a3e520335894faff3e1a211bc0ea, type: 2}
+  _logic: {fileID: 0}
 --- !u!65 &659759773
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2378,6 +2378,12 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 11400000, guid: def01e83f98244541b61cbc5833ac66b,
+        type: 2}
+    - target: {fileID: 884628455148898522, guid: f7071dbea4c377143b81891538b0e792,
+        type: 3}
+      propertyPath: _logic
+      value: 
+      objectReference: {fileID: 11400000, guid: dfc2a3e520335894faff3e1a211bc0ea,
         type: 2}
     - target: {fileID: 4744352514864121406, guid: f7071dbea4c377143b81891538b0e792,
         type: 3}
@@ -2792,7 +2798,7 @@ MonoBehaviour:
   currentState: {fileID: 0}
   turns:
   - {fileID: 11400000, guid: e94118c3b2e20844ea4a9f8b4f7fc591, type: 2}
-  - {fileID: 11400000, guid: ff18a98f12121e647ac4801d2c7a13fc, type: 2}
+  - {fileID: 11400000, guid: 420f77df5050fb944bc28dcec0fdad92, type: 2}
   playerStats:
   - {fileID: 1443482414}
   - {fileID: 755100765}
@@ -2810,7 +2816,9 @@ MonoBehaviour:
   - {fileID: 1624317818}
   switchPlayer: 0
   turnIndex: 0
-  allPlayers: []
+  allPlayers:
+  - {fileID: 11400000, guid: def01e83f98244541b61cbc5833ac66b, type: 2}
+  - {fileID: 11400000, guid: 2054d3257d1d4c24fab3bcf94d45fd66, type: 2}
 --- !u!1 &755100762
 GameObject:
   m_ObjectHideFlags: 0
@@ -4484,7 +4492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb051799cdcd33d45bec89835fe9ea5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logic: {fileID: 11400000, guid: dfc2a3e520335894faff3e1a211bc0ea, type: 2}
+  _logic: {fileID: 0}
 --- !u!65 &1316996894
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4813,6 +4821,12 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 11400000, guid: def01e83f98244541b61cbc5833ac66b,
+        type: 2}
+    - target: {fileID: 884628455148898522, guid: f7071dbea4c377143b81891538b0e792,
+        type: 3}
+      propertyPath: _logic
+      value: 
+      objectReference: {fileID: 11400000, guid: dfc2a3e520335894faff3e1a211bc0ea,
         type: 2}
     - target: {fileID: 4744352514864121406, guid: f7071dbea4c377143b81891538b0e792,
         type: 3}
@@ -5607,6 +5621,12 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 11400000, guid: def01e83f98244541b61cbc5833ac66b,
+        type: 2}
+    - target: {fileID: 884628455148898522, guid: f7071dbea4c377143b81891538b0e792,
+        type: 3}
+      propertyPath: _logic
+      value: 
+      objectReference: {fileID: 11400000, guid: dfc2a3e520335894faff3e1a211bc0ea,
         type: 2}
     - target: {fileID: 4744352514864121406, guid: f7071dbea4c377143b81891538b0e792,
         type: 3}
@@ -6764,7 +6784,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb051799cdcd33d45bec89835fe9ea5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logic: {fileID: 11400000, guid: dfc2a3e520335894faff3e1a211bc0ea, type: 2}
+  _logic: {fileID: 0}
 --- !u!114 &1795412255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7393,6 +7413,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: def01e83f98244541b61cbc5833ac66b,
         type: 2}
+    - target: {fileID: 884628455148898522, guid: f7071dbea4c377143b81891538b0e792,
+        type: 3}
+      propertyPath: _logic
+      value: 
+      objectReference: {fileID: 11400000, guid: dfc2a3e520335894faff3e1a211bc0ea,
+        type: 2}
     - target: {fileID: 4744352514864121406, guid: f7071dbea4c377143b81891538b0e792,
         type: 3}
       propertyPath: m_Enabled
@@ -7597,6 +7623,12 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 11400000, guid: def01e83f98244541b61cbc5833ac66b,
+        type: 2}
+    - target: {fileID: 884628455148898522, guid: f7071dbea4c377143b81891538b0e792,
+        type: 3}
+      propertyPath: _logic
+      value: 
+      objectReference: {fileID: 11400000, guid: dfc2a3e520335894faff3e1a211bc0ea,
         type: 2}
     - target: {fileID: 4744352514864121406, guid: f7071dbea4c377143b81891538b0e792,
         type: 3}

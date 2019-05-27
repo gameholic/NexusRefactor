@@ -20,10 +20,10 @@ namespace GH.GameTurn
 
         public override void OnEndPhase()
         {
-            if (isInit)
+            if (_IsInit)
             {
                 Setting.gameController.SetState(null);
-                isInit = false;
+                _IsInit = false;
             }
 
         }
@@ -31,11 +31,11 @@ namespace GH.GameTurn
         public override void OnStartPhase()
         {
             GameController gc = Setting.gameController;
-            if (!isInit)
+            if (!_IsInit)
             {
                 gc.SetState(playerControlState);
                 gc.OnPhaseChanged.Raise();
-                isInit = true;
+                _IsInit = true;
                 //As attacking cards are on field without attack, forceExit is false (Which means can't getaway from loop)
             }
             

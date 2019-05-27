@@ -10,13 +10,13 @@ namespace GH.GameTurn
     {
 
         [SerializeField]
-        private PlayerHolder _thisTurnPlayer;
+        private PlayerHolder _ThisTurnPlayer;
         [SerializeField]
-        private PhaseVariable _currentPhase;
+        private PhaseVariable _CurrentPhase;
         [SerializeField]
-        private Phase[] _phases;
+        private Phase[] _Phases;
         [SerializeField]
-        private PlayerAction[] _turnStartActions;
+        private PlayerAction[] _TurnStartAction;
 
 
         [System.NonSerialized]
@@ -30,27 +30,27 @@ namespace GH.GameTurn
 
         public void TurnStart()
         {
-            if (_turnStartActions == null)
+            if (_TurnStartAction == null)
                 return;
             
-            for (int i = 0; i < _turnStartActions.Length; i++)
+            for (int i = 0; i < _TurnStartAction.Length; i++)
             {
-                _turnStartActions[i].Execute(_thisTurnPlayer);
+                _TurnStartAction[i].Execute(_ThisTurnPlayer);
             }
 
             ///If current player has less than 10 mana resources, add 1. Nor, just initialise it.
-            if (_thisTurnPlayer.manaResourceManager.GetMaxMana() < 10)
-                _thisTurnPlayer.manaResourceManager.UpdateMaxMana(1);
-            _thisTurnPlayer.manaResourceManager.InitMana();
-            Setting.RegisterLog(_thisTurnPlayer.name + " turn starts ", _thisTurnPlayer.playerColor);
+            if (_ThisTurnPlayer.manaResourceManager.GetMaxMana() < 10)
+                _ThisTurnPlayer.manaResourceManager.UpdateMaxMana(1);
+            _ThisTurnPlayer.manaResourceManager.InitMana();
+            Setting.RegisterLog(_ThisTurnPlayer.name + " turn starts ", _ThisTurnPlayer.playerColor);
         }
         public bool Execute()
         {
             bool result = false;
-            _currentPhase.value = _phases[_TurnIndex];
-            _phases[_TurnIndex].OnStartPhase();
+            _CurrentPhase.value = _Phases[_TurnIndex];
+            _Phases[_TurnIndex].OnStartPhase();
             
-            bool IsComplete = _phases[_TurnIndex].IsComplete();
+            bool IsComplete = _Phases[_TurnIndex].IsComplete();
             if (_TurnBegin && _TurnIndex == 0)
             {
                 //Debug.Log("This is the problem");
@@ -59,9 +59,9 @@ namespace GH.GameTurn
             }
             if (IsComplete)
             {                
-                _phases[_TurnIndex].OnEndPhase();
+                _Phases[_TurnIndex].OnEndPhase();
                 _TurnIndex++;
-                if(_TurnIndex>_phases.Length-1)
+                if(_TurnIndex>_Phases.Length-1)
                 {
                     _TurnIndex = 0;
                     _TurnBegin = true;
@@ -72,12 +72,12 @@ namespace GH.GameTurn
         }
         public void EndCurrentPhase()
         {
-            _phases[_TurnIndex].PhaseForceExit = true;
+            _Phases[_TurnIndex].PhaseForceExit = true;
         }       
         public PlayerHolder ThisTurnPlayer
         {
-            set { _thisTurnPlayer = value; }
-            get{ return _thisTurnPlayer; }
+            set { _ThisTurnPlayer = value; }
+            get{ return _ThisTurnPlayer; }
         }
         public bool TurnBegin
         {
@@ -90,8 +90,8 @@ namespace GH.GameTurn
         }
         public PhaseVariable CurrentPhase
         {
-            set { _currentPhase = value; }
-            get { return _currentPhase; }
+            set { _CurrentPhase = value; }
+            get { return _CurrentPhase; }
         }
     }
 }
