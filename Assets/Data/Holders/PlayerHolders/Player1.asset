@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: Player1
   userID: Kaisa
-  isBottomPos: 0
+  isBottomPos: 1
   isHumanPlayer: 1
   playerColor: {r: 1, g: 0.16996826, b: 0, a: 1}
   playerAvatar: {fileID: 21300000, guid: e8535282c36abfa44ba2d47dc4073771, type: 3}
@@ -22,6 +22,7 @@ MonoBehaviour:
   handLogic: {fileID: 11400000, guid: f3d5b603ae865e349a94e78b240f9cba, type: 2}
   fieldLogic: {fileID: 11400000, guid: e5493222b1cc06546bacc56bb9c7b13a, type: 2}
   startingDeck:
+  - Arcanist
   - Arcanist
   - Arcanist
   - Arcanist

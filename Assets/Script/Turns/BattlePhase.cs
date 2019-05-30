@@ -33,8 +33,8 @@ namespace GH.GameTurn
         {
             if (!IsInit)
             {
-                PhaseForceExit = _IsBattleValid.IsValid();
-                Setting.gameController.SetState((PhaseForceExit)? _BattleStateControl : null);
+                PhaseForceExit = !_IsBattleValid.IsValid();
+                Setting.gameController.SetState((!PhaseForceExit)? _BattleStateControl : null);
                 Setting.gameController.OnPhaseChanged.Raise();
                 IsInit = true;
             }

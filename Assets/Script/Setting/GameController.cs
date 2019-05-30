@@ -9,6 +9,7 @@ namespace GH
 {
     public class GameController : MonoBehaviour
     {
+        [SerializeField]
         private PlayerHolder _CurrentPlayer;
         [SerializeField]
         private CardHolders _TopCardHolder;
@@ -131,7 +132,8 @@ namespace GH
 
                 Setting.RegisterLog(allPlayers[i].name + " joined the game successfully", allPlayers[i].playerColor);
             }
-            _CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
+            Debug.Log("First TurnIndex is " + turnIndex);
+            _CurrentPlayer = GetTurns(0).ThisTurnPlayer;
             //_BottomCardHolder = GetTurns(0).ThisTurnPlayer.currentCardHolder;
             //_TopCardHolder = GetTurns(1).ThisTurnPlayer.currentCardHolder;
         }
@@ -295,6 +297,7 @@ namespace GH
         }
         private void Update()
         {
+            _CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
             UpdateMana();
             if (startTurn)
             {
@@ -325,6 +328,7 @@ namespace GH
             
             if (isComplete)
             {
+                Debug.Log("ISCOMPLET");
                 turnIndex++;
                 if (turnIndex > _TurnLength-1 )
                 {
@@ -334,19 +338,14 @@ namespace GH
                 }
 
                 startTurn = true;
-                EndPhase();
                 //currentPlayer = turns[turnIndex].ThisTurnPlayer;
                 turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString();
-
                 switchPlayer = true;
                 OnTurnChanged.Raise();
-
             }
 
             if (_CurrentState != null)
                 _CurrentState.Tick(Time.deltaTime);
-
-
         }
         public void SetState(State state)
         {
@@ -355,8 +354,9 @@ namespace GH
         public void EndPhase()
         {
             Setting.RegisterLog(_CurrentPlayer.name + " finished phase: " + GetTurns(turnIndex).CurrentPhase.value.name, _CurrentPlayer.playerColor);
+
             GetTurns(turnIndex).EndCurrentPhase();
-            _CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
+            //_CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
         }
         public PlayerHolder GetOpponentOf(PlayerHolder p)
         {

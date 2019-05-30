@@ -18,7 +18,7 @@ namespace GH
             }
             else
             {
-                Setting.RegisterLog("Cant start battle phase", Color.black);
+                Setting.RegisterLog("Can't start battle phase", Color.black);
                 return false;
             }
         }

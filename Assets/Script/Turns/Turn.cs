@@ -54,7 +54,6 @@ namespace GH.GameTurn
             _CurrentPhase.value = _Phases[PhaseIndex];
             _Phases[PhaseIndex].OnStartPhase();            
             bool IsComplete = _Phases[PhaseIndex].IsComplete();
-            //Debug.Log(IsComplete +""+TurnBegin + ""+PhaseIndex);
             if (TurnBegin && PhaseIndex == 0)
             {
                 Debug.Log("TurnBegin");

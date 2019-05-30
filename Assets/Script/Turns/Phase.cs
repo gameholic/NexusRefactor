@@ -13,7 +13,7 @@ namespace GH.GameTurn
         [SerializeField]
         private string _PhaseName;
         [System.NonSerialized]
-        private bool _IsInit =false;
+        private bool _IsInit;
 
         public abstract bool IsComplete();
         public abstract void OnStartPhase();
