@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 714664c8e5525054982817c04940a304, type: 3}
   m_Name: CurrentPlayer
   m_EditorClassIdentifier: 
-  value: Player1 (GH.PlayerHolder)
+  value: Player2 (GH.PlayerHolder)

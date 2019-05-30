@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GH.GameAction;
 
 namespace GH.GameTurn
 {
@@ -19,15 +20,18 @@ namespace GH.GameTurn
         private PlayerAction[] _TurnStartAction;
 
 
-        [System.NonSerialized]
-        private int _TurnIndex = 0;
-        [System.NonSerialized]
-        private bool _TurnBegin = true; 
+        private int _PhaseIndex;
+        private bool _TurnBegin;
         // Somehow, this is initialised different as I initialise. 
         // If I initialise as True, it becomes False
         // If I initialise as False, it becomes True;
-     
 
+
+        private void Awake()
+        {
+            _PhaseIndex = 0;
+            TurnBegin = true;
+        }
         public void TurnStart()
         {
             if (_TurnStartAction == null)
@@ -47,24 +51,26 @@ namespace GH.GameTurn
         public bool Execute()
         {
             bool result = false;
-            _CurrentPhase.value = _Phases[_TurnIndex];
-            _Phases[_TurnIndex].OnStartPhase();
-            
-            bool IsComplete = _Phases[_TurnIndex].IsComplete();
-            if (_TurnBegin && _TurnIndex == 0)
+            _CurrentPhase.value = _Phases[PhaseIndex];
+            _Phases[PhaseIndex].OnStartPhase();            
+            bool IsComplete = _Phases[PhaseIndex].IsComplete();
+            //Debug.Log(IsComplete +""+TurnBegin + ""+PhaseIndex);
+            if (TurnBegin && PhaseIndex == 0)
             {
-                //Debug.Log("This is the problem");
+                Debug.Log("TurnBegin");
                 TurnStart();
-                _TurnBegin = false;
+                TurnBegin = false;
             }
+
+
             if (IsComplete)
-            {                
-                _Phases[_TurnIndex].OnEndPhase();
-                _TurnIndex++;
-                if(_TurnIndex>_Phases.Length-1)
+            {
+                _Phases[PhaseIndex].OnEndPhase();
+                _PhaseIndex++;
+                if (PhaseIndex>_Phases.Length-1)
                 {
-                    _TurnIndex = 0;
-                    _TurnBegin = true;
+                    _PhaseIndex = 0;
+                    TurnBegin = true;
                     result = true;
                 }
             }
@@ -72,7 +78,7 @@ namespace GH.GameTurn
         }
         public void EndCurrentPhase()
         {
-            _Phases[_TurnIndex].PhaseForceExit = true;
+            _Phases[PhaseIndex].PhaseForceExit = true;
         }       
         public PlayerHolder ThisTurnPlayer
         {
@@ -84,9 +90,9 @@ namespace GH.GameTurn
             set { _TurnBegin = value;}
             get { return _TurnBegin; }
         }
-        public int TurnIndex
+        public int PhaseIndex
         {
-            get { return _TurnIndex; }
+            get { return _PhaseIndex; }
         }
         public PhaseVariable CurrentPhase
         {

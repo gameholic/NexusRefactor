@@ -78,7 +78,7 @@ namespace GH
             health -= v;
             if(statsUI !=null)
             {
-                statsUI.UpdateHealth();
+                statsUI.UpdateHealthUI();
             }
         }
 

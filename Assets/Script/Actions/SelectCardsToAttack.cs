@@ -20,7 +20,7 @@ namespace GH
                     RaycastHit hit = results[i];
                     //Get card instance
                     CardInstance inst = hit.transform.gameObject.GetComponentInParent<CardInstance>();
-                    PlayerHolder p = Setting.gameController.currentPlayer;
+                    PlayerHolder p = Setting.gameController.CurrentPlayer;
 
                     //Check inst is one of the current player's card (placed on field)                  
                     if (!inst == p.fieldCard.Contains(inst))

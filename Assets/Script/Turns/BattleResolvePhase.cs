@@ -15,7 +15,7 @@ namespace GH.GameTurn
         public override bool IsComplete()
         {
             //Debug.Log("BattleResolvePhase IsComplete");
-            PlayerHolder p = Setting.gameController.currentPlayer;
+            PlayerHolder p = Setting.gameController.CurrentPlayer;
             PlayerHolder e = Setting.gameController.GetOpponentOf(p);
 
 
@@ -128,7 +128,8 @@ namespace GH.GameTurn
 
         public override void OnStartPhase()
         {
-          
+
+
         }
     }
 }

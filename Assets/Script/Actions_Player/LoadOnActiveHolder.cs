@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-namespace GH
+namespace GH.GameAction
 {
 
     [CreateAssetMenu(menuName = "Actions/Player Actions/Load Active Holder")]

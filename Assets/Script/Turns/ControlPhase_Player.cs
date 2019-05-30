@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GH.GameAction;
 
 
 namespace GH.GameTurn
@@ -9,11 +10,12 @@ namespace GH.GameTurn
     {
         public PlayerAction OnStartAction;
         public GameStates.State playerControlState;
+
         public override bool IsComplete()
         {
-            if (_PhaseForceExit )
+            if (PhaseForceExit)
             {
-                _PhaseForceExit = false;
+                PhaseForceExit = false;
                 return true;
             }
             return false;
@@ -21,26 +23,26 @@ namespace GH.GameTurn
 
         public override void OnEndPhase()
         {
-            if (_IsInit)
+            if (IsInit)
             {
                 Setting.gameController.SetState(null);
-                _IsInit = false;
+                IsInit = false;
             }
 
         }
 
         public override void OnStartPhase()
         {
-            if (!_IsInit)
+            if (!IsInit)
             {
                 Setting.gameController.SetState(playerControlState);
                 Setting.gameController.OnPhaseChanged.Raise();
-                _IsInit = true;
+                IsInit = true;
             }
 
             if(OnStartAction!= null)
             {
-                OnStartAction.Execute(Setting.gameController.currentPlayer);
+                OnStartAction.Execute(Setting.gameController.CurrentPlayer);
             }
         }
     }

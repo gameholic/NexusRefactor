@@ -9,12 +9,16 @@ namespace GH
     public class ConsoleHook : ScriptableObject
     {
         [System.NonSerialized]
-        public ConsoleManager consoleManager;
-
-
+        private ConsoleManager _ConsoleManager;
         public void RegisterEvent(string s, Color color)
         {
-            consoleManager.RegisterEvent(s, color);
+            _ConsoleManager.RegisterEvent(s, color);
         }
+        public ConsoleManager ConsoleManager
+        {
+            set { _ConsoleManager = value; }
+            get { return _ConsoleManager; }
+        }
+
     }
 }

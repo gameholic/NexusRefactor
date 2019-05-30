@@ -64,6 +64,12 @@
     <Compile Include="Assets\notused\OrderCardsOnHand.cs" />
     <Compile Include="Assets\notused\RotateAxis.cs" />
     <Compile Include="Assets\notused\RotateInfo.cs" />
+    <Compile Include="Assets\Script\_DisplayUI\LoadPlayerUI.cs" />
+    <Compile Include="Assets\Script\_DisplayUI\PlayerStatsUI.cs" />
+    <Compile Include="Assets\Script\_Setuper\BlockInstanceManager.cs" />
+    <Compile Include="Assets\Script\_Setuper\CardGraveyard.cs" />
+    <Compile Include="Assets\Script\_Setuper\ManaManager.cs" />
+    <Compile Include="Assets\Script\_Setuper\ResourceManager.cs" />
     <Compile Include="Assets\Script\Actions\Action.cs" />
     <Compile Include="Assets\Script\Actions\BattlePhaseStartCheck.cs" />
     <Compile Include="Assets\Script\Actions\Condition.cs" />
@@ -106,11 +112,6 @@
     <Compile Include="Assets\Script\Holders\PlayerHolder.cs" />
     <Compile Include="Assets\Script\Holders\PositionHolder.cs" />
     <Compile Include="Assets\Script\Interfaces\IClickable.cs" />
-    <Compile Include="Assets\Script\Manager\GameController.cs" />
-    <Compile Include="Assets\Script\Manager\ManaManager.cs" />
-    <Compile Include="Assets\Script\Manager\PlayerStatsUI.cs" />
-    <Compile Include="Assets\Script\Manager\ResourceManager.cs" />
-    <Compile Include="Assets\Script\Manager\Setting.cs" />
     <Compile Include="Assets\Script\Scriptable\Custom UI\EventEditor.cs" />
     <Compile Include="Assets\Script\Scriptable\Events\ConditionalEvent_BoolVariable.cs" />
     <Compile Include="Assets\Script\Scriptable\Events\ConditionalEvent_GameObjectState.cs" />
@@ -140,6 +141,8 @@
     <Compile Include="Assets\Script\Scriptable\Variables\TransformArrayVariable.cs" />
     <Compile Include="Assets\Script\Scriptable\Variables\TransformVariable.cs" />
     <Compile Include="Assets\Script\Scriptable\Variables\Vector3Variable.cs" />
+    <Compile Include="Assets\Script\Setting\GameController.cs" />
+    <Compile Include="Assets\Script\Setting\Setting.cs" />
     <Compile Include="Assets\Script\State\State.cs" />
     <Compile Include="Assets\Script\Turns\BattlePhase.cs" />
     <Compile Include="Assets\Script\Turns\BattleResolvePhase.cs" />

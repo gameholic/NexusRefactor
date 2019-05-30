@@ -1379,7 +1379,7 @@ Transform:
   - {fileID: 518248918}
   - {fileID: 695488006}
   m_Father: {fileID: 1546491756}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &337645037
 MonoBehaviour:
@@ -2792,14 +2792,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 974f7b64b4005784aa1a8987774848d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPlayer: {fileID: 11400000, guid: def01e83f98244541b61cbc5833ac66b, type: 2}
-  bottomCardHolder: {fileID: 11400000, guid: de8c454d3de231243b2cce449a5de728, type: 2}
-  topCardHolder: {fileID: 11400000, guid: 38b61d5496fcf0a4ca0d556d1c15a2ee, type: 2}
-  currentState: {fileID: 0}
-  turns:
+  _TopCardHolder: {fileID: 11400000, guid: 38b61d5496fcf0a4ca0d556d1c15a2ee, type: 2}
+  _BottomCardHolder: {fileID: 11400000, guid: de8c454d3de231243b2cce449a5de728, type: 2}
+  _CurrentState: {fileID: 11400000, guid: 2e3958c1c48e9c84d8497aa6cde37c48, type: 2}
+  _Turns:
   - {fileID: 11400000, guid: e94118c3b2e20844ea4a9f8b4f7fc591, type: 2}
   - {fileID: 11400000, guid: 420f77df5050fb944bc28dcec0fdad92, type: 2}
-  playerStats:
+  _PlayerStatsUI:
   - {fileID: 1443482414}
   - {fileID: 755100765}
   OnTurnChanged: {fileID: 11400000, guid: dccb11963692fa1409bef9ae22746af8, type: 2}
@@ -2814,7 +2813,6 @@ MonoBehaviour:
   manaObj:
   - {fileID: 826019339}
   - {fileID: 1624317818}
-  switchPlayer: 0
   turnIndex: 0
   allPlayers:
   - {fileID: 11400000, guid: def01e83f98244541b61cbc5833ac66b, type: 2}
@@ -2851,8 +2849,9 @@ Transform:
   - {fileID: 149680887}
   - {fileID: 2135082965}
   - {fileID: 1347926696}
+  - {fileID: 1624317819}
   m_Father: {fileID: 1268152543}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &755100764
 SortingGroup:
@@ -2874,7 +2873,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 755100762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0169a1744b0bea942abe7d250cc4ffc2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7723e1311aaf86547bc14f7c90b59b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 11400000, guid: 2054d3257d1d4c24fab3bcf94d45fd66, type: 2}
@@ -3081,13 +3080,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826019339}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 73, y: 0, z: -40}
+  m_LocalPosition: {x: -2, y: 0, z: -22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 77885101}
   - {fileID: 1271195830}
-  m_Father: {fileID: 1546491756}
-  m_RootOrder: 1
+  m_Father: {fileID: 1443482412}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &826019342
 SortingGroup:
@@ -3373,7 +3372,7 @@ Transform:
   - {fileID: 782692663}
   - {fileID: 116053592}
   m_Father: {fileID: 1268152543}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &996382345
 MonoBehaviour:
@@ -4199,7 +4198,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1927995025}
-  - {fileID: 1624317819}
   - {fileID: 996382344}
   - {fileID: 755100763}
   m_Father: {fileID: 993307031}
@@ -4873,8 +4871,9 @@ Transform:
   - {fileID: 1222436496}
   - {fileID: 522745718}
   - {fileID: 888477542}
+  - {fileID: 826019340}
   m_Father: {fileID: 1546491756}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &1443482413
 SortingGroup:
@@ -4896,7 +4895,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1443482411}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0169a1744b0bea942abe7d250cc4ffc2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7723e1311aaf86547bc14f7c90b59b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 11400000, guid: def01e83f98244541b61cbc5833ac66b, type: 2}
@@ -5216,7 +5215,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1676689104}
-  - {fileID: 826019340}
   - {fileID: 337645036}
   - {fileID: 1443482412}
   m_Father: {fileID: 993307031}
@@ -5665,14 +5663,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1624317818}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -84, y: 1, z: -24.5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.5, y: 1, z: -19.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 200444840}
   - {fileID: 1462127825}
-  m_Father: {fileID: 1268152543}
-  m_RootOrder: 1
+  m_Father: {fileID: 755100763}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &1624317820
 SortingGroup:

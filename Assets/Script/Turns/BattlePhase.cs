@@ -1,18 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using GH.GameStates;
 namespace GH.GameTurn
 {
     [CreateAssetMenu(menuName = "Turns/Battle Phase_Player")]
     public class BattlePhase : Phase
     {
-        public GameStates.State battlePhaseControl;
-        public Condition isBattleValid;
+        [SerializeField]
+        private State _BattleStateControl;
+        [SerializeField]
+        private Condition _IsBattleValid;
         public override bool IsComplete()
         {
-            if (_PhaseForceExit)
+            if (PhaseForceExit)
             {
-                _PhaseForceExit = false;
+                PhaseForceExit = false;
                 return true;
             }
             return false;
@@ -20,21 +22,21 @@ namespace GH.GameTurn
 
         public override void OnEndPhase()
         {
-            if (_IsInit)
+            if (IsInit)
             {
                 Setting.gameController.SetState(null);
-                _IsInit = false;
+                IsInit = false;
             }            
         }
 
         public override void OnStartPhase()
         {
-            if (!_IsInit)
+            if (!IsInit)
             {
-                _PhaseForceExit = !isBattleValid.IsValid();
-                Setting.gameController.SetState((!_PhaseForceExit)? battlePhaseControl : null);
+                PhaseForceExit = _IsBattleValid.IsValid();
+                Setting.gameController.SetState((PhaseForceExit)? _BattleStateControl : null);
                 Setting.gameController.OnPhaseChanged.Raise();
-                _IsInit = true;
+                IsInit = true;
             }
         }
 

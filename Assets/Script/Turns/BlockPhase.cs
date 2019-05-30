@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using GH.GameAction;
 namespace GH.GameTurn
 {
     [CreateAssetMenu(menuName ="Turns/BlockPhase")]
@@ -10,9 +10,9 @@ namespace GH.GameTurn
         public GameStates.State playerControlState;
         public override bool IsComplete()
         {
-            if (_PhaseForceExit)
+            if (PhaseForceExit)
             {
-                _PhaseForceExit = false;
+                PhaseForceExit = false;
                 return true;
             }
             return false;
@@ -20,10 +20,10 @@ namespace GH.GameTurn
 
         public override void OnEndPhase()
         {
-            if (_IsInit)
+            if (IsInit)
             {
                 Setting.gameController.SetState(null);
-                _IsInit = false;
+                IsInit = false;
             }
 
         }
@@ -31,22 +31,22 @@ namespace GH.GameTurn
         public override void OnStartPhase()
         {
             GameController gc = Setting.gameController;
-            if (!_IsInit)
+            if (!IsInit)
             {
                 gc.SetState(playerControlState);
                 gc.OnPhaseChanged.Raise();
-                _IsInit = true;
+                IsInit = true;
                 //As attacking cards are on field without attack, forceExit is false (Which means can't getaway from loop)
             }
             
-            if(gc.currentPlayer.attackingCards.Count == 0)
+            if(gc.CurrentPlayer.attackingCards.Count == 0)
             {
-                _PhaseForceExit = true;
+                PhaseForceExit = true;
                 return; 
             }
-            if(gc.topCardHolder.thisPlayer.isHumanPlayer /*&& forceExit == true*/)
+            if(gc.TopCardHolder.thisPlayer.isHumanPlayer /*&& forceExit == true*/)
             {
-                gc.LoadPlayerOnActive(gc.topCardHolder.thisPlayer);
+                gc.LoadPlayerOnActive(gc.TopCardHolder.thisPlayer);
                 //forceExit = true; // add code that other player blocks
             }
             else

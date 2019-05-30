@@ -16,7 +16,7 @@ namespace GH
 
         private void Awake()
         {
-            hook.consoleManager = this;
+            hook.ConsoleManager = this;
             textObjs = new Text[5];
             for (int i=0;i< textObjs.Length; i++)
             {

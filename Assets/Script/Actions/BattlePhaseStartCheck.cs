@@ -7,11 +7,12 @@ namespace GH
     [CreateAssetMenu(menuName = "Actions/Condition/BattleAvailable")]
     public class BattlePhaseStartCheck : Condition
     {
-        public bool available;
+        [SerializeField]
+        private bool _CanStartBattle;
         public override bool IsValid()
         {
             GameController controller = GameController.singleton;
-            if (controller.currentPlayer.fieldCard.Count > 0 && available)
+            if (controller.CurrentPlayer.fieldCard.Count > 0 && _CanStartBattle)
             {
                 return true;
             }

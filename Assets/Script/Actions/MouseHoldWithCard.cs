@@ -32,7 +32,7 @@ namespace GH.GameStates
                 GameController gc = Setting.gameController;
                 RaycastHit[] results = Setting.GetUIObjs();
 
-                if (gc.turns[gc.turnIndex].CurrentPhase.value != blockPhase)
+                if (gc.GetTurns(gc.turnIndex).CurrentPhase.value != blockPhase)
                 {
                     for (int i = 0; i < results.Length; i++)
                     {
@@ -53,12 +53,11 @@ namespace GH.GameStates
                 }
                 else
                 {
-                    Debug.Log("Check");
                     for (int i = 0; i < results.Length; i++)
                     {
                         RaycastHit hit = results[i];
                         CardInstance c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
-                        if(c != null)
+                        if(c != null/* && c.currentLogic = Mycard_field*/)
                         {
                             int count = 0;                        
                             bool block = c.CanBeBlocked(_SelectedCard.value, ref count);

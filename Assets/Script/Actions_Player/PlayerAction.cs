@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace GH
+namespace GH.GameAction
 {
     public abstract class PlayerAction : ScriptableObject
     {

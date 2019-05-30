@@ -41,8 +41,8 @@ namespace GH
             //if card w/ special ability is placed, change to true
             SetParentForCard(c, p);
             inst.ColorCard(true);
-            gameController.currentPlayer.PayMana(card);
-            gameController.currentPlayer.DropCardOnField(inst);
+            gameController.CurrentPlayer.PayMana(card);
+            gameController.CurrentPlayer.DropCardOnField(inst);
 
         }
 

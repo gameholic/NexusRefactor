@@ -25,7 +25,7 @@ namespace GH.GameElements
 
         public override void Execute(GameElements.Area a)
         {
-            PlayerHolder p = Setting.gameController.currentPlayer;
+            PlayerHolder p = Setting.gameController.CurrentPlayer;
             //bool isPlaced = false;
             //if (a.transform.childCount != 0)
             //    isPlaced = true;

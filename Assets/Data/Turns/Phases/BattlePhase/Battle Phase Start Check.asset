@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb47d441c4a49c340b16e45986db3e86, type: 3}
   m_Name: Battle Phase Start Check
   m_EditorClassIdentifier: 
-  available: 1
+  _CanStartBattle: 1

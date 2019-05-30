@@ -2,9 +2,8 @@
 using System.Collections;
 using GH.GameCard;
 
-namespace GH
+namespace GH.GameAction
 {
-
     [CreateAssetMenu(menuName = "Actions/Reset isJustPlaced")]
     public class ResetJustPlaced : PlayerAction
     {

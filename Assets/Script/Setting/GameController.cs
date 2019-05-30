@@ -1,4 +1,5 @@
-﻿using GH.GameStates;
+﻿#pragma warning disable 0649
+using GH.GameStates;
 using System.Collections.Generic;
 using UnityEngine;
 using GH.GameCard;
@@ -8,14 +9,18 @@ namespace GH
 {
     public class GameController : MonoBehaviour
     {
-        public PlayerHolder currentPlayer;
-        public CardHolders bottomCardHolder;
-        public CardHolders topCardHolder;
-        public State currentState;
-        public Turn[] turns;
-
-        //public AssignPlayer[] gameobjPlayerAssigned;
-        public PlayerStatsUI[] playerStats;
+        private PlayerHolder _CurrentPlayer;
+        [SerializeField]
+        private CardHolders _TopCardHolder;
+        [SerializeField]
+        private CardHolders _BottomCardHolder;
+        [SerializeField]
+        private State _CurrentState;
+        [SerializeField]
+        private Turn[] _Turns;
+        private int _TurnLength = 0;
+        [SerializeField]
+        private PlayerStatsUI[] _PlayerStatsUI;
 
 
         public GH.GameEvent OnTurnChanged;
@@ -27,8 +32,8 @@ namespace GH
         public GameObject cardPrefab;
         public GameObject[] manaObj;
 
-        public bool switchPlayer;
-        public int turnIndex;
+        private bool switchPlayer;
+        public int turnIndex=0;
 
 
         public static GameController singleton;
@@ -43,6 +48,31 @@ namespace GH
 
         private bool startTurn = true; //Check the start of the turn
         private int turnCounter; //Count the turn. When both player plays, it increases by 1
+
+
+        public PlayerHolder CurrentPlayer
+        {
+            set { _CurrentPlayer = value; }
+            get { return _CurrentPlayer; }
+        }
+        public CardHolders TopCardHolder
+        {
+            set { _TopCardHolder = value; }
+            get { return _TopCardHolder; }
+        } 
+        public CardHolders BottomCardHolder
+        {
+            set { _BottomCardHolder = value; }
+            get { return _BottomCardHolder; }
+        }
+        public Turn GetTurns(int i)
+        {
+            return _Turns[i];
+        }
+        public PlayerStatsUI GetPlayerStatsUI(int i)
+        {
+            return _PlayerStatsUI[i];
+        }
 
         Dictionary<CardInstance, BlockInstance> blockInstDic = new Dictionary<CardInstance, BlockInstance>();
 
@@ -89,10 +119,11 @@ namespace GH
         {
             switchPlayer = false;
             singleton = this;
-            allPlayers = new PlayerHolder[turns.Length];
-            for (int i = 0; i < turns.Length; i++)
+            _TurnLength = _Turns.Length;
+            allPlayers = new PlayerHolder[_TurnLength];
+            for (int i = 0; i < _TurnLength; i++)
             {
-                allPlayers[i] = turns[i].ThisTurnPlayer;
+                allPlayers[i] = GetTurns(i).ThisTurnPlayer;
                 if (allPlayers[i].player == "Player1")
                     allPlayers[i].isBottomPos = true;
                 else
@@ -100,7 +131,9 @@ namespace GH
 
                 Setting.RegisterLog(allPlayers[i].name + " joined the game successfully", allPlayers[i].playerColor);
             }
-            currentPlayer = turns[0].ThisTurnPlayer;
+            _CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
+            //_BottomCardHolder = GetTurns(0).ThisTurnPlayer.currentCardHolder;
+            //_TopCardHolder = GetTurns(1).ThisTurnPlayer.currentCardHolder;
         }
 
         private void Start()
@@ -111,7 +144,7 @@ namespace GH
 
             //CreateStartingCards(); //Each player gets their starting cards
 
-            turnText.value = turns[turnIndex].ThisTurnPlayer.ToString(); // Visualize whose turn is now
+            turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString(); // Visualize whose turn is now
 
             turnCounter = 1;
             turnCountTextVariable.value = turnCounter.ToString();
@@ -119,9 +152,9 @@ namespace GH
             OnTurnChanged.Raise();
             for (int i = 0; i < allPlayers.Length; i++)
             {
-                allPlayers[i].statsUI = playerStats[i];
+                allPlayers[i].statsUI = GetPlayerStatsUI(i);
                 allPlayers[i].manaResourceManager.InitManaZero();
-                playerStats[i].UpdateMana();
+                GetPlayerStatsUI(i).UpdateManaUI();
                 /*
                  *Initialise mana as 0
                  *This is for the speical mode that might exist in future
@@ -138,14 +171,14 @@ namespace GH
             {
                 allPlayers[i].Init();
                 if (i == 0)
-                    allPlayers[i].currentCardHolder = bottomCardHolder; // Player 1 is bottom card holder
+                    allPlayers[i].currentCardHolder = _BottomCardHolder; // Player 1 is bottom card holder
                 else
-                    allPlayers[i].currentCardHolder = topCardHolder;  // Player 2 is top card holder
+                    allPlayers[i].currentCardHolder = _TopCardHolder;  // Player 2 is top card holder
 
                 if (i < 2)
                 {
-                    allPlayers[i].statsUI = playerStats[i];
-                    playerStats[i].player.LoadPlayerOnStatsUI();
+                    allPlayers[i].statsUI = GetPlayerStatsUI(i);
+                    GetPlayerStatsUI(i).player.LoadPlayerOnStatsUI();
                 }
             }
         }
@@ -153,17 +186,17 @@ namespace GH
         public void LoadPlayerOnActive(PlayerHolder loadedPlayer)
         {
             //At first run, bottomcardholder is player1, topCardHolder is player2
-            PlayerHolder prevPlayer = topCardHolder.thisPlayer;
+            PlayerHolder prevPlayer = _TopCardHolder.thisPlayer;
 
 
-            if (loadedPlayer == topCardHolder.thisPlayer)
+            if (loadedPlayer == _TopCardHolder.thisPlayer)
             //It is run when player turn(or position) is changed
             {
                 //playerStats[0] = UIs at bottom / playerStats[1] = UIs at top
-                prevPlayer = bottomCardHolder.thisPlayer;
+                prevPlayer = _BottomCardHolder.thisPlayer;
 
-                LoadPlayerOnHolder(prevPlayer, allPlayers[1].currentCardHolder, playerStats[0]); // move bottom player's UI, cards to top                
-                LoadPlayerOnHolder(loadedPlayer, allPlayers[0].currentCardHolder, playerStats[1]);
+                LoadPlayerOnHolder(prevPlayer, allPlayers[1].currentCardHolder, _PlayerStatsUI[0]); // move bottom player's UI, cards to top                
+                LoadPlayerOnHolder(loadedPlayer, allPlayers[0].currentCardHolder, _PlayerStatsUI[1]);
                 ///////////////////////////////////
                 //LoadPlayerOnHolder(prevPlayer, topCardHolder, playerStats[0]);           
                 //LoadPlayerOnHolder(loadedPlayer, bottomCardHolder, playerStats[1]);
@@ -173,24 +206,24 @@ namespace GH
                 //in this case, line 171,172 don't have meaning except moving cards in its origninal place.
                 ///////////////////////////////////////
 
-                if (turns[turnIndex].TurnIndex != 2) // 3rd Phase is blockphase___ On block phase, infinite loop exists.
+                if (GetTurns(turnIndex).PhaseIndex != 2) // 3rd Phase is blockphase___ On block phase, infinite loop exists.
                 {
-                    topCardHolder = prevPlayer.currentCardHolder;
-                    bottomCardHolder = loadedPlayer.currentCardHolder;
+                    _TopCardHolder = prevPlayer.currentCardHolder;
+                    _BottomCardHolder = loadedPlayer.currentCardHolder;
                 }
                 /* else
                      Debug.Log("CHECK");*/
             }
-            else if (loadedPlayer == bottomCardHolder.thisPlayer && loadedPlayer.player == "Player2")
+            else if (loadedPlayer == _BottomCardHolder.thisPlayer && loadedPlayer.player == "Player2")
             //It is only run at battle phase
             {
                 Debug.Log("Loop2 + loadedPlayer is " + loadedPlayer);
-                prevPlayer = topCardHolder.thisPlayer;
-                LoadPlayerOnHolder(prevPlayer, bottomCardHolder, playerStats[1]); // move bottom player's UI, cards to top
-                LoadPlayerOnHolder(loadedPlayer, topCardHolder, playerStats[0]);
+                prevPlayer = _TopCardHolder.thisPlayer;
+                LoadPlayerOnHolder(prevPlayer, _BottomCardHolder, _PlayerStatsUI[1]); // move bottom player's UI, cards to top
+                LoadPlayerOnHolder(loadedPlayer, _TopCardHolder, _PlayerStatsUI[0]);
 
             }
-            else if (loadedPlayer != topCardHolder.thisPlayer && loadedPlayer != bottomCardHolder.thisPlayer)
+            else if (loadedPlayer != _TopCardHolder.thisPlayer && loadedPlayer != _BottomCardHolder.thisPlayer)
             {
                 Debug.LogError("loaded player isn't at bottom nor top");
             }
@@ -211,7 +244,6 @@ namespace GH
             //    bottomCardHolder = loadedPlayer.currentCardHolder;
             //}
         }
-
         /// <summary>
         /// Pick top card from deck
         /// Issue: Does this function should be at Gamecontroller?
@@ -246,84 +278,27 @@ namespace GH
                 Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
             //LoadPlayerOnHolder(p, p.currentCardHolder, p.statsUI);
         }
-
-
         // Move targetPlayer, targetUI's position to destCardHolder's position
         public void LoadPlayerOnHolder(PlayerHolder targetPlayer, CardHolders destCardHolder, PlayerStatsUI targetUI)
         {
             destCardHolder.LoadPlayer(targetPlayer, targetUI);
-        }
-        private void CreateStartingCards()
-        {
-            //ResourceManager rm = Setting.GetResourceManager();
-
-            //for(int p =0;p<allPlayers.Length; p++)
-            //{
-            //    Setting.RegisterLog(allPlayers[p].name + " loading . . . ", allPlayers[p].playerColor);
-            //    for (int i = 0; i < allPlayers[p].startingCards.Length; i++)
-            //    {
-            //        GameObject go = Instantiate(cardPrefab) as GameObject;
-            //        CardViz v = go.GetComponent<CardViz>();
-
-            //        v.LoadCard(rm.GetCardInstance(allPlayers[p].startingCards[i]));
-
-
-            //        CardInstance inst = go.GetComponent<CardInstance>();
-            //        inst.currentLogic = allPlayers[p].handLogic;
-            //        Setting.SetParentForCard(go.transform, allPlayers[p].currentCardHolder.handGrid.value);
-            //        allPlayers[p].handCards.Add(inst);
-            //    }
-
-            //    //allPlayers[p].currentCardHolder.LoadPlayer(allPlayers[p],allPlayers[p].statsUI);
-            //    Setting.RegisterLog("Card Created for " + allPlayers[p].name, allPlayers[p].playerColor);
-            //}
-        }
-
+        }       
         private void UpdateMana()
         {
-            //int playerIndex = -1;
-
-            //for ( int i =0; i<manaObj.Length;i++)
-            //{
-            //    tempManaHolder = manaObj[i].GetComponent<ManaHolder>();
-            //    PlayerHolder thisPlayer = manaObj[i].GetComponentInParent<AssignPlayer>().GetPlayer();
-
-            //    if (currentPlayer == thisPlayer)
-            //    {
-            //        playerIndex = i;
-            //        break;
-            //    }
-            //}
-            //if (playerIndex == -1)
-            //    return;
-
-            //tempManaHolder.currentMana.text = currentPlayer.manaResourceManager.getCurrentMana().ToString();
-            //tempManaHolder.maxMana.text = currentPlayer.manaResourceManager.getMaxMana().ToString();       
-
-
-            for (int i = 0; i < playerStats.Length; i++)
+            for (int i = 0; i < _PlayerStatsUI.Length; i++)
             {
-                if (currentPlayer == playerStats[i].player)
+                if (_CurrentPlayer == _PlayerStatsUI[i].player)
                 {
-                    playerStats[i].UpdateMana();
+                    _PlayerStatsUI[i].UpdateManaUI();
                 }
             }
         }
-
         private void Update()
         {
-            //if (switchPlayer)
-            //{
-            //    playerOnHolder.LoadPlayer(allPlayers[1], playersStats[1]);
-            //    otherPlayerOnHolder.LoadPlayer(allPlayers[0], playersStats[0]);
-            //    switchPlayer = false;
-            //}        
-
-
             UpdateMana();
             if (startTurn)
             {
-                turns[turnIndex].TurnBegin = startTurn;
+                GetTurns(turnIndex).TurnBegin = startTurn;
                 startTurn = false;
             }
 
@@ -332,9 +307,9 @@ namespace GH
             {
                 Setting.RegisterLog("Position Changed!! ", Color.green);
                 ///Switch UI's position.
-                Vector3 t = playerStats[0].gameObject.transform.position;
-                playerStats[0].gameObject.transform.position = playerStats[1].gameObject.transform.position;
-                playerStats[1].gameObject.transform.position = t;
+                Vector3 t = _PlayerStatsUI[0].gameObject.transform.position;
+                _PlayerStatsUI[0].gameObject.transform.position = _PlayerStatsUI[1].gameObject.transform.position;
+                _PlayerStatsUI[1].gameObject.transform.position = t;
 
                 Vector3 m = manaObj[0].gameObject.transform.position;
                 manaObj[0].gameObject.transform.position = manaObj[1].gameObject.transform.position;
@@ -346,45 +321,43 @@ namespace GH
             turnCountTextVariable.value = turnCounter.ToString();
 
 
-            isComplete = turns[turnIndex].Execute();
-
+            isComplete = GetTurns(turnIndex).Execute();
+            
             if (isComplete)
             {
                 turnIndex++;
-                if (turnIndex > turns.Length - 1)
+                if (turnIndex > _TurnLength-1 )
                 {
                     turnIndex = 0;
-                    turns[turnIndex].TurnBegin = startTurn;
+                    GetTurns(turnIndex).TurnBegin = startTurn;
                     turnCounter++;
                 }
 
                 startTurn = true;
-                currentPlayer = turns[turnIndex].ThisTurnPlayer;
-                turnText.value = turns[turnIndex].ThisTurnPlayer.ToString();
+                EndPhase();
+                //currentPlayer = turns[turnIndex].ThisTurnPlayer;
+                turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString();
 
                 switchPlayer = true;
                 OnTurnChanged.Raise();
 
             }
 
-            if (currentState != null)
-                currentState.Tick(Time.deltaTime);
+            if (_CurrentState != null)
+                _CurrentState.Tick(Time.deltaTime);
 
 
         }
-
         public void SetState(State state)
         {
-            currentState = state;
+            _CurrentState = state;
         }
-
         public void EndPhase()
         {
-            Setting.RegisterLog(currentPlayer.name + " finished phase: " + turns[turnIndex].CurrentPhase.value.name, currentPlayer.playerColor);
-            turns[turnIndex].EndCurrentPhase();
-            currentPlayer = turns[turnIndex].ThisTurnPlayer;
+            Setting.RegisterLog(_CurrentPlayer.name + " finished phase: " + GetTurns(turnIndex).CurrentPhase.value.name, _CurrentPlayer.playerColor);
+            GetTurns(turnIndex).EndCurrentPhase();
+            _CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
         }
-
         public PlayerHolder GetOpponentOf(PlayerHolder p)
         {
             for (int i = 0; i < allPlayers.Length; i++)
@@ -395,8 +368,6 @@ namespace GH
             return null;
 
         }
-
-
         public void PutCardToGrave(CardInstance c)
         {
             PlayerHolder cardOwner = c.owner;

@@ -1067,9 +1067,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48343791f1de73c42a4c30616cbd2a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  owner: {fileID: 0}
   currentLogic: {fileID: 0}
-  viz: {fileID: 0}
+  viz: {fileID: 114853251582968266}
   canAttack: 0
+  dead: 0
 --- !u!65 &4744352514864121406
 BoxCollider:
   m_ObjectHideFlags: 0

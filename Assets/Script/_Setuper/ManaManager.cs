@@ -5,25 +5,22 @@ namespace GH
 {
     public class ManaManager 
     {
-        public int currentMana;
-        public int maxMana;
+        private int currentMana;
+        private int maxMana;
 
         
         public void UpdateMaxMana(int chnages)
         {
             maxMana = maxMana + chnages;
         }
-
         public void UpdateCurrentMana(int changes)
         {
             currentMana = currentMana + changes;
         }
-
         public void InitMana()
         {
             currentMana = maxMana;
         }
-
         public void InitManaZero()
         {
             currentMana = 0;

@@ -23,31 +23,26 @@ namespace GH
                 Debug.Log("Avatar sprite component is needed on " + player);
                 return;
             }
-            UpdateAll();
             player.statsUI = this;
+            UpdateAll();
 
         }
-
         public void UpdateUserInfo()
         {
             userID.text = player.userID;
             avatarObj.GetComponent<SpriteRenderer>().sprite = player.playerAvatar;
 
         }
-
-        public void UpdateHealth()
+        public void UpdateHealthUI()
         {
             health.text = player.health.ToString();
-        }
-        
+        }        
         public void UpdateAll()
         {
             UpdateUserInfo();
-            UpdateHealth();
+            UpdateHealthUI();
         }
-
-
-        public void UpdateMana()
+        public void UpdateManaUI()
         {
             manaCurrent.text = player.manaResourceManager.GetCurrentMana().ToString();
             manaMax.text = player.manaResourceManager.GetMaxMana().ToString();

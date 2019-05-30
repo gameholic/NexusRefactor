@@ -28,7 +28,7 @@ namespace GH.GameStates
                 {
                     RaycastHit hit = results[i];
                     c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
-                    PlayerHolder enemy = gc.GetOpponentOf(gc.currentPlayer);
+                    PlayerHolder enemy = gc.GetOpponentOf(gc.CurrentPlayer);
 
 
                     if (c != null)
