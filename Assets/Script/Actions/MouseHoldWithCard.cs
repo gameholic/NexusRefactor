@@ -51,7 +51,7 @@ namespace GH.GameStates
                     Setting.gameController.SetState(_PlayerControlState);
                     _OnPlayerControlState.Raise();
                 }
-                else
+                else if(gc.GetTurns(gc.turnIndex).CurrentPhase.value == blockPhase)
                 {
                     for (int i = 0; i < results.Length; i++)
                     {
@@ -61,12 +61,10 @@ namespace GH.GameStates
                         {
                             int count = 0;                        
                             bool block = c.CanBeBlocked(_SelectedCard.value, ref count);
-
                             if(block)
                             {
                                 Setting.SetCardForblock(_SelectedCard.value.transform, c.transform, count);                                 
                             }
-
                             _SelectedCard.value.gameObject.SetActive(true);
                             _SelectedCard.value = null;
                             _OnPlayerControlState.Raise();
@@ -75,6 +73,10 @@ namespace GH.GameStates
                         }
 
                     } 
+                }
+                else
+                {
+                    Debug.Log("MouseHoldCardException");
                 }
                     return;
             }

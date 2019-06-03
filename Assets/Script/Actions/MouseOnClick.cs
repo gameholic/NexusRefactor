@@ -26,7 +26,7 @@ namespace GH.GameStates
                     RaycastHit hit = results[i];
                     c = hit.transform.gameObject.GetComponentInParent<IClickable>();
 
-                    check = Setting.gameController.checkObjOwner.CheckPlayer(hit.transform.gameObject);
+                    check = Setting.gameController.CheckOwner.CheckPlayer(hit.transform.gameObject);
                     //Debug.Log("Check Obj Owner: " + check);
                     if (!check)//break when the gameObject is unclickable (other player's gameObject);
                     {

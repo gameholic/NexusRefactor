@@ -2,7 +2,7 @@
 using System.Collections;
 using GH.GameStates;
 using GH.GameElements;
-
+using GH.Setup;
 namespace GH.GameCard
 {
     public class CardInstance : MonoBehaviour, IClickable
@@ -13,7 +13,6 @@ namespace GH.GameCard
         public bool canAttack; //Indicates that card is just placed and can't attak this turn.
         public bool dead;
         private bool _isOnAttack = false;
-
         private Transform originFieldTransform;
         void Start()
         {
@@ -56,7 +55,6 @@ namespace GH.GameCard
         public bool CanBeBlocked(CardInstance block, ref int count)
         {
             bool result =  false;
-
             if (owner.attackingCards == null)
             {
                 Setting.RegisterLog("Attacking cards error", Color.black);
@@ -68,10 +66,7 @@ namespace GH.GameCard
             {
                 Debug.Log("Can block");
                 result = owner.attackingCards.Contains(this);
-
-            }
-
-         
+            }         
             if (result && viz.card.cardType.canAttack)
             {
                 result = true;
@@ -79,7 +74,7 @@ namespace GH.GameCard
                 //Or cases like that should be here
                 if (result)
                 {
-                    Setting.gameController.AddBlockInstance(this, block, ref count);
+                    Setting.gameController.BlockManager.AddBlockInstance(this, block, ref count);
                 }
                 return result;
             }
@@ -104,15 +99,6 @@ namespace GH.GameCard
         {
             canAttack = available;
         }
-        //public void SetIsOnAttack()
-        //{
-        //    isOnAttack = true;
-        //}
-        //public bool GetIsOnAttack()
-        //{
-        //    return isOnAttack;
-        //}
-
         public bool IsOnAttack
         {
             get { return _isOnAttack;}

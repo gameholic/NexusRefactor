@@ -12,7 +12,6 @@ namespace GH.GameAction
         public override void Execute(PlayerHolder p)
         {
             GameController.singleton.PickNewCardFromDeck(p);
-
         }
     }
 }

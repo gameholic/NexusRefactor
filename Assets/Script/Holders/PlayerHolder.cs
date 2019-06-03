@@ -90,9 +90,5 @@ namespace GH
                 statsUI.UpdateAll();
             }
         }
-
-
     }
-
-
 } 

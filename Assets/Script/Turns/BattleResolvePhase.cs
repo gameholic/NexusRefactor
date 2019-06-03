@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GH.GameCard;
+using GH.Setup;
 
 namespace GH.GameTurn
 {
@@ -14,10 +15,10 @@ namespace GH.GameTurn
 
         public override bool IsComplete()
         {
+            GameController gc = Setting.gameController;
             //Debug.Log("BattleResolvePhase IsComplete");
             PlayerHolder p = Setting.gameController.CurrentPlayer;
             PlayerHolder e = Setting.gameController.GetOpponentOf(p);
-
 
             if (p == e)
                 Debug.LogError("p = = e ");
@@ -28,12 +29,11 @@ namespace GH.GameTurn
 
             }
 
-            Dictionary<CardInstance, BlockInstance> defDic = Setting.gameController.GetBlockInstances();
+            Dictionary<CardInstance, BlockInstance> defDic = gc.BlockManager.BlockInstDict;
 
 
             for (int i = 0; i < p.attackingCards.Count; i++)
             {
-                //Debug.Log("BattleResolvePhase Check attackingCards");
                 CardInstance inst = p.attackingCards[i];
                 Card c = inst.viz.card;
                 CardProperties attack = c.GetProperties(elementAttack);
@@ -42,11 +42,8 @@ namespace GH.GameTurn
                     Setting.RegisterLog("Attack of the " + c.name + "is null. This card can't attack", Color.red);
                     continue;
                 }
-
                 int attackValue  = attack.intValue;
-
-
-                BlockInstance bi = GetBlockInstanceOfAttacker(inst, defDic);
+                BlockInstance bi = gc.BlockManager.GetBlockInstanceOfAttacker(inst, defDic);
                 if(bi!=null)
                 {
                     for(int defenders =0; defenders < bi.defenders.Count; defenders++)
@@ -57,9 +54,7 @@ namespace GH.GameTurn
                             Debug.LogWarning("You are trying to block with a card with no def element");
                             continue;
                         }
-
                         attackValue -= def.intValue;
-
                         if(def.intValue <= attackValue)
                         {
                             //Debug.Log("defendcard dead");
@@ -67,7 +62,6 @@ namespace GH.GameTurn
                         }
                     }
                 }
-
                 if(attackValue <= 0)
                 {
                     //Debug.Log("AttackCard dead");
@@ -79,18 +73,17 @@ namespace GH.GameTurn
                     p.DropCardOnField(inst, false);
                     p.currentCardHolder.SetCardDown(inst);
                     inst.ColorCard(true);
-
                 }
                 ////////
                 Setting.RegisterLog("Attack damage is "+ attackValue, Color.red);
                 e.DoDamage(attackValue);
             }
-            Dictionary <CardInstance, BlockInstance> blockInstances = Setting.gameController.GetBlockInstances();
+
+            Dictionary <CardInstance, BlockInstance> blockInstances = gc.BlockManager.BlockInstDict;
 
 
             foreach (CardInstance c in blockInstances.Keys)
             {
-                //Debug.Log("Blocked card :" + c.viz.card);
                 if (c.dead)
                 {
                     Debug.Log("this card is dead");
@@ -102,24 +95,22 @@ namespace GH.GameTurn
 
             foreach (CardInstance c in e.fieldCard)
             {
-                //Bug: Defender's card should go into blockdic.
-                Debug.Log("enemy player's attacking card :" + c.viz.card);
                 Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
             }
 
-            Setting.gameController.ClearBlockInstances();
+            gc.BlockManager.ClearBlockInst();
             p.attackingCards.Clear();
             return true;
 
         }
-
+        /*
         BlockInstance GetBlockInstanceOfAttacker(CardInstance attck, Dictionary<CardInstance, BlockInstance> blockInst)
         {
             BlockInstance r = null;
             blockInst.TryGetValue(attck, out r);
             return r;
 
-        }
+        }*/
 
         public override void OnEndPhase()
         {

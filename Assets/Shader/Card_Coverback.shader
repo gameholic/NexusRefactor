@@ -41,7 +41,7 @@ Shader "UI/Card_Coverback"
         Cull Back
         Lighting Off
         ZWrite Off
-        ZTest [unity_GUIZTestMode]
+        Zc [unity_GUIZTestMode]
         Blend SrcAlpha OneMinusSrcAlpha
         ColorMask [_ColorMask]
 

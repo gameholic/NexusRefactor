@@ -2792,6 +2792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 974f7b64b4005784aa1a8987774848d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _CurrentPlayer: {fileID: 0}
   _TopCardHolder: {fileID: 11400000, guid: 38b61d5496fcf0a4ca0d556d1c15a2ee, type: 2}
   _BottomCardHolder: {fileID: 11400000, guid: de8c454d3de231243b2cce449a5de728, type: 2}
   _CurrentState: {fileID: 11400000, guid: 2e3958c1c48e9c84d8497aa6cde37c48, type: 2}
@@ -2801,22 +2802,17 @@ MonoBehaviour:
   _PlayerStatsUI:
   - {fileID: 1443482414}
   - {fileID: 755100765}
+  _CardGrave: {fileID: 11400000, guid: f392d83252196cc4894d2e5024dbc58c, type: 2}
   OnTurnChanged: {fileID: 11400000, guid: dccb11963692fa1409bef9ae22746af8, type: 2}
   OnPhaseChanged: {fileID: 11400000, guid: 292e84f866027514d88c8ec7ae946f53, type: 2}
   turnText: {fileID: 11400000, guid: 99951c9e14f683348beb615fa104ad04, type: 2}
   turnCountTextVariable: {fileID: 11400000, guid: 2b5068366bc71034eaf8ce32e11466ea,
     type: 2}
-  graveyard_transform:
-  - {fileID: 11400000, guid: 553de3490dc4f134482f3f24d6a62f35, type: 2}
-  - {fileID: 11400000, guid: f5b0c88b5ae1cc04f8650080bff8a8a5, type: 2}
   cardPrefab: {fileID: 1791560745095846, guid: 1a06abc966f524f42b409862d0109266, type: 3}
   manaObj:
   - {fileID: 826019339}
   - {fileID: 1624317818}
   turnIndex: 0
-  allPlayers:
-  - {fileID: 11400000, guid: def01e83f98244541b61cbc5833ac66b, type: 2}
-  - {fileID: 11400000, guid: 2054d3257d1d4c24fab3bcf94d45fd66, type: 2}
 --- !u!1 &755100762
 GameObject:
   m_ObjectHideFlags: 0
@@ -2849,7 +2845,6 @@ Transform:
   - {fileID: 149680887}
   - {fileID: 2135082965}
   - {fileID: 1347926696}
-  - {fileID: 1624317819}
   m_Father: {fileID: 1268152543}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3080,12 +3075,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826019339}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2, y: 0, z: -22}
+  m_LocalPosition: {x: 73, y: 0, z: -40}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 77885101}
   - {fileID: 1271195830}
-  m_Father: {fileID: 1443482412}
+  m_Father: {fileID: 1546491756}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &826019342
@@ -4200,6 +4195,7 @@ Transform:
   - {fileID: 1927995025}
   - {fileID: 996382344}
   - {fileID: 755100763}
+  - {fileID: 1624317819}
   m_Father: {fileID: 993307031}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4871,7 +4867,6 @@ Transform:
   - {fileID: 1222436496}
   - {fileID: 522745718}
   - {fileID: 888477542}
-  - {fileID: 826019340}
   m_Father: {fileID: 1546491756}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5217,6 +5212,7 @@ Transform:
   - {fileID: 1676689104}
   - {fileID: 337645036}
   - {fileID: 1443482412}
+  - {fileID: 826019340}
   m_Father: {fileID: 993307031}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5664,12 +5660,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1624317818}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 1, z: -19.5}
+  m_LocalPosition: {x: -84, y: 1, z: -24.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 200444840}
   - {fileID: 1462127825}
-  m_Father: {fileID: 755100763}
+  m_Father: {fileID: 1268152543}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &1624317820
@@ -6255,6 +6251,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: f3d5b603ae865e349a94e78b240f9cba,
         type: 2}
+    - target: {fileID: 3473977918341262483, guid: 1a06abc966f524f42b409862d0109266,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1114191846875136, guid: 1a06abc966f524f42b409862d0109266, type: 3}
       propertyPath: m_Layer
       value: 11
@@ -6352,7 +6353,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3473977918341262483, guid: 1a06abc966f524f42b409862d0109266, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1a06abc966f524f42b409862d0109266, type: 3}
 --- !u!114 &1715989079 stripped
 MonoBehaviour:

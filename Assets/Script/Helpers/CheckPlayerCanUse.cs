@@ -5,7 +5,7 @@ namespace GH
 {
     public class CheckPlayerCanUse
     {
-        bool result = false;
+        private bool result = false;
         public bool CheckPlayer(GameObject obj)
         {
             if (obj.GetComponentInParent<PositionHolder>().IsAtBottom()) // Is at Bottom = current player is at bottom position

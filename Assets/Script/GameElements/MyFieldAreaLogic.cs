@@ -29,7 +29,7 @@ namespace GH.GameElements
             //bool isPlaced = false;
             //if (a.transform.childCount != 0)
             //    isPlaced = true;
-            bool checkOwner = Setting.gameController.checkObjOwner.CheckPlayer(a.gameObject);
+            bool checkOwner = Setting.gameController.CheckOwner.CheckPlayer(a.gameObject);
             if (!checkOwner)
             {
                 Debug.Log("You cant control other player's obj");

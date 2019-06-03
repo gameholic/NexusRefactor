@@ -10,8 +10,6 @@ namespace GH
         public CardInstance attacker;
         public List<CardInstance> defenders = new List<CardInstance>();
         //Multiple units can defend one attacker
-
-
     }
 
 }

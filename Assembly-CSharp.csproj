@@ -67,7 +67,6 @@
     <Compile Include="Assets\Script\_DisplayUI\LoadPlayerUI.cs" />
     <Compile Include="Assets\Script\_DisplayUI\PlayerStatsUI.cs" />
     <Compile Include="Assets\Script\_Setuper\BlockInstanceManager.cs" />
-    <Compile Include="Assets\Script\_Setuper\CardGraveyard.cs" />
     <Compile Include="Assets\Script\_Setuper\ManaManager.cs" />
     <Compile Include="Assets\Script\_Setuper\ResourceManager.cs" />
     <Compile Include="Assets\Script\Actions\Action.cs" />
@@ -84,6 +83,7 @@
     <Compile Include="Assets\Script\Actions_Player\ResetJustPlaced.cs" />
     <Compile Include="Assets\Script\CardDeck\HandDeck\Card_handOrder.cs" />
     <Compile Include="Assets\Script\Cards\Card.cs" />
+    <Compile Include="Assets\Script\Cards\CardGraveyard.cs" />
     <Compile Include="Assets\Script\Cards\CardProperties.cs" />
     <Compile Include="Assets\Script\Cards\CardType.cs" />
     <Compile Include="Assets\Script\Cards\CardType\Creature.cs" />
