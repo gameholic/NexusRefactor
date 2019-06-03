@@ -43,6 +43,7 @@ namespace GH
         private BlockInstanceManager _BlockManager = new BlockInstanceManager();
         private CheckPlayerCanUse _CheckOwner = new CheckPlayerCanUse();        
         private PlayerHolder[] _Players;
+        private LoadPlayerUI _LoadPlayerUI = new LoadPlayerUI();
         private bool startTurn = true; //Check the start of the turn
         private int turnCounter; //Count the turn. When both player plays, it increases by 1
 
@@ -72,7 +73,7 @@ namespace GH
             set { _BlockManager = value; }
             get { return _BlockManager; }
         }
-        public PlayerStatsUI GetPlayerStatsUI(int i)
+        public PlayerStatsUI GetPlayerUIInfo(int i)
         {
             return _PlayerStatsUI[i];
         }
@@ -88,11 +89,14 @@ namespace GH
         {
             return _Players[i];
         }
-
-
-
+        public LoadPlayerUI LoadPlayerUI
+        {
+            get { return _LoadPlayerUI; }
+        }
         private void Awake()
         {
+
+            Debug.Log("1");
             isComplete = false;
             switchPlayer = false;
             singleton = this;
@@ -116,28 +120,21 @@ namespace GH
         private void Start()
         {
             Setting.gameController = this;
-
             SetupPlayers();
-
-            //CreateStartingCards(); //Each player gets their starting cards
-
             turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString(); // Visualize whose turn is now
-
             turnCounter = 1;
             turnCountTextVariable.value = turnCounter.ToString();
-
             OnTurnChanged.Raise();
             for (int i = 0; i < _Players.Length; i++)
             {
-                GetPlayer(i).statsUI = GetPlayerStatsUI(i);
+                GetPlayer(i).statsUI = GetPlayerUIInfo(i);
                 GetPlayer(i).manaResourceManager.InitManaZero();
-                GetPlayerStatsUI(i).UpdateManaUI();
+                GetPlayerUIInfo(i).UpdateManaUI();
                 /*
                  *Initialise mana as 0
                  *This is for the speical mode that might exist in future
                  *      Ex) Initialise mana as 3 
                  */
-
             }
 
         }
@@ -153,41 +150,42 @@ namespace GH
 
                 if (i < 2)
                 {
-                    GetPlayer(i).statsUI = GetPlayerStatsUI(i);
-                    GetPlayerStatsUI(i).player.LoadPlayerOnStatsUI();
+                    GetPlayer(i).statsUI = GetPlayerUIInfo(i);
+                    GetPlayerUIInfo(i).player.LoadPlayerOnStatsUI();
                 }
             }
         }
-        public void LoadPlayerOnActive(PlayerHolder loadedPlayer)
-        {
-            //At first run, bottomcardholder is player1, topCardHolder is player2
-            PlayerHolder prevPlayer = TopCardHolder.thisPlayer;
-
-
-            if (loadedPlayer == TopCardHolder.thisPlayer)
-            {
-                prevPlayer = BottomCardHolder.thisPlayer;
-                LoadPlayerOnHolder(prevPlayer, GetPlayer(1).currentCardHolder, _PlayerStatsUI[0]); // move bottom player's UI, cards to top                
-                LoadPlayerOnHolder(loadedPlayer, GetPlayer(0).currentCardHolder, _PlayerStatsUI[1]);
-                if (GetTurns(turnIndex).PhaseIndex != 2) // 3rd Phase is blockphase___ On block phase, infinite loop exists.
-                {
-                    TopCardHolder = prevPlayer.currentCardHolder;
-                    BottomCardHolder = loadedPlayer.currentCardHolder;
-                }
-            }
-            else if (loadedPlayer == BottomCardHolder.thisPlayer && loadedPlayer.player == "Player2")
-            {
-                //This is only run at battle phase;
-                prevPlayer = TopCardHolder.thisPlayer;
-                LoadPlayerOnHolder(prevPlayer, BottomCardHolder, _PlayerStatsUI[1]); // move bottom player's UI, cards to top
-                LoadPlayerOnHolder(loadedPlayer, TopCardHolder, _PlayerStatsUI[0]);
-
-            }
-            else if (loadedPlayer != TopCardHolder.thisPlayer && loadedPlayer != BottomCardHolder.thisPlayer)
-            {
-                Debug.LogError("loaded player isn't at bottom nor top");
-            }
-        }
+        //public void LoadPlayerOnActive(PlayerHolder loadedPlayer)
+        //{
+        //    //At first run, bottomcardholder is player1, topCardHolder is player2
+        //    PlayerHolder prevPlayer = TopCardHolder.thisPlayer;
+        //    if (loadedPlayer == TopCardHolder.thisPlayer)
+        //    {
+        //        prevPlayer = BottomCardHolder.thisPlayer;
+        //        LoadPlayerOnHolder(prevPlayer, GetPlayer(1).currentCardHolder, _PlayerStatsUI[0]); // move bottom player's UI, cards to top                
+        //        LoadPlayerOnHolder(loadedPlayer, GetPlayer(0).currentCardHolder, _PlayerStatsUI[1]);
+        //        if (GetTurns(turnIndex).PhaseIndex != 2) // 3rd Phase is blockphase___ On block phase, infinite loop exists.
+        //        {
+        //            TopCardHolder = prevPlayer.currentCardHolder;
+        //            BottomCardHolder = loadedPlayer.currentCardHolder;
+        //        }
+        //    }
+        //    else if (loadedPlayer == BottomCardHolder.thisPlayer && loadedPlayer.player == "Player2")
+        //    {
+        //        //This is only run at battle phase;
+        //        prevPlayer = TopCardHolder.thisPlayer;
+        //        LoadPlayerOnHolder(prevPlayer, BottomCardHolder, _PlayerStatsUI[1]); // move bottom player's UI, cards to top
+        //        LoadPlayerOnHolder(loadedPlayer, TopCardHolder, _PlayerStatsUI[0]);
+        //    }
+        //    else if (loadedPlayer != TopCardHolder.thisPlayer && loadedPlayer != BottomCardHolder.thisPlayer)
+        //    {
+        //        Debug.LogError("loaded player isn't at bottom nor top");
+        //    }
+        //}
+        //public void LoadPlayerOnHolder(PlayerHolder targetPlayer, CardHolders destCardHolder, PlayerStatsUI targetUI)
+        //{
+        //    destCardHolder.LoadPlayer(targetPlayer, targetUI);
+        //}
         /// <summary>
         /// Pick top card from deck
         /// Issue: Does this function should be at Gamecontroller?
@@ -219,11 +217,7 @@ namespace GH
                 Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
             //LoadPlayerOnHolder(p, p.currentCardHolder, p.statsUI);
         }
-        // Move targetPlayer, targetUI's position to destCardHolder's position
-        public void LoadPlayerOnHolder(PlayerHolder targetPlayer, CardHolders destCardHolder, PlayerStatsUI targetUI)
-        {
-            destCardHolder.LoadPlayer(targetPlayer, targetUI);
-        }       
+        // Move targetPlayer, targetUI's position to destCardHolder's position            
         private void UpdateMana()
         {
             for (int i = 0; i < _PlayerStatsUI.Length; i++)

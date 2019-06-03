@@ -46,7 +46,7 @@ namespace GH.GameTurn
             }
             if(gc.TopCardHolder.thisPlayer.isHumanPlayer /*&& forceExit == true*/)
             {
-                gc.LoadPlayerOnActive(gc.TopCardHolder.thisPlayer);
+                gc.LoadPlayerUI.LoadPlayerOnActive(gc.TopCardHolder.thisPlayer);
                 //forceExit = true; // add code that other player blocks
             }
             else

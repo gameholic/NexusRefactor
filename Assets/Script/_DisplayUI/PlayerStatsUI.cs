@@ -15,7 +15,6 @@ namespace GH
         public TextMesh userID;
         public TextMesh manaCurrent;
         public TextMesh manaMax;
-
         private void Start()
         {
             if (!avatarObj.GetComponent<SpriteRenderer>())
@@ -25,7 +24,6 @@ namespace GH
             }
             player.statsUI = this;
             UpdateAll();
-
         }
         public void UpdateUserInfo()
         {
@@ -47,6 +45,5 @@ namespace GH
             manaCurrent.text = player.manaResourceManager.GetCurrentMana().ToString();
             manaMax.text = player.manaResourceManager.GetMaxMana().ToString();
         }
-
     }
 }
