@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-namespace GH.GameCard
+using GH.GameCard;
+namespace GH
 {
 
     //It is more likely to be called as Card manager
@@ -38,7 +38,6 @@ namespace GH.GameCard
             Card result = null;
             cardDict.TryGetValue(id, out result);
             return result;
-
         }
     }
 }

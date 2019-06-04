@@ -15,6 +15,20 @@ namespace GH.GameCard
         public int cardCost;
         public bool canAttack;
 
+        private int _InstId;
+        private CardViz _Viz;
+
+        public CardViz Viz
+        {
+            set { _Viz = value; }
+            get { return _Viz; }
+        }
+
+        public int InstId
+        {
+            set { _InstId = value; }
+            get { return _InstId; }
+        }
         public CardProperties GetProperties(Element e )
         {
             for(int i =0;i<properties.Length;i++)

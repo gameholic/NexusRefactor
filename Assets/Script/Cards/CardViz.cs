@@ -17,6 +17,7 @@ namespace GH.GameCard
             if (c == null)
                 return;
             card = c;
+            c.Viz = this;
             c.cardType.OnSetType(this);
             CloseAll();
 

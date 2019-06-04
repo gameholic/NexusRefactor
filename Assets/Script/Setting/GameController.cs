@@ -31,12 +31,9 @@ namespace GH
         public StringVariable turnText;
         public StringVariable turnCountTextVariable;//Count the turn. When both player plays, it increases by 1
         //public TransformVariable[] graveyard_transform;
-
         public GameObject cardPrefab;
         public GameObject[] manaObj;
-
         public int turnIndex = 0;
-
         private bool isComplete;
         private bool switchPlayer;
         private int _TurnLength = 0;
@@ -46,7 +43,6 @@ namespace GH
         private LoadPlayerUI _LoadPlayerUI = new LoadPlayerUI();
         private bool startTurn = true; //Check the start of the turn
         private int turnCounter; //Count the turn. When both player plays, it increases by 1
-
 
 
         public PlayerHolder CurrentPlayer
