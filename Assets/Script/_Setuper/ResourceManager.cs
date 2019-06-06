@@ -23,7 +23,7 @@ namespace GH
         }
 
 
-        public Card GetCardFromDict(string id)
+        public Card GetCardInstFromDeck(string id)
         {
             Card originCard = GetCard(id);
             if (originCard == null)

@@ -8,7 +8,7 @@ namespace GH.GameCard
     [CreateAssetMenu(menuName ="Card")]
     public class Card : ScriptableObject
     {
-      
+        
         public CardType cardType;
         public CardProperties[] properties;
 
@@ -17,7 +17,6 @@ namespace GH.GameCard
 
         private int _InstId;
         private CardViz _Viz;
-
         public CardViz Viz
         {
             set { _Viz = value; }

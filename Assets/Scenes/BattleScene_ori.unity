@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 33431301}
   - component: {fileID: 33431300}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Canvas_Button&Console
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2813,6 +2813,7 @@ MonoBehaviour:
   - {fileID: 826019339}
   - {fileID: 1624317818}
   turnIndex: 0
+  _Players: []
   localPlayer: {fileID: 11400000, guid: 25a4d3d96a280a64dad6775ee15eff9f, type: 2}
   clientPlayer: {fileID: 11400000, guid: bb002c96739fab942b2d4ed610a48793, type: 2}
 --- !u!1 &755100762

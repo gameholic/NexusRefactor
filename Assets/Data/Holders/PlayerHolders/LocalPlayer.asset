@@ -15,7 +15,7 @@ MonoBehaviour:
   player: Local
   userID: AHri
   isBottomPos: 1
-  isHumanPlayer: 0
+  isHumanPlayer: 1
   playerColor: {r: 0, g: 0.4081595, b: 1, a: 1}
   playerAvatar: {fileID: 21300000, guid: 9cce416f9c1c98a4d94bb8dbdd33625b, type: 3}
   statsUI: {fileID: 0}

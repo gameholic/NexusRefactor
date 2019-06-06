@@ -43,4 +43,10 @@ MonoBehaviour:
   - RequestForPickupItems
   - RequestForPickupTimes
   - TaggedPlayer
+  - RPC_InitGame
+  - RPC_PlayerEndsturn
+  - RPC_PlayerEndsTurn
+  - RPC_PlayerStartsTurn
+  - RPC_PlayerTryUseCard
+  - RPC_PlayerHasCard
   DisableAutoOpenWizard: 1

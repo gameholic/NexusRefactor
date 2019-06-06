@@ -5,6 +5,7 @@ using UnityEngine;
 using GH.GameCard;
 using GH.GameTurn;
 using GH.Setup;
+using GH.Multiplay;
 
 namespace GH
 {
@@ -26,7 +27,7 @@ namespace GH
         private PlayerStatsUI[] _PlayerStatsUI;
         [SerializeField]
         private CardGraveyard _CardGrave;
-
+        private bool _IsMultiplayer;
         public GameEvent OnTurnChanged;
         public GameEvent OnPhaseChanged;
         public StringVariable turnText;
@@ -40,9 +41,11 @@ namespace GH
         private bool switchPlayer;
         private int _TurnLength = 0;
         private BlockInstanceManager _BlockManager = new BlockInstanceManager();
-        private CheckPlayerCanUse _CheckOwner = new CheckPlayerCanUse();        
-        public PlayerHolder[] _Players;
+        private CheckPlayerCanUse _CheckOwner = new CheckPlayerCanUse();
         private LoadPlayerUI _LoadPlayerUI = new LoadPlayerUI();
+        public PlayerHolder[] _Players;
+
+        private ResourceManager _resourceManager;
         private bool startTurn = true; //Check the start of the turn
         private int turnCounter; //Count the turn. When both player plays, it increases by 1
         private bool isInit;
@@ -66,7 +69,7 @@ namespace GH
         {
             set { _TopCardHolder = value; }
             get { return _TopCardHolder; }
-        } 
+        }
         public CardHolders BottomCardHolder
         {
             set { _BottomCardHolder = value; }
@@ -91,7 +94,7 @@ namespace GH
         }
         public void SetPlayer(int i, PlayerHolder p)
         {
-            _Players[i] = p; 
+            _Players[i] = p;
         }
         public PlayerHolder GetPlayer(int i)
         {
@@ -114,12 +117,28 @@ namespace GH
         public PlayerHolder LocalPlayer
         {
             set { localPlayer = value; }
-            get { return localPlayer; } 
+            get { return localPlayer; }
         }
         public PlayerHolder ClientPlayer
         {
             set { clientPlayer = value; }
             get { return clientPlayer; }
+        }
+        public ResourceManager ResourceManager
+        {
+            set { _resourceManager = value; }
+            get { return _resourceManager; }
+        }
+        public bool IsMultiplay
+        {
+            set
+            {
+                _IsMultiplayer = value;
+            }
+            get
+            {
+                return _IsMultiplayer;
+            }
         }
         /// <summary>
         /// Get/Set Properties
@@ -127,6 +146,7 @@ namespace GH
         private void Awake()
         {
             Setting.gameController = this;
+            ResourceManager = Setting.GetResourceManager();
             singleton = this;
             isComplete = false;
             switchPlayer = false;
@@ -135,7 +155,7 @@ namespace GH
             _Players = new PlayerHolder[_TurnLength];
             for (int i = 0; i < _TurnLength; i++)
             {
-                SetPlayer(i,GetTurns(i).ThisTurnPlayer);
+                SetPlayer(i, GetTurns(i).ThisTurnPlayer);
                 if (GetPlayer(i).player == "Player1")
                     GetPlayer(i).isBottomPos = true;
                 else
@@ -150,7 +170,7 @@ namespace GH
         private void Start()
         {
 
-            
+
 
         }
         public void InitGame(int startingPlayer)
@@ -168,13 +188,13 @@ namespace GH
                  *      Ex) Initialise mana as 3 
                  */
 
-                if(GetPlayer(i).PhotonId == startingPlayer)
+                if (GetPlayer(i).PhotonId == startingPlayer)
                 {
                     _tmpTurn[0] = GetTurns(i);
                 }
                 else
                 {
-                    _tmpTurn[1] = GetTurns(i);  
+                    _tmpTurn[1] = GetTurns(i);
                 }
             }
             _Turns = _tmpTurn;
@@ -186,6 +206,7 @@ namespace GH
             isInit = true;
 
         }
+
 
         private void SetupPlayers()
         {
@@ -241,8 +262,7 @@ namespace GH
         /// </summary>
         /// <param name="p"></param>
         public void PickNewCardFromDeck(PlayerHolder p)
-        {
-            ResourceManager rm = Setting.GetResourceManager();
+        {            
             if (p.allCards.Count == 0)
             {
                 Setting.RegisterLog(p + " don't have card in deck", Color.black);
@@ -252,7 +272,7 @@ namespace GH
             p.allCards.RemoveAt(0);
             GameObject go = Instantiate(cardPrefab) as GameObject;
             CardViz v = go.GetComponent<CardViz>();
-            v.LoadCard(rm.GetCardFromDict(cardId));
+            //v.LoadCard(rm.GetCardFromDict(cardId));
             CardInstance inst = go.GetComponent<CardInstance>();
             inst.owner = p;
             inst.currentLogic = p.handLogic;
@@ -279,9 +299,9 @@ namespace GH
         }
         private void Update()
         {
+            //turnIndex is great but not in multiplay
             if (!isInit)
                 return;
-            _CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
             UpdateMana();
             if (startTurn)
             {
@@ -304,85 +324,84 @@ namespace GH
             }
 
             turnCountTextVariable.value = turnCounter.ToString();
-
-
             isComplete = GetTurns(turnIndex).Execute();
-            
-            if (isComplete)
+            if (!IsMultiplay)
             {
-                turnIndex++;
-                if (turnIndex > _TurnLength-1 )
+                _CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
+                if (isComplete)
                 {
-                    turnIndex = 0;
-                    GetTurns(turnIndex).TurnBegin = startTurn;
-                    turnCounter++;
-                }
+                    turnIndex++;
+                    if (turnIndex > _TurnLength - 1)
+                    {
+                        turnIndex = 0;
+                        GetTurns(turnIndex).TurnBegin = startTurn;
+                        turnCounter++;
+                    }
 
-                startTurn = true;
-                //currentPlayer = turns[turnIndex].ThisTurnPlayer;
-                turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString();
-                switchPlayer = true;
-                OnTurnChanged.Raise();
+                    startTurn = true;
+                    turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString();
+                    switchPlayer = true;
+                    OnTurnChanged.Raise();
+                }
+            }
+            else
+            {
+                if (isComplete)
+                {
+                    MultiplayManager.singleton.PlayerEndsTurn(CurrentPlayer.PhotonId);
+                }
             }
 
             if (_CurrentState != null)
                 _CurrentState.Tick(Time.deltaTime);
         }
+
+        public int GetAnotherPlayerID()
+        {
+            int r = turnIndex;
+            r++;
+            if (r > _TurnLength - 1)
+            {
+                r = 0;
+            }
+            return GetTurns(r).ThisTurnPlayer.PhotonId;
+        }
+        public int GetPlayerTurnIndex(int photonId)
+        {
+            for (int i = 0; i < _TurnLength; i++)
+            {
+                if (GetTurns(i).ThisTurnPlayer.PhotonId == photonId)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        public void ChangeCurrentTurn(int photonId)
+        {
+            startTurn = true;
+            turnIndex = GetPlayerTurnIndex(photonId);
+            turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString();
+            OnTurnChanged.Raise();
+
+        }
         public void SetState(State state)
         {
             _CurrentState = state;
         }
-        public void EndPhase()
+        public void EndPhase()//Run by EndTurn button
         {
-            Setting.RegisterLog(_CurrentPlayer.name + " finished phase: " + GetTurns(turnIndex).CurrentPhase.value.name, _CurrentPlayer.playerColor);
+            if (CurrentPlayer.isHumanPlayer)
+            {
+                Setting.RegisterLog(_CurrentPlayer.name + " finished phase: " + GetTurns(turnIndex).CurrentPhase.value.name, _CurrentPlayer.playerColor);
+                GetTurns(turnIndex).EndCurrentPhase();
 
-            GetTurns(turnIndex).EndCurrentPhase();
+            }
             //_CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
         }
         public void PutCardToGrave(CardInstance c)
         {
             _CardGrave.PutCardToGrave(c);
         }
-        //public void PutCardToGrave(CardInstance c)
-        //{
-        //    PlayerHolder cardOwner = c.owner;
-        //    GameObject graveyardObj = null;
-        //    cardOwner.graveyard.Add(c);
-                       
-        //    if (c.owner.player == "Player1")
-        //        graveyardObj = graveyard_transform[0].value.gameObject;
-        //    else if (c.owner.player == "Player2")
-        //        graveyardObj = graveyard_transform[1].value.gameObject;
-
-
-        //    if (graveyardObj == null)
-        //    {
-        //        Debug.Log("Failed to check obj");
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("Found graveyardOBj : " + graveyardObj.transform);
-        //        Setting.SetParentForCard(c.transform, graveyardObj.transform);
-        //    }
-
-        //    if (cardOwner.fieldCard.Contains(c))
-        //    {
-        //        cardOwner.fieldCard.Remove(c);
-        //    }
-
-        //    if (cardOwner.handCards.Contains(c))
-        //    {
-        //        cardOwner.handCards.Remove(c);
-        //    }
-
-        //    if (cardOwner.attackingCards.Contains(c))
-        //    {
-        //        cardOwner.attackingCards.Remove(c);
-        //    }
-        //    c.dead = true;
-        //    c.gameObject.SetActive(false);
-        //    c.gameObject.GetComponentInChildren<CardInstance>().enabled = false;
-        //    c.currentLogic = null;
-        //}
     }
 }

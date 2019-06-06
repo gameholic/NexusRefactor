@@ -10,7 +10,7 @@ namespace GH.Multiplay
     {
         [SerializeField]
         private StringVariable logger;
-        private bool _IsMaster;
+        private static bool _IsMaster;
         private int _CardInstIds;
         ResourceManager rm;
         List<MultiplayerHolder> multiplayerHolders = new List<MultiplayerHolder>();
@@ -65,7 +65,7 @@ namespace GH.Multiplay
         {
             if (singleton == null)
             {
-                rm = Resources.Load("ResourceManager") as ResourceManager;
+                rm = GameController.singleton.ResourceManager;
                 singleton = this;
                 DontDestroyOnLoad(this.gameObject);
             }
@@ -137,28 +137,27 @@ namespace GH.Multiplay
 
         public Card CreateCardMaster(string cardId)
         {
-            Card card = rm.GetCardFromDict(cardId);
+            Card card = rm.GetCardInstFromDeck(cardId);
             card.InstId = CardInstId;
             CardInstId = CardInstId + 1;
             return card;
         }
+        //public void CreateCardClient_Call(string cardId, int instId,int photonId)
+        //{
+        //    Card c = CreateCardClient(cardId, instId);
+        //    if(c!=null)
+        //    {
+        //        MultiplayerHolder h = GetHolder(photonId);
+        //        h.RegisterCard(c);
+        //    }
 
-        public void CreateCardClient_Call(string cardId, int instId,int photonId)
-        {
-            Card c = CreateCardClient(cardId, instId);
-            if(c!=null)
-            {
-                MultiplayerHolder h = GetHolder(photonId);
-                h.RegisterCard(c);
-            }
-
-        }
-        public Card CreateCardClient(string cardId, int instId)
-        {
-            Card card = rm.GetCardFromDict(cardId);
-            card.InstId = CardInstId;
-            return card;
-        }
+        //}
+        //public Card CreateCardClient(string cardId, int instId)
+        //{
+        //    Card card = rm.GetCardFromDict(cardId);
+        //    card.InstId = CardInstId;
+        //    return card;
+        //}
         #endregion
 
         #region Phton Callbacks

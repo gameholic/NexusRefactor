@@ -41,22 +41,34 @@ namespace GH
         [System.NonSerialized]
         public int health;
 
-        private int _PhotonId = -1;
 
+        private List<int> _CardInstIds = new List<int>();
+        private List<Card> _AllCardInstances = new List<Card>();
+        private int _PhotonId = -1;
         public int PhotonId
         {
             set { _PhotonId = value; }
             get { return _PhotonId; }
         }
+        public List<int> CardInstIds
+        {
+            get { return _CardInstIds; }
+        }
+        public List<Card> AllCardInst
+        {
+            get { return _AllCardInstances; }
+        }
+        public void AddCardToAllCardInst(Card c)
+        {
+            _AllCardInstances.Add(c);
+        }
+
 
         public void Init()
         {
             health = 20;
-            //Debug.Log("check");
             allCards.AddRange(startingDeck); 
         }
-       
-
         public void DropCardOnField(CardInstance inst, bool registerEvent =true)
         {
             if (handCards.Contains(inst))

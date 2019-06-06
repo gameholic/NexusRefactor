@@ -294,6 +294,7 @@
     <Compile Include="Assets\Script\Scriptable\Variables\TransformVariable.cs" />
     <Compile Include="Assets\Script\Scriptable\Variables\Vector3Variable.cs" />
     <Compile Include="Assets\Script\Setting\GameController.cs" />
+    <Compile Include="Assets\Script\Setting\GameController_AI.cs" />
     <Compile Include="Assets\Script\Setting\Setting.cs" />
     <Compile Include="Assets\Script\State\State.cs" />
     <Compile Include="Assets\Script\Turns\BattlePhase.cs" />

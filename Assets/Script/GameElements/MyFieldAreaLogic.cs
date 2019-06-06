@@ -5,9 +5,9 @@ using GH.GameCard;
 
 
 /// <summary>
-/// It runs when card is trying to be placed on area.
-/// 
-/// It checks what sort of the card is and can this card be placed in area. If not, return error message and stop running.
+/// It runs when card is getting placed on area.
+/// Checks what sort of the card is and can this card be placed in area. If not, return error message and stop running.
+/// It works with field area game object
 /// </summary>
 namespace GH.GameElements
 {
@@ -26,9 +26,6 @@ namespace GH.GameElements
         public override void Execute(GameElements.Area a)
         {
             PlayerHolder p = Setting.gameController.CurrentPlayer;
-            //bool isPlaced = false;
-            //if (a.transform.childCount != 0)
-            //    isPlaced = true;
             bool checkOwner = Setting.gameController.CheckOwner.CheckPlayer(a.gameObject);
             if (!checkOwner)
             {
@@ -36,37 +33,25 @@ namespace GH.GameElements
                 return;
             }
 
-            ////////////////
-            ///this need to be changed.
-            ///isPlaced isn't initialised which means, eventhough creature card that is placed on field get removed, still it thinks area isn't empty.
-            ////////////////
-            if (_CardVar.value == null /*|| isPlaced==true*/)
-                return;
+            if (_CardVar.value == null)
+                Debug.Log("CARD VAR ERR");
+            if (a.IsPlaced)
+                Debug.Log("There is something in area");
 
             Card currentCard = _CardVar.value.viz.card;
             CardInstance c = _CardVar.value;
             if (currentCard.cardType == _CreatureType)
             {
-                bool canUse = p.PayMana(currentCard); // Check current mana cost.
-
-
+                bool canUse = p.PayMana(currentCard);
                 if (canUse)
                 {
-                    //Send card transform, area transform, current card viz and variables to Setting.
                     Setting.DropCreatureCard(_CardVar.value.transform
                         ,a.transform
                         ,currentCard
                         ,_CardVar.value);
-
                     _CardVar.value.currentLogic = _CardOnFieldLogic;
-                    //currentCard.value.gameObject.layer = 9;
-
-                    //isPlaced = true; // Set isPlace to true so another card can't be placed in this area. 
-                    BoxCollider box =a.GetComponent<BoxCollider>();
-                    box.enabled = false;
                     p.manaResourceManager.UpdateCurrentMana(-(currentCard.cardCost));
-
-
+                    a.IsPlaced = true;
                     c.SetOriginFieldLocation(a.transform);
                     c.SetCanAttack(false);
                 }

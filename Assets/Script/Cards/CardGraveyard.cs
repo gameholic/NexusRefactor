@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
-
+using GH.GameElements;
 namespace GH.GameCard{
     [CreateAssetMenu(menuName ="Card_Grave")]
     public class CardGraveyard : ScriptableObject
@@ -48,6 +48,8 @@ namespace GH.GameCard{
             {
                 cardOwner.attackingCards.Remove(c);
             }
+            Area a = c.GetComponentInParent<Area>();
+            a.IsPlaced = false;
             c.dead = true;
             c.gameObject.SetActive(false);
             c.gameObject.GetComponentInChildren<CardInstance>().enabled = false;
