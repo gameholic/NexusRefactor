@@ -41,6 +41,13 @@ namespace GH
         [System.NonSerialized]
         public int health;
 
+        private int _PhotonId = -1;
+
+        public int PhotonId
+        {
+            set { _PhotonId = value; }
+            get { return _PhotonId; }
+        }
 
         public void Init()
         {

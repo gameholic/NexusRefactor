@@ -255,10 +255,13 @@
     <Compile Include="Assets\Script\Helpers\CheckPlayerCanUse.cs" />
     <Compile Include="Assets\Script\Holders\CardHolders.cs" />
     <Compile Include="Assets\Script\Holders\PlayerHolder.cs" />
+    <Compile Include="Assets\Script\Holders\PlayerProfile.cs" />
     <Compile Include="Assets\Script\Holders\PositionHolder.cs" />
     <Compile Include="Assets\Script\Interfaces\IClickable.cs" />
     <Compile Include="Assets\Script\Multiplayer\EventManager.cs" />
+    <Compile Include="Assets\Script\Multiplayer\MultiplayManager.cs" />
     <Compile Include="Assets\Script\Multiplayer\NetworkManager.cs" />
+    <Compile Include="Assets\Script\Multiplayer\NetworkPrint.cs" />
     <Compile Include="Assets\Script\Multiplayer\SessionManager.cs" />
     <Compile Include="Assets\Script\Scriptable\Custom UI\EventEditor.cs" />
     <Compile Include="Assets\Script\Scriptable\Events\ConditionalEvent_BoolVariable.cs" />
@@ -296,6 +299,7 @@
     <Compile Include="Assets\Script\Turns\BattlePhase.cs" />
     <Compile Include="Assets\Script\Turns\BattleResolvePhase.cs" />
     <Compile Include="Assets\Script\Turns\BlockPhase.cs" />
+    <Compile Include="Assets\Script\Turns\ClientEmptyPhase.cs" />
     <Compile Include="Assets\Script\Turns\ControlPhase_Player.cs" />
     <Compile Include="Assets\Script\Turns\Phase.cs" />
     <Compile Include="Assets\Script\Turns\Turn.cs" />
@@ -578,6 +582,12 @@
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
+    <Reference Include="Photon3Unity3D">
+      <HintPath>D:/Study/Unity/Processing Projects/G-card/Assets/Plugins/Photon3Unity3D.dll</HintPath>
+    </Reference>
+    <Reference Include="websocket-sharp">
+      <HintPath>D:/Study/Unity/Processing Projects/G-card/Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.Advertisements">
       <HintPath>D:/Study/Unity/Processing Projects/G-card/Library/PackageCache/com.unity.ads@2.3.1/Runtime/UnityEngine.Advertisements.dll</HintPath>
     </Reference>
@@ -592,12 +602,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>D:/Study/Unity/Processing Projects/G-card/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
-    </Reference>
-    <Reference Include="Photon3Unity3D">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Assets/Plugins/Photon3Unity3D.dll</HintPath>
-    </Reference>
-    <Reference Include="websocket-sharp">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/unity/mscorlib.dll</HintPath>

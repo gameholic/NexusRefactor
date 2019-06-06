@@ -175,3 +175,7 @@ D:\Study\Unity\Processing Projects\G-card\obj\Debug\Assembly-CSharp.csproj.CopyC
 D:\Study\Unity\Processing Projects\G-card\obj\Debug\Assembly-CSharp.dll
 D:\Study\Unity\Processing Projects\G-card\obj\Debug\Assembly-CSharp.pdb
 D:\Study\Unity\Processing Projects\G-card\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+D:\Study\Unity\Processing Projects\G-card\Temp\bin\Debug\Photon3Unity3D.dll
+D:\Study\Unity\Processing Projects\G-card\Temp\bin\Debug\websocket-sharp.dll
+D:\Study\Unity\Processing Projects\G-card\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
+D:\Study\Unity\Processing Projects\G-card\Temp\bin\Debug\Photon3Unity3D.xml

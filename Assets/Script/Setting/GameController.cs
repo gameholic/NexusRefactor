@@ -26,6 +26,7 @@ namespace GH
         private PlayerStatsUI[] _PlayerStatsUI;
         [SerializeField]
         private CardGraveyard _CardGrave;
+
         public GameEvent OnTurnChanged;
         public GameEvent OnPhaseChanged;
         public StringVariable turnText;
@@ -33,18 +34,29 @@ namespace GH
         //public TransformVariable[] graveyard_transform;
         public GameObject cardPrefab;
         public GameObject[] manaObj;
+
         public int turnIndex = 0;
         private bool isComplete;
         private bool switchPlayer;
         private int _TurnLength = 0;
         private BlockInstanceManager _BlockManager = new BlockInstanceManager();
         private CheckPlayerCanUse _CheckOwner = new CheckPlayerCanUse();        
-        private PlayerHolder[] _Players;
+        public PlayerHolder[] _Players;
         private LoadPlayerUI _LoadPlayerUI = new LoadPlayerUI();
         private bool startTurn = true; //Check the start of the turn
         private int turnCounter; //Count the turn. When both player plays, it increases by 1
+        private bool isInit;
+        /// <summary>
+        /// Variables used for multiplay
+        /// </summary>
+        [SerializeField]
+        private PlayerHolder localPlayer;
+        [SerializeField]
+        private PlayerHolder clientPlayer;
 
-
+        /// <summary>
+        /// Get/Set Methods/Properties
+        /// </summary>
         public PlayerHolder CurrentPlayer
         {
             set { _CurrentPlayer = value; }
@@ -89,13 +101,35 @@ namespace GH
         {
             get { return _LoadPlayerUI; }
         }
+        public PlayerHolder GetOpponentOf(PlayerHolder p)
+        {
+            for (int i = 0; i < _Players.Length; i++)
+            {
+                if (GetPlayer(i) != p)
+                    return GetPlayer(i);
+            }
+            return null;
+
+        }
+        public PlayerHolder LocalPlayer
+        {
+            set { localPlayer = value; }
+            get { return localPlayer; } 
+        }
+        public PlayerHolder ClientPlayer
+        {
+            set { clientPlayer = value; }
+            get { return clientPlayer; }
+        }
+        /// <summary>
+        /// Get/Set Properties
+        /// </summary>
         private void Awake()
         {
-
-            Debug.Log("1");
+            Setting.gameController = this;
+            singleton = this;
             isComplete = false;
             switchPlayer = false;
-            singleton = this;
             _TurnLength = _Turns.Length;
             _BlockManager.BlockInstDict = new Dictionary<CardInstance, BlockInstance>();
             _Players = new PlayerHolder[_TurnLength];
@@ -115,12 +149,14 @@ namespace GH
         }
         private void Start()
         {
-            Setting.gameController = this;
-            SetupPlayers();
-            turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString(); // Visualize whose turn is now
-            turnCounter = 1;
-            turnCountTextVariable.value = turnCounter.ToString();
-            OnTurnChanged.Raise();
+
+            
+
+        }
+        public void InitGame(int startingPlayer)
+        {
+            Turn[] _tmpTurn = new Turn[2];
+
             for (int i = 0; i < _Players.Length; i++)
             {
                 GetPlayer(i).statsUI = GetPlayerUIInfo(i);
@@ -131,9 +167,26 @@ namespace GH
                  *This is for the speical mode that might exist in future
                  *      Ex) Initialise mana as 3 
                  */
+
+                if(GetPlayer(i).PhotonId == startingPlayer)
+                {
+                    _tmpTurn[0] = GetTurns(i);
+                }
+                else
+                {
+                    _tmpTurn[1] = GetTurns(i);  
+                }
             }
+            _Turns = _tmpTurn;
+            SetupPlayers();
+            turnCounter = 1;
+            turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString(); // Visualize whose turn is now            
+            turnCountTextVariable.value = turnCounter.ToString();
+            OnTurnChanged.Raise();
+            isInit = true;
 
         }
+
         private void SetupPlayers()
         {
             for (int i = 0; i < _Players.Length; i++)
@@ -226,6 +279,8 @@ namespace GH
         }
         private void Update()
         {
+            if (!isInit)
+                return;
             _CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
             UpdateMana();
             if (startTurn)
@@ -283,16 +338,6 @@ namespace GH
 
             GetTurns(turnIndex).EndCurrentPhase();
             //_CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
-        }
-        public PlayerHolder GetOpponentOf(PlayerHolder p)
-        {
-            for (int i = 0; i < _Players.Length; i++)
-            {
-                if (GetPlayer(i) != p)
-                    return GetPlayer(i);
-            }
-            return null;
-
         }
         public void PutCardToGrave(CardInstance c)
         {

@@ -25,9 +25,10 @@ namespace GH.Multiplay
             }
         }
         
-        public void LoadGameLevel()
+        public void LoadGameLevel(OnSceneLoaded callback)
         {
-            StartCoroutine("BattleScene_ori");
+            onSceneLoaded = callback;
+            StartCoroutine(LoadLevel("BattleScene_ori"));
         }
 
         public void LoadMenu()

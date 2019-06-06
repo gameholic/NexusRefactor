@@ -2797,8 +2797,8 @@ MonoBehaviour:
   _BottomCardHolder: {fileID: 11400000, guid: de8c454d3de231243b2cce449a5de728, type: 2}
   _CurrentState: {fileID: 11400000, guid: 2e3958c1c48e9c84d8497aa6cde37c48, type: 2}
   _Turns:
-  - {fileID: 11400000, guid: e94118c3b2e20844ea4a9f8b4f7fc591, type: 2}
-  - {fileID: 11400000, guid: 420f77df5050fb944bc28dcec0fdad92, type: 2}
+  - {fileID: 11400000, guid: a078b746e7a55df4aa4a85297dc1608f, type: 2}
+  - {fileID: 11400000, guid: c476c721914d8a74aa5788dd38ce4851, type: 2}
   _PlayerStatsUI:
   - {fileID: 1443482414}
   - {fileID: 755100765}
@@ -2813,6 +2813,8 @@ MonoBehaviour:
   - {fileID: 826019339}
   - {fileID: 1624317818}
   turnIndex: 0
+  localPlayer: {fileID: 11400000, guid: 25a4d3d96a280a64dad6775ee15eff9f, type: 2}
+  clientPlayer: {fileID: 11400000, guid: bb002c96739fab942b2d4ed610a48793, type: 2}
 --- !u!1 &755100762
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72bb9510c2f0963418c50dbb4d44b0d1, type: 3}
+  m_Name: LocalPlayerTurn
+  m_EditorClassIdentifier: 
+  _ThisTurnPlayer: {fileID: 11400000, guid: 25a4d3d96a280a64dad6775ee15eff9f, type: 2}
+  _CurrentPhase: {fileID: 11400000, guid: 842080bb5b7598146b4120b99cb21ecf, type: 2}
+  _Phases:
+  - {fileID: 11400000, guid: b3b4f0e6979f833439b872cf0e331a8a, type: 2}
+  - {fileID: 11400000, guid: 95059cf52ec2e8d43b693b24ecdbf8fa, type: 2}
+  - {fileID: 11400000, guid: 9189a99a722e2774489e7c7ffd312281, type: 2}
+  - {fileID: 11400000, guid: 54a783ad2470e1949b45bdb7eccda4d0, type: 2}
+  _TurnStartAction:
+  - {fileID: 11400000, guid: 6d38ad579436d1f4eb6ccd6946b8002b, type: 2}
+  - {fileID: 11400000, guid: 074228803a7709243a152e9e3763ce4c, type: 2}
+  - {fileID: 11400000, guid: 0382abfe68fe4d34382cde5d26c9e32e, type: 2}

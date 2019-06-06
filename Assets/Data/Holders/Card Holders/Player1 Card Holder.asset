@@ -20,4 +20,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4704cddba42b337498f0b7715eab66a8, type: 2}
   - {fileID: 11400000, guid: cd8b27c6a3b15174babfd44afbd7b424, type: 2}
   battleLine: {fileID: 11400000, guid: a522e82758872a84eb719f2b16ecf430, type: 2}
-  thisPlayer: {fileID: 11400000, guid: def01e83f98244541b61cbc5833ac66b, type: 2}
+  thisPlayer: {fileID: 11400000, guid: 25a4d3d96a280a64dad6775ee15eff9f, type: 2}

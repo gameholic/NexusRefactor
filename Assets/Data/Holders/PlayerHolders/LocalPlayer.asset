@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a4ee6e47004b224d891637cfb57d24a, type: 3}
+  m_Name: LocalPlayer
+  m_EditorClassIdentifier: 
+  player: Local
+  userID: AHri
+  isBottomPos: 1
+  isHumanPlayer: 0
+  playerColor: {r: 0, g: 0.4081595, b: 1, a: 1}
+  playerAvatar: {fileID: 21300000, guid: 9cce416f9c1c98a4d94bb8dbdd33625b, type: 3}
+  statsUI: {fileID: 0}
+  handLogic: {fileID: 11400000, guid: f3d5b603ae865e349a94e78b240f9cba, type: 2}
+  fieldLogic: {fileID: 11400000, guid: e5493222b1cc06546bacc56bb9c7b13a, type: 2}
+  startingDeck: []

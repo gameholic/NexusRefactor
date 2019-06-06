@@ -63,7 +63,7 @@ namespace GH.Multiplay
 
         private void Awake()
         {
-            if(singleton == null)
+            if (singleton == null)
             {
                 rm = Resources.Load("ResourceManager") as ResourceManager;
                 singleton = this;
@@ -85,6 +85,7 @@ namespace GH.Multiplay
             Init();
 
         }
+      
         public void Init()
         {
             PhotonNetwork.ConnectUsingSettings("1");
@@ -204,12 +205,22 @@ namespace GH.Multiplay
                 {
                     SetLoggerAsString("Ready for game");
                     loggerUpdated.Raise();
-
-
-                    PhotonNetwork.room.IsOpen = false;                    
-                    //SessionManager.singleton.LoadGameLevel();
+                    PhotonNetwork.room.IsOpen = false;
+                    PhotonNetwork.Instantiate("Multiplay Manager", Vector3.zero, Quaternion.identity, 0);
                 }
             }
+        }
+        public void LoadGameScene()
+        {
+            SessionManager.singleton.LoadGameLevel(OnGameSceneLoaded);
+        }
+
+        /// <summary>
+        /// Responsible for getting data from n/w manager about BattleScene
+        /// </summary>
+        void OnGameSceneLoaded()
+        {
+            MultiplayManager.singleton.CountPlayer = true;
         }
 
         public override void OnDisconnectedFromPhoton()
