@@ -1,6 +1,7 @@
 ﻿using GH.GameCard;
 using System.Collections.Generic;
 using UnityEngine;
+using GH.GameElements;
 
 namespace GH.Multiplay
 
@@ -81,7 +82,6 @@ namespace GH.Multiplay
         /// </summary>
         void InstantiateNetworkPrint()
         {
-            Debug.Log("HowManyThisRun");
             PlayerProfile profile = Resources.Load("Player Profile")as PlayerProfile;
             object[] data = new object[1];
             data[0] = profile.GetCardIds();
@@ -248,6 +248,7 @@ namespace GH.Multiplay
         { 
             if(!NetworkManager.singleton.IsMaster)
                 return;
+
             bool hasCard = PlayerHasCard(cardInst, photonId);
             if(hasCard)
             {
@@ -272,29 +273,33 @@ namespace GH.Multiplay
         public void RPC_PlayerUsesCard(int instId, int photonId, CardOperation operation)
         {
             NetworkPrint p = GetPlayer(photonId);
-            Card c = p.GetCard(instId); 
-            switch(operation)
+            Card card = p.GetCard(instId); 
+            switch(operation)    
             {
                 case CardOperation.dropCreatureCard:
-                    //Logic when creature card is placed
+                    Setting.DropCreatureCard(card.Instance.transform
+                        , card.Instance.GetOriginFieldLocation(), card);
+
+                    card.Instance.currentLogic = MainData.FieldCardLogic;
+                    p.ThisPlayer.manaResourceManager.UpdateCurrentMana(-(card.cardCost));
+                    card.Instance.SetCanAttack(true);                    
+                    card.Instance.gameObject.SetActive(true);
                     break;
+
                 case CardOperation.useSpellCard:
                     //Logic for spell card
                     break;
-                case CardOperation.pickCardFromDeck:
 
+                case CardOperation.pickCardFromDeck:
                     GameObject go = Instantiate(MainData.CardPrefab) as GameObject;
                     CardViz v = go.GetComponent<CardViz>();
-                    v.LoadCard(c);
-                    c.Instance = go.GetComponent<CardInstance>();
-                    c.Instance.owner = p.ThisPlayer;
-                    c.Instance.currentLogic = MainData.HandCardLogic;
-                    ///Player who control card is always at bottom position. 
-                    ///The reason why I didn't set as BottomCardholder is because CardHolder's grid never get changed.
-                    ///So even current player is Player2, I should put card in "PLAYER1'S HANDGRID", and change
+                    v.LoadCard(card);
+                    card.Instance = go.GetComponent<CardInstance>();
+                    card.Instance.owner = p.ThisPlayer;
+                    card.Instance.currentLogic = MainData.HandCardLogic;
                     Setting.SetParentForCard(go.transform, p.ThisPlayer.currentCardHolder.handGrid.value);
                     if (p.ThisPlayer.handCards.Count <= 7)
-                        p.ThisPlayer.handCards.Add(c.Instance);
+                        p.ThisPlayer.handCards.Add(card.Instance);
                     else
                         Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
                         break;

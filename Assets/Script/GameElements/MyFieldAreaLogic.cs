@@ -18,13 +18,14 @@ namespace GH.GameElements
         private CardType _CreatureType;
         [SerializeField]
         private CardType _SpellType;
-        [SerializeField]
-        private Instance_logic _CardOnFieldLogic;
+        //[SerializeField]
+        //private Instance_logic _CardOnFieldLogic;
 
         public override void Execute(GameElements.Area a)
         {
             PlayerHolder p = Setting.gameController.CurrentPlayer;
             bool checkOwner = Setting.gameController.CheckOwner.CheckPlayer(a.gameObject);
+
             if (!checkOwner)
             {
                 Debug.Log("You cant control other player's obj");
@@ -33,29 +34,22 @@ namespace GH.GameElements
             if (a.IsPlaced)
                 Debug.Log("There is something in area");
 
-
             Card thisCard = _CardVar.value.viz.card;
-            CardInstance c = _CardVar.value;
-
             if (thisCard.cardType == _CreatureType)
             {
-                MultiplayManager.singleton.PlayerTryToUseCard
-                    (thisCard.InstId, GameController.singleton.LocalPlayer.PhotonId, 
-                    MultiplayManager.CardOperation.dropCreatureCard);
-                //bool canUse = p.PayMana(thisCard);
-                //if (canUse)
-                //{
-                //    Setting.DropCreatureCard(_CardVar.value.transform
-                //        ,a.transform
-                //        ,thisCard
-                //        ,_CardVar.value);
-                //    _CardVar.value.currentLogic = _CardOnFieldLogic;
-                //    p.manaResourceManager.UpdateCurrentMana(-(thisCard.cardCost));
-                //    a.IsPlaced = true;
-                //    c.SetOriginFieldLocation(a.transform);
-                //    c.SetCanAttack(false);
-                //}
-                //c.gameObject.SetActive(true);
+                bool canUse = p.PayMana(thisCard);
+                if (canUse)
+                {
+                    thisCard.Instance.SetOriginFieldLocation(a.transform);
+                    a.IsPlaced = true;
+                    MultiplayManager.singleton.PlayerTryToUseCard
+                        (thisCard.InstId, GameController.singleton.LocalPlayer.PhotonId,
+                        MultiplayManager.CardOperation.dropCreatureCard);
+                }
+                else
+                {
+                    Setting.RegisterLog("Can't use card", Color.red);
+                }
             }
 
             else if(thisCard.cardType == _SpellType)

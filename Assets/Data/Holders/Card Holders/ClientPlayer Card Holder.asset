@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82d012332ebd7024aacfeeecc9232f5d, type: 3}
-  m_Name: Player2 Card Holder
+  m_Name: ClientPlayer Card Holder
   m_EditorClassIdentifier: 
   handGrid: {fileID: 11400000, guid: 0bd1f3890ba453342a285de30c75abda, type: 2}
   fieldGrid:

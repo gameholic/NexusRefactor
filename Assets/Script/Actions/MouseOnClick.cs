@@ -32,7 +32,6 @@ namespace GH.GameStates
                     {
                         Debug.Log("This isn't your control");
                         break;
-
                     }
 
                     if (c != null)

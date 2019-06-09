@@ -8,7 +8,7 @@ namespace GH
         private bool result = false;
         public bool CheckPlayer(GameObject obj)
         {
-            if (obj.GetComponentInParent<PositionHolder>().IsAtBottom()) // Is at Bottom = current player is at bottom position
+            if (obj.GetComponentInParent<PositionHolder>().IsAtBottom) // Is at Bottom = current player is at bottom position
             {
                 result = true;
             }

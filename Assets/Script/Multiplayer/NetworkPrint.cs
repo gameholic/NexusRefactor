@@ -38,7 +38,6 @@ namespace GH.Multiplay
             set { isLocal = value; }
             get { return isLocal; }
         }
-
         public string[] GetStartingCardids()
         {
             return cardIds;

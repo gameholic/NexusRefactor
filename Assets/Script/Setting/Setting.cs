@@ -35,14 +35,16 @@ namespace GH
         }
 
     
-        public static void DropCreatureCard(Transform c, Transform p, Card card, CardInstance inst)
+        public static void DropCreatureCard(Transform c, Transform p, Card card)
         {
             //inst.isJustPlaced = true;
             //if card w/ special ability is placed, change to true
             SetParentForCard(c, p);
-            inst.ColorCard(true);
+
+            Debug.Log(card.Instance.GetOriginFieldLocation().parent.gameObject);
+            card.Instance.ColorCard(true);
             gameController.CurrentPlayer.PayMana(card);
-            gameController.CurrentPlayer.DropCardOnField(inst);
+            gameController.CurrentPlayer.DropCardOnField(card.Instance);
 
         }
 

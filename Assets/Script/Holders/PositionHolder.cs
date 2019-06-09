@@ -5,11 +5,12 @@ namespace GH
 {
     public class PositionHolder : MonoBehaviour
     {
-        public bool isBottom;
+        [SerializeField]
+        private bool _IsBottom;
 
-        public bool IsAtBottom()
+        public bool IsAtBottom
         {
-            return isBottom;
+            get { return _IsBottom; }
         }
     }
 

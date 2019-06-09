@@ -14,20 +14,20 @@ namespace GH.GameElements
 
     public class Card_handOrder : MonoBehaviour
     {
-        [SerializeField]
-        private PlayerHolder player;
-        private Transform card;
-
+        private bool isBottom;
         private int cardsOnHand;
-
         private int midIndex;
         private int currentIndex;
-
-
         private Transform leftEnd;
         private Transform midCenter;
         private Transform rightEnd;
+        private Transform card;
 
+
+        private void Awake()
+        {
+            isBottom = this.gameObject.GetComponentInParent<PositionHolder>().IsAtBottom;
+        }
         private void EvenLogic()
         {
             float transDif_even = 3.5f;
@@ -41,13 +41,13 @@ namespace GH.GameElements
                 left.localPosition = new Vector3(-transDif_even, 0, -(i * 2));
                 right.localPosition = new Vector3(transDif_even, 0, -(i * 2));
 
-                if(player.isBottomPos)
+                if(isBottom)
                 {
                     //Player1 Arrange
                     left.rotation = Quaternion.Euler(90, 0, transDif_even);
                     right.rotation = Quaternion.Euler(90, 0, -transDif_even);
                 }
-                else if(!player.isBottomPos)
+                else if(!isBottom)
                 {
                     //Player2 Arrange
                     left.rotation = Quaternion.Euler(90, 0, -transDif_even+180);
@@ -69,7 +69,7 @@ namespace GH.GameElements
             
             midCenter.rotation = Quaternion.Euler(90,0,0);
 
-            if(!player.isBottomPos)
+            if(!isBottom)
                 midCenter.rotation = Quaternion.Euler(90, 0, 180);
        
             for (int i = 0; i < cardsOnHand / 2; i++)
@@ -81,13 +81,13 @@ namespace GH.GameElements
                 left.localPosition = new Vector3(-transDif_odd, 0, -(i * 2));
                 right.localPosition = new Vector3(transDif_odd, 0, -(i * 2));
 
-                if (player.isBottomPos)
+                if (isBottom)
                 {
                     //Player1 Arrange
                     left.rotation = Quaternion.Euler(90, 0, transDif_odd);
                     right.rotation = Quaternion.Euler(90, 0, -transDif_odd);
                 }
-                else if (!player.isBottomPos)
+                else if (!isBottom)
                 {
                     //Player2 Arrange
                     left.rotation = Quaternion.Euler(90, 0, -transDif_odd + 180);
@@ -110,8 +110,6 @@ namespace GH.GameElements
 
                 return;
             }
-            if (cardsOnHand > 5)
-                Debug.Log("5");
 
             //Logic for even counts
             if (cardsOnHand % 2 == 0)
