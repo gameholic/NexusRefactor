@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/Scenes/BattleScene_ori.unity
-  isLoaded: 1
-  isActive: 1
