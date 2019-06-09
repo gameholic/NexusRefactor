@@ -27,6 +27,8 @@ namespace GH
         private PlayerStatsUI[] _PlayerStatsUI;
         [SerializeField]
         private CardGraveyard _CardGrave;
+        [SerializeField]
+        private ResourceManager _ResourceManager;
         private bool _IsMultiplayer;
         public GameEvent OnTurnChanged;
         public GameEvent OnPhaseChanged;
@@ -45,7 +47,6 @@ namespace GH
         private LoadPlayerUI _LoadPlayerUI = new LoadPlayerUI();
         public PlayerHolder[] _Players;
 
-        private ResourceManager _resourceManager;
         private bool startTurn = true; //Check the start of the turn
         private int turnCounter; //Count the turn. When both player plays, it increases by 1
         private bool isInit;
@@ -126,8 +127,7 @@ namespace GH
         }
         public ResourceManager ResourceManager
         {
-            set { _resourceManager = value; }
-            get { return _resourceManager; }
+            get { return _ResourceManager; }
         }
         public bool IsMultiplay
         {
@@ -146,7 +146,6 @@ namespace GH
         private void Awake()
         {
             Setting.gameController = this;
-            ResourceManager = Setting.GetResourceManager();
             singleton = this;
             isComplete = false;
             switchPlayer = false;
@@ -160,7 +159,6 @@ namespace GH
                     GetPlayer(i).isBottomPos = true;
                 else
                     GetPlayer(i).isBottomPos = false;
-
                 Setting.RegisterLog(GetPlayer(i).name + " joined the game successfully", GetPlayer(i).playerColor);
             }
             _CurrentPlayer = GetTurns(0).ThisTurnPlayer;
@@ -262,29 +260,8 @@ namespace GH
         /// </summary>
         /// <param name="p"></param>
         public void PickNewCardFromDeck(PlayerHolder p)
-        {            
-            if (p.allCards.Count == 0)
-            {
-                Setting.RegisterLog(p + " don't have card in deck", Color.black);
-                return;
-            }
-            string cardId = p.allCards[0];
-            p.allCards.RemoveAt(0);
-            GameObject go = Instantiate(cardPrefab) as GameObject;
-            CardViz v = go.GetComponent<CardViz>();
-            //v.LoadCard(rm.GetCardFromDict(cardId));
-            CardInstance inst = go.GetComponent<CardInstance>();
-            inst.owner = p;
-            inst.currentLogic = p.handLogic;
-            ///Player who control card is always at bottom position. 
-            ///The reason why I didn't set as BottomCardholder is because CardHolder's grid never get changed.
-            ///So even current player is Player2, I should put card in "PLAYER1'S HANDGRID", and change
-            Setting.SetParentForCard(go.transform, GetPlayer(0).currentCardHolder.handGrid.value);
-            if (p.handCards.Count <= 7)
-                p.handCards.Add(inst);
-            else
-                Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
-            //LoadPlayerOnHolder(p, p.currentCardHolder, p.statsUI);
+        {
+            MultiplayManager.singleton.PlayerPicksCardFromDeck(p);
         }
         // Move targetPlayer, targetUI's position to destCardHolder's position            
         private void UpdateMana()

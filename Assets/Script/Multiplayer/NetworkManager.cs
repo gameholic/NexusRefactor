@@ -12,7 +12,8 @@ namespace GH.Multiplay
         private StringVariable logger;
         private static bool _IsMaster;
         private int _CardInstIds;
-        ResourceManager rm;
+        [SerializeField]
+        private ResourceManager rm;
         List<MultiplayerHolder> multiplayerHolders = new List<MultiplayerHolder>();
         public static NetworkManager singleton;
 
@@ -65,7 +66,7 @@ namespace GH.Multiplay
         {
             if (singleton == null)
             {
-                rm = GameController.singleton.ResourceManager;
+                rm = Resources.Load("ResourceManager") as ResourceManager;
                 singleton = this;
                 DontDestroyOnLoad(this.gameObject);
             }
@@ -78,7 +79,8 @@ namespace GH.Multiplay
         /// Connect to Photon networks
         /// </summary>
         private void Start()
-        {
+        {            
+            rm.Init();
             PhotonNetwork.autoCleanUpPlayerObjects = false;
             PhotonNetwork.autoJoinLobby = false;
             PhotonNetwork.automaticallySyncScene = false;
@@ -220,6 +222,7 @@ namespace GH.Multiplay
         void OnGameSceneLoaded()
         {
             MultiplayManager.singleton.CountPlayer = true;
+
         }
 
         public override void OnDisconnectedFromPhoton()

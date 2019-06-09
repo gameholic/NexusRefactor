@@ -11,10 +11,12 @@ namespace GH.GameCard
         
         public CardType cardType;
         public CardProperties[] properties;
-
+        
         public int cardCost;
         public bool canAttack;
 
+
+        private CardInstance _CardInstance;
         private int _InstId;
         private CardViz _Viz;
         public CardViz Viz
@@ -22,7 +24,11 @@ namespace GH.GameCard
             set { _Viz = value; }
             get { return _Viz; }
         }
-
+        public CardInstance Instance
+        {
+            set { _CardInstance = value; }
+            get { return _CardInstance; }
+        }
         public int InstId
         {
             set { _InstId = value; }

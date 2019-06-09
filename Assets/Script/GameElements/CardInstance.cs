@@ -14,6 +14,7 @@ namespace GH.GameCard
         public bool dead;
         private bool _isOnAttack = false;
         private Transform originFieldTransform;
+
         void Start()
         {
             viz = GetComponent<CardViz>();

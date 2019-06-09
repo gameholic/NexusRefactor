@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
 using GH.GameCard;
-
+using GH.Multiplay;
 
 /// <summary>
 /// It runs when card is getting placed on area.
@@ -32,33 +30,35 @@ namespace GH.GameElements
                 Debug.Log("You cant control other player's obj");
                 return;
             }
-
-            if (_CardVar.value == null)
-                Debug.Log("CARD VAR ERR");
             if (a.IsPlaced)
                 Debug.Log("There is something in area");
 
-            Card currentCard = _CardVar.value.viz.card;
+
+            Card thisCard = _CardVar.value.viz.card;
             CardInstance c = _CardVar.value;
-            if (currentCard.cardType == _CreatureType)
+
+            if (thisCard.cardType == _CreatureType)
             {
-                bool canUse = p.PayMana(currentCard);
-                if (canUse)
-                {
-                    Setting.DropCreatureCard(_CardVar.value.transform
-                        ,a.transform
-                        ,currentCard
-                        ,_CardVar.value);
-                    _CardVar.value.currentLogic = _CardOnFieldLogic;
-                    p.manaResourceManager.UpdateCurrentMana(-(currentCard.cardCost));
-                    a.IsPlaced = true;
-                    c.SetOriginFieldLocation(a.transform);
-                    c.SetCanAttack(false);
-                }
-                c.gameObject.SetActive(true);
+                MultiplayManager.singleton.PlayerTryToUseCard
+                    (thisCard.InstId, GameController.singleton.LocalPlayer.PhotonId, 
+                    MultiplayManager.CardOperation.dropCreatureCard);
+                //bool canUse = p.PayMana(thisCard);
+                //if (canUse)
+                //{
+                //    Setting.DropCreatureCard(_CardVar.value.transform
+                //        ,a.transform
+                //        ,thisCard
+                //        ,_CardVar.value);
+                //    _CardVar.value.currentLogic = _CardOnFieldLogic;
+                //    p.manaResourceManager.UpdateCurrentMana(-(thisCard.cardCost));
+                //    a.IsPlaced = true;
+                //    c.SetOriginFieldLocation(a.transform);
+                //    c.SetCanAttack(false);
+                //}
+                //c.gameObject.SetActive(true);
             }
 
-            else if(currentCard.cardType == _SpellType)
+            else if(thisCard.cardType == _SpellType)
             {
                 Debug.Log("This is spell Card");
             }

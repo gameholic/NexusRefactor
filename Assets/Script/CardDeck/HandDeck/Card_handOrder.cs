@@ -14,7 +14,8 @@ namespace GH.GameElements
 
     public class Card_handOrder : MonoBehaviour
     {
-        public PlayerHolder player;
+        [SerializeField]
+        private PlayerHolder player;
         private Transform card;
 
         private int cardsOnHand;
@@ -60,7 +61,7 @@ namespace GH.GameElements
         }
         private void OddLogic()
         {
-             float transDif_odd = 7;
+            float transDif_odd = 7;
             midIndex = cardsOnHand / 2 + 1; 
             midCenter = gameObject.transform.GetChild(cardsOnHand / 2);
             
@@ -109,15 +110,18 @@ namespace GH.GameElements
 
                 return;
             }
+            if (cardsOnHand > 5)
+                Debug.Log("5");
 
-                
             //Logic for even counts
             if (cardsOnHand % 2 == 0)
                 EvenLogic();
             //Logic for odd counts
             else if (cardsOnHand % 2 == 1)
                 OddLogic();
-                
+            else
+                Debug.LogError("HandOrderErr");
+
         }
 
     }

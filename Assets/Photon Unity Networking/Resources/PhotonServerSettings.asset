@@ -49,4 +49,7 @@ MonoBehaviour:
   - RPC_PlayerStartsTurn
   - RPC_PlayerTryUseCard
   - RPC_PlayerHasCard
+  - RPC_PlayerCreatesCard
+  - RPC_PlayerTryToUseCard
+  - RPC_PlayerUsesCard
   DisableAutoOpenWizard: 1

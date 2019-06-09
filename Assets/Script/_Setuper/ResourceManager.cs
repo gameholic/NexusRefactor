@@ -12,9 +12,16 @@ namespace GH
         public Element typeElement;
         public Card[] allCards;
         Dictionary<string, Card> cardDict = new Dictionary<string, Card>();
+        private int cardInstIndex;
 
+        public int CardIndex
+        {
+            set { cardInstIndex = value; }
+            get { return cardInstIndex; }
+        }
         public void Init()
         {
+            CardIndex = -1;
             cardDict.Clear();
             for (int i = 0; i < allCards.Length; i++)
             {
@@ -31,6 +38,11 @@ namespace GH
 
             Card newInst = Instantiate(originCard);
             newInst.name = originCard.name;
+
+            newInst.InstId = CardIndex;
+
+            CardIndex++;
+
             return newInst;
         }
         Card GetCard(string id)

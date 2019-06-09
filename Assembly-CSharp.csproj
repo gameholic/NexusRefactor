@@ -254,6 +254,7 @@
     <Compile Include="Assets\Script\Helpers\AssignTransform.cs" />
     <Compile Include="Assets\Script\Helpers\CheckPlayerCanUse.cs" />
     <Compile Include="Assets\Script\Holders\CardHolders.cs" />
+    <Compile Include="Assets\Script\Holders\MainDataHolder.cs" />
     <Compile Include="Assets\Script\Holders\PlayerHolder.cs" />
     <Compile Include="Assets\Script\Holders\PlayerProfile.cs" />
     <Compile Include="Assets\Script\Holders\PositionHolder.cs" />

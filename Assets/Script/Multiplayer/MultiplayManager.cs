@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using GH.GameCard;
+using System.Collections.Generic;
 using UnityEngine;
-using GH.GameCard;
 
 namespace GH.Multiplay
 
@@ -11,17 +11,18 @@ namespace GH.Multiplay
     public class MultiplayManager : Photon.MonoBehaviour
     {
         #region Variables
+        [SerializeField]
+        private MainDataHolder _MainDataHolder;
         public static MultiplayManager singleton;
         private List<NetworkPrint> _Players = new List<NetworkPrint>();
         private NetworkPrint localPlayerNWPrint;
-        private Transform _MultiplayerReferences;
-        
+        private Transform _MultiplayerReferences;        
         //Now the game is on between two players so List might not be best way.
 
-        [SerializeField]
-        private PlayerHolder localPlayerHolder;
-        [SerializeField]
-        private PlayerHolder clientPlayerHolder;
+        //[SerializeField]
+        //private PlayerHolder localPlayerHolder;
+        //[SerializeField]
+        //private PlayerHolder clientPlayerHolder;
         private bool gameStarted;
         private bool countPlayers; // To check game scene is loaded.
         #endregion  
@@ -48,7 +49,11 @@ namespace GH.Multiplay
         {
             get { return _MultiplayerReferences; }
         }
-        private NetworkPrint GetPlayer(int photonID)
+        public MainDataHolder MainData
+        {
+            get { return _MainDataHolder; }
+        }
+        public NetworkPrint GetPlayer(int photonID)
         {
             for(int i=0; i< Players.Count; i++)
             {
@@ -59,6 +64,8 @@ namespace GH.Multiplay
             }
             return null;
         }
+        
+        
         #region Init
         void OnPhotonInstantiate(PhotonMessageInfo info)
         {
@@ -100,66 +107,67 @@ namespace GH.Multiplay
         #region Starting the Match  
         public void StartMatch()
         {
-            List<int> playerId = new List<int>();
-            List<int> cardInstId = new List<int>();
-            List<string> cardName = new List<string>();
             ResourceManager rm = GC.ResourceManager;
-            
 
-
-            foreach(NetworkPrint p in Players)
+            if (NetworkManager.singleton.IsMaster)
             {
-                foreach (string id in p.GetStartingCardids())
+                List<int> playerId = new List<int>();
+                List<int> cardInstId = new List<int>();
+                List<string> cardName = new List<string>();
+                
+                foreach (NetworkPrint p in Players)
                 {
-                    Card c = rm.GetCardInstFromDeck(id);
-                    playerId.Add(p.photonId);
-                    cardInstId.Add(c.InstId);
-                    cardName.Add(id);
-
-                    if(p.IsLocal)
+                    foreach (string id in p.GetStartingCardids())
                     {
-                        localPlayerHolder.PhotonId = p.photonId;
-                        localPlayerHolder.AddCardToAllCardInst(c);
+                        Card c = rm.GetCardInstFromDeck(id);
+                        playerId.Add(p.photonId);
+                        cardInstId.Add(c.InstId);
+                        cardName.Add(id);
+
+                        if (p.IsLocal)
+                        {
+                            p.ThisPlayer = GC.LocalPlayer;
+                            p.ThisPlayer.PhotonId = p.photonId;
+                        }
+                        else
+                        {
+                            p.ThisPlayer = GC.ClientPlayer;
+                            p.ThisPlayer.PhotonId = p.photonId;
+                        }
                     }
                 }
-                
-                //if (p.IsLocal)
-                //{
-                //    localPlayerHolder.PhotonId = p.photonId;
-                //    localPlayerHolder.allCards.Clear();
-                //    localPlayerHolder.allCards.AddRange(p.GetStartingCardids());
+                for (int i = 0; i < playerId.Count; i++)
+                {
+                    photonView.RPC("RPC_PlayerCreatesCard", PhotonTargets.All, playerId[i], cardInstId[i], cardName[i]);
+                }
+                photonView.RPC("RPC_InitGame", PhotonTargets.All, 1);
 
-                //}
-                //else
-                //{
-                //    clientPlayerHolder.PhotonId = p.photonId;
-                //    clientPlayerHolder.allCards.Clear();
-                //    clientPlayerHolder.allCards.AddRange(p.GetStartingCardids());
 
-                //    foreach (string id in p.GetStartingCardids())
-                //    {
-                //        Card c = rm.GetCardFromDict(id);
-                //        localPlayerHolder.AddCardToAllCardInst(c);
-                //    }
-                //}
-            
             }
-            if(NetworkManager.singleton.IsMaster)
+            else
             {
-                photonView.RPC("RPC_InitGame", PhotonTargets.All,1);
-            }
-        }
+                foreach (NetworkPrint p in Players)
+                {
+                    if (p.IsLocal)
+                    {
+                        p.ThisPlayer = GC.LocalPlayer;
+                        p.ThisPlayer.PhotonId = p.photonId;
+                    }
+                    else
+                    {
+                        p.ThisPlayer = GC.ClientPlayer;
+                        p.ThisPlayer.PhotonId = p.photonId;
+                    }
+                }
+            }}
         [PunRPC]
         public void RPC_PlayerCreatesCard(int photonId,int cardId,string cardName)
         {
-            if(NetworkManager.singleton.IsMaster)
-            {
-                //master can manage cards at line 105~108
-                return;
-            }
             Card c = GC.ResourceManager.GetCardInstFromDeck(cardName);
             c.InstId = cardId;
+
             NetworkPrint p = GetPlayer(photonId);
+            p.AddCard(c);
         }
 
         [PunRPC]
@@ -224,26 +232,79 @@ namespace GH.Multiplay
 
         #region Card Checks
 
-
-        public void PlayerTryToUseCard(int cardInst, int photonId)
+        public void PlayerPicksCardFromDeck(PlayerHolder playerHolder)
         {
-            photonView.RPC("RPC_PlayerTryToUseCard", PhotonTargets.MasterClient, cardInst, photonId);
+            NetworkPrint p = GetPlayer(playerHolder.PhotonId);
+            Card c = p.CardDeck[0];
+            p.CardDeck.RemoveAt(0);
+            PlayerTryToUseCard(c.InstId, p.photonId, CardOperation.pickCardFromDeck);
+        }
+        public void PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation)
+        {
+            photonView.RPC("RPC_PlayerTryToUseCard", PhotonTargets.MasterClient, cardInst, photonId, operation);
         }
         [PunRPC]
-        public void RPC_PlayerTryToUseCard(int cardInst, int photonId)
+        public void RPC_PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation)
         { 
             if(!NetworkManager.singleton.IsMaster)
                 return;
+            bool hasCard = PlayerHasCard(cardInst, photonId);
+            if(hasCard)
+            {
+                photonView.RPC("RPC_PlayerUsesCard", PhotonTargets.All, cardInst, photonId, operation);
+            }
         }
 
-        //private bool PlayerHasCard(int cardInst, int photonId)
-        //{
-        //    bool r = false;
-        //    NetworkPrint player = GetPlayer(photonId);
-
-        //    return r;
-        //}
+        private bool PlayerHasCard(int cardInst, int photonId)
+        {
+            NetworkPrint p = GetPlayer(photonId);
+            Card c = p.GetCard(cardInst);
+            return (c!=null);
+        }
         #endregion
+
+        #region Card Operations
+        public enum CardOperation
+        {
+            dropCreatureCard, useSpellCard, pickCardFromDeck
+        }
+        [PunRPC]
+        public void RPC_PlayerUsesCard(int instId, int photonId, CardOperation operation)
+        {
+            NetworkPrint p = GetPlayer(photonId);
+            Card c = p.GetCard(instId); 
+            switch(operation)
+            {
+                case CardOperation.dropCreatureCard:
+                    //Logic when creature card is placed
+                    break;
+                case CardOperation.useSpellCard:
+                    //Logic for spell card
+                    break;
+                case CardOperation.pickCardFromDeck:
+
+                    GameObject go = Instantiate(MainData.CardPrefab) as GameObject;
+                    CardViz v = go.GetComponent<CardViz>();
+                    v.LoadCard(c);
+                    c.Instance = go.GetComponent<CardInstance>();
+                    c.Instance.owner = p.ThisPlayer;
+                    c.Instance.currentLogic = MainData.HandCardLogic;
+                    ///Player who control card is always at bottom position. 
+                    ///The reason why I didn't set as BottomCardholder is because CardHolder's grid never get changed.
+                    ///So even current player is Player2, I should put card in "PLAYER1'S HANDGRID", and change
+                    Setting.SetParentForCard(go.transform, p.ThisPlayer.currentCardHolder.handGrid.value);
+                    if (p.ThisPlayer.handCards.Count <= 7)
+                        p.ThisPlayer.handCards.Add(c.Instance);
+                    else
+                        Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
+                        break;
+                default:
+                    break;
+            }
+        }
+        #endregion
+
+
     }
 
 }
