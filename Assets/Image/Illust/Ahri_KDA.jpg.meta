@@ -2,7 +2,7 @@ fileFormatVersion: 2
 guid: 9cce416f9c1c98a4d94bb8dbdd33625b
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Ahri_KDA_Avatar
+    21300000: Avatar_Ahri_KDA
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -107,7 +107,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Ahri_KDA_Avatar
+      name: Avatar_Ahri_KDA
       rect:
         serializedVersion: 2
         x: 547
@@ -115,7 +115,7 @@ TextureImporter:
         width: 150
         height: 150
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

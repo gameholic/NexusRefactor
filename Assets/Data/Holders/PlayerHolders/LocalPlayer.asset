@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: LocalPlayer
   m_EditorClassIdentifier: 
   player: Local
-  userID: AHri
-  isBottomPos: 1
+  userID: Fiora
+  _IsBottomPos: 1
   isHumanPlayer: 1
   playerColor: {r: 0, g: 0.4081595, b: 1, a: 1}
-  playerAvatar: {fileID: 21300000, guid: 9cce416f9c1c98a4d94bb8dbdd33625b, type: 3}
+  playerAvatar: {fileID: 21300000, guid: b3415efa03bba7c4d9e9a79ae841c096, type: 3}
   statsUI: {fileID: 0}
   handLogic: {fileID: 11400000, guid: f3d5b603ae865e349a94e78b240f9cba, type: 2}
   fieldLogic: {fileID: 11400000, guid: e5493222b1cc06546bacc56bb9c7b13a, type: 2}

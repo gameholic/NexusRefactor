@@ -21,17 +21,17 @@ namespace GH.GameElements
         //[SerializeField]
         //private Instance_logic _CardOnFieldLogic;
 
-        public override void Execute(GameElements.Area a)
+        public override void Execute(GameElements.Area fieldArea)
         {
             PlayerHolder p = Setting.gameController.CurrentPlayer;
-            bool checkOwner = Setting.gameController.CheckOwner.CheckPlayer(a.gameObject);
+            bool checkOwner = Setting.gameController.CheckOwner.CheckPlayer(fieldArea.gameObject);
 
             if (!checkOwner)
             {
                 Debug.Log("You cant control other player's obj");
                 return;
             }
-            if (a.IsPlaced)
+            if (fieldArea.IsPlaced)
                 Debug.Log("There is something in area");
 
             Card thisCard = _CardVar.value.viz.card;
@@ -40,11 +40,28 @@ namespace GH.GameElements
                 bool canUse = p.PayMana(thisCard);
                 if (canUse)
                 {
-                    thisCard.Instance.SetOriginFieldLocation(a.transform);
-                    a.IsPlaced = true;
+                    int fieldCode = 0;
+                    thisCard.Instance.SetOriginFieldLocation(fieldArea.transform);
+                    for(int i =0; i<p._CardHolder.GetFieldGrid().Length; i++)
+                    {
+                        if (fieldArea.transform.name == p._CardHolder.GetFieldGrid(i).value.name)
+                        {
+                            fieldCode = i;
+                            break;
+                        }
+                        else
+                        {
+                            //If there is no field area for this card, send it to trashArea.
+                            //This is for checking error. So when game is on release, delete this code.
+                            fieldCode = 6;
+                        }
+                    }
+                      
+                    fieldArea.IsPlaced = true;
                     MultiplayManager.singleton.PlayerTryToUseCard
                         (thisCard.InstId, GameController.singleton.LocalPlayer.PhotonId,
-                        MultiplayManager.CardOperation.dropCreatureCard);
+                        MultiplayManager.CardOperation.dropCreatureCard, fieldCode);
+
                 }
                 else
                 {

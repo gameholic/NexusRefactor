@@ -20,7 +20,9 @@ namespace GH.GameStates
         [SerializeField]
         private GameEvent _OnPlayerControlState;
         [SerializeField]
-        private Phase blockPhase;
+        private Phase _PlayerBlockPhase;
+        [SerializeField]
+        private Phase _PlayerBattlePhase;
 
 
         public override void Execute(float d)
@@ -31,14 +33,42 @@ namespace GH.GameStates
             {
                 GameController gc = Setting.gameController;
                 RaycastHit[] results = Setting.GetUIObjs();
+                Phase currentPhase = gc.GetTurns(gc.turnIndex).CurrentPhase.value;
 
-                if (gc.GetTurns(gc.turnIndex).CurrentPhase.value != blockPhase)
+
+                if (currentPhase == _PlayerBlockPhase)
+                {
+                    for (int i = 0; i < results.Length; i++)
+                    {
+                        RaycastHit hit = results[i];
+                        CardInstance c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
+                        if (c != null/* && c.currentLogic = Mycard_field*/)
+                        {
+                            int count = 0;
+                            bool block = c.CanBeBlocked(_SelectedCard.value, ref count);
+                            if (block)
+                            {
+                                Setting.SetCardForblock(_SelectedCard.value.transform, c.transform, count);
+                            }
+                            _SelectedCard.value.gameObject.SetActive(true);
+                            _SelectedCard.value = null;
+                            _OnPlayerControlState.Raise();
+                            Setting.gameController.SetState(_PlayerBlockState);
+                            break;
+                        }
+
+                    }
+                }
+                else
                 {
                     for (int i = 0; i < results.Length; i++)
                     {
                         RaycastHit hit = results[i];
                         GameElements.Area a
                             = hit.transform.gameObject.GetComponentInParent<GameElements.Area>();
+
+                        if (gc.CurrentPlayer == _PlayerControlState && a != null)
+                            break;
 
                         if (a != null)
                         {
@@ -50,33 +80,6 @@ namespace GH.GameStates
                     _SelectedCard.value = null;
                     Setting.gameController.SetState(_PlayerControlState);
                     _OnPlayerControlState.Raise();
-                }
-                else if(gc.GetTurns(gc.turnIndex).CurrentPhase.value == blockPhase)
-                {
-                    for (int i = 0; i < results.Length; i++)
-                    {
-                        RaycastHit hit = results[i];
-                        CardInstance c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
-                        if(c != null/* && c.currentLogic = Mycard_field*/)
-                        {
-                            int count = 0;                        
-                            bool block = c.CanBeBlocked(_SelectedCard.value, ref count);
-                            if(block)
-                            {
-                                Setting.SetCardForblock(_SelectedCard.value.transform, c.transform, count);                                 
-                            }
-                            _SelectedCard.value.gameObject.SetActive(true);
-                            _SelectedCard.value = null;
-                            _OnPlayerControlState.Raise();
-                            Setting.gameController.SetState(_PlayerBlockState);
-                            break;
-                        }
-
-                    } 
-                }
-                else
-                {
-                    Debug.Log("MouseHoldCardException");
                 }
                     return;
             }

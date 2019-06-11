@@ -232,19 +232,12 @@ namespace GH.Multiplay
 
         #region Card Checks
 
-        public void PlayerPicksCardFromDeck(PlayerHolder playerHolder)
+        public void PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation, int cardArea=0)
         {
-            NetworkPrint p = GetPlayer(playerHolder.PhotonId);
-            Card c = p.CardDeck[0];
-            p.CardDeck.RemoveAt(0);
-            PlayerTryToUseCard(c.InstId, p.photonId, CardOperation.pickCardFromDeck);
-        }
-        public void PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation)
-        {
-            photonView.RPC("RPC_PlayerTryToUseCard", PhotonTargets.MasterClient, cardInst, photonId, operation);
+            photonView.RPC("RPC_PlayerTryToUseCard", PhotonTargets.MasterClient, cardInst, photonId, operation, cardArea);
         }
         [PunRPC]
-        public void RPC_PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation)
+        public void RPC_PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation, int cardArea=0)
         { 
             if(!NetworkManager.singleton.IsMaster)
                 return;
@@ -252,7 +245,7 @@ namespace GH.Multiplay
             bool hasCard = PlayerHasCard(cardInst, photonId);
             if(hasCard)
             {
-                photonView.RPC("RPC_PlayerUsesCard", PhotonTargets.All, cardInst, photonId, operation);
+                photonView.RPC("RPC_PlayerUsesCard", PhotonTargets.All, cardInst, photonId, operation, cardArea);
             }
         }
 
@@ -265,23 +258,33 @@ namespace GH.Multiplay
         #endregion
 
         #region Card Operations
+
         public enum CardOperation
         {
             dropCreatureCard, useSpellCard, pickCardFromDeck
         }
-        [PunRPC]
-        public void RPC_PlayerUsesCard(int instId, int photonId, CardOperation operation)
+
+        public void PlayerPicksCardFromDeck(PlayerHolder playerHolder)
         {
-            NetworkPrint p = GetPlayer(photonId);
-            Card card = p.GetCard(instId); 
+            NetworkPrint p = GetPlayer(playerHolder.PhotonId);
+            Card c = p.CardDeck[0];
+            p.CardDeck.RemoveAt(0);
+            PlayerTryToUseCard(c.InstId, p.photonId, CardOperation.pickCardFromDeck);
+        }
+        [PunRPC]
+        public void RPC_PlayerUsesCard(int instId, int photonId, CardOperation operation, int cardArea, PhotonMessageInfo info)
+        {
+            NetworkPrint nwPrint = GetPlayer(photonId);
+            PlayerHolder currentPlayer = nwPrint.ThisPlayer;
+            Card card = nwPrint.GetCard(instId);
             switch(operation)    
             {
                 case CardOperation.dropCreatureCard:
-                    Setting.DropCreatureCard(card.Instance.transform
-                        , card.Instance.GetOriginFieldLocation(), card);
-
+                    Setting.DropCreatureCard(card.Instance.transform,
+                        currentPlayer._CardHolder.GetFieldGrid(cardArea).value,
+                        card);
                     card.Instance.currentLogic = MainData.FieldCardLogic;
-                    p.ThisPlayer.manaResourceManager.UpdateCurrentMana(-(card.cardCost));
+                    currentPlayer.manaResourceManager.UpdateCurrentMana(-(card.cardCost));
                     card.Instance.SetCanAttack(true);                    
                     card.Instance.gameObject.SetActive(true);
                     break;
@@ -295,11 +298,13 @@ namespace GH.Multiplay
                     CardViz v = go.GetComponent<CardViz>();
                     v.LoadCard(card);
                     card.Instance = go.GetComponent<CardInstance>();
-                    card.Instance.owner = p.ThisPlayer;
+                    card.Instance.owner = currentPlayer;
                     card.Instance.currentLogic = MainData.HandCardLogic;
-                    Setting.SetParentForCard(go.transform, p.ThisPlayer.currentCardHolder.handGrid.value);
-                    if (p.ThisPlayer.handCards.Count <= 7)
-                        p.ThisPlayer.handCards.Add(card.Instance);
+                    Setting.SetParentForCard(go.transform, currentPlayer._CardHolder.handGrid.value);
+                    //Register log occurs error here. Don't know why
+                    //Setting.RegisterLog("Opponent field card position: " + GameController.singleton.GetOpponentOf(nwPrint.ThisPlayer).fieldCard[0].gameObject, Color.green);
+                    if (currentPlayer.handCards.Count <= 7)
+                        currentPlayer.handCards.Add(card.Instance);
                     else
                         Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
                         break;

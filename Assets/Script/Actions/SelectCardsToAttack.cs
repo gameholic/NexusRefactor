@@ -31,10 +31,7 @@ namespace GH
 
                     if(inst == null)
                     {
-                        Setting.RegisterLog("InstIsNullError", Color.black);
-                        Setting.RegisterLog("---------------", Color.black);
-                        Setting.RegisterLog("Player: "+p.name, Color.black);
-                        Setting.RegisterLog("Obj: "+hit.transform.gameObject, Color.black);
+                        Setting.RegisterLog("InstIsNullError"+ " Obj: " + hit.transform.gameObject, Color.black);
                         return;
 
                     }
@@ -54,7 +51,7 @@ namespace GH
                         p.attackingCards.Add(inst);
                         //p.fieldCard.Remove(inst); // remove card from fieldcard
                         //Debug.Log("Attacking card added Player: "+p.name);
-                        p.currentCardHolder.SetCardOnBattleLine(inst);
+                        p._CardHolder.SetCardOnBattleLine(inst);
                     }
                 }
 

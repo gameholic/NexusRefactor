@@ -9,11 +9,21 @@ namespace GH
     public class CardHolders : ScriptableObject
     {
         public GH.TransformVariable handGrid;
-        public GH.TransformVariable[] fieldGrid;
+        
+
+        [SerializeField]
+        private GH.TransformVariable[] _FieldGrid;
         public GH.TransformVariable battleLine;
         public PlayerHolder thisPlayer;
 
-
+        public TransformVariable GetFieldGrid(int i)
+        {
+            return _FieldGrid[i];
+        }
+        public TransformVariable[] GetFieldGrid()
+        {
+            return _FieldGrid;
+        }
 
         public void SetCardOnBattleLine(CardInstance card)
         {
@@ -49,7 +59,7 @@ namespace GH
         /// <param name="playerStatsUI"></param>
         public void LoadPlayer(PlayerHolder targetPlayer, PlayerStatsUI playerStatsUI)
         {
-            int i = 0;           
+            //int i = 0;           
             if (targetPlayer == null || playerStatsUI ==null)
                 return;
             foreach (CardInstance c in targetPlayer.fieldCard)
@@ -66,12 +76,12 @@ namespace GH
                 {
                     cardParentObj = c.gameObject.GetComponentInParent<Area>().gameObject;
                     headObj = cardParentObj.transform.parent.gameObject;
-                    for (int t = 0; t < headObj.transform.childCount; t++)
-                    {
-                        if (cardParentObj == headObj.transform.GetChild(t).gameObject)
-                            i = t;
-                    }
-                    Setting.SetParentForCard(c.viz.gameObject.transform, fieldGrid[i].value.transform);
+                    //for (int t = 0; t < headObj.transform.childCount; t++)
+                    //{
+                    //    if (cardParentObj == headObj.transform.GetChild(t).gameObject)
+                    //        i = t;
+                    //}
+                    Setting.SetParentForCard(c.viz.gameObject.transform, c.GetOriginFieldLocation().transform);
                 }
             }
             ///This function is to arrange cards on player's handgrid.

@@ -71,7 +71,7 @@ namespace GH.GameTurn
                 else
                 {
                     p.DropCardOnField(inst, false);
-                    p.currentCardHolder.SetCardDown(inst);
+                    p._CardHolder.SetCardDown(inst);
                     inst.ColorCard(true);
                 }
                 ////////

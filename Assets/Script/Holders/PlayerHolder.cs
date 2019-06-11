@@ -11,7 +11,8 @@ namespace GH
     {
         public string player;
         public string userID;
-        public bool isBottomPos;
+        [SerializeField]
+        private bool _IsBottomPos;
         public bool isHumanPlayer;
 
         //public string[] startingCards;
@@ -37,7 +38,7 @@ namespace GH
         [System.NonSerialized]
         public ManaManager manaResourceManager = new ManaManager();
         [System.NonSerialized]
-        public CardHolders currentCardHolder;
+        public CardHolders _CardHolder;
         [System.NonSerialized]
         public int health;
 
@@ -62,7 +63,10 @@ namespace GH
         {
             _AllCardInstances.Add(c);
         }
-
+        public bool IsBottom
+        {
+            get { return _IsBottomPos; }
+        }
 
         public void Init()
         {

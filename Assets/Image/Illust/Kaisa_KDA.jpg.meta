@@ -2,7 +2,7 @@ fileFormatVersion: 2
 guid: e8535282c36abfa44ba2d47dc4073771
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Kaisa_KDA_Avatar
+    21300000: Avatar_Kaisa_Kda
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -107,7 +107,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Kaisa_KDA_Avatar
+      name: Avatar_Kaisa_Kda
       rect:
         serializedVersion: 2
         x: 528

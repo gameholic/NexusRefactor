@@ -19,15 +19,15 @@ namespace GH.Setup
                 //playerStats[0] = UIs at bottom / playerStats[1] = UIs at top
                 prevPlayer = gc.BottomCardHolder.thisPlayer;
 
-                LoadPlayerOnHolder(prevPlayer, gc.GetPlayer(1).currentCardHolder, gc.GetPlayerUIInfo(0));
-                LoadPlayerOnHolder(loadedPlayer, gc.GetPlayer(0).currentCardHolder, gc.GetPlayerUIInfo(1));
+                LoadPlayerOnHolder(prevPlayer, gc.GetPlayer(1)._CardHolder, gc.GetPlayerUIInfo(0));
+                LoadPlayerOnHolder(loadedPlayer, gc.GetPlayer(0)._CardHolder, gc.GetPlayerUIInfo(1));
 
                 //LoadPlayerOnHolder(prevPlayer, gc.allPlayers[1].currentCardHolder, playerStats[0]);              
                 //LoadPlayerOnHolder(loadedPlayer, gc.allPlayers[0].currentCardHolder, playerStats[1]);
                 if (gc.GetTurns(gc.turnIndex).PhaseIndex != 2)
                 {
-                    gc.TopCardHolder = prevPlayer.currentCardHolder;
-                    gc.BottomCardHolder = loadedPlayer.currentCardHolder;
+                    gc.TopCardHolder = prevPlayer._CardHolder;
+                    gc.BottomCardHolder = loadedPlayer._CardHolder;
                 }
             }
             else if (loadedPlayer == gc.BottomCardHolder.thisPlayer && loadedPlayer.player == "Player2")

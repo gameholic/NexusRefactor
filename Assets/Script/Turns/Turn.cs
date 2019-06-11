@@ -9,7 +9,6 @@ namespace GH.GameTurn
     [CreateAssetMenu(menuName = "Turns/Turn")]
     public class Turn : ScriptableObject
     {
-
         [SerializeField]
         private PlayerHolder _ThisTurnPlayer;
         [SerializeField]
@@ -25,8 +24,7 @@ namespace GH.GameTurn
         // Somehow, this is initialised different as I initialise. 
         // If I initialise as True, it becomes False
         // If I initialise as False, it becomes True;
-
-
+        
         private void Awake()
         {
             _PhaseIndex = 0;
@@ -35,24 +33,22 @@ namespace GH.GameTurn
         public void TurnStart()
         {
             if (_TurnStartAction == null)
-                return;
-            
+                return;            
             for (int i = 0; i < _TurnStartAction.Length; i++)
             {
                 _TurnStartAction[i].Execute(_ThisTurnPlayer);
             }
-
             ///If current player has less than 10 mana resources, add 1. Nor, just initialise it.
             if (_ThisTurnPlayer.manaResourceManager.GetMaxMana() < 10)
                 _ThisTurnPlayer.manaResourceManager.UpdateMaxMana(1);
             _ThisTurnPlayer.manaResourceManager.InitMana();
-            Setting.RegisterLog(_ThisTurnPlayer.name + " turn starts ", _ThisTurnPlayer.playerColor);
         }
         public bool Execute()
         {
             bool result = false;
             _CurrentPhase.value = _Phases[PhaseIndex];
-            _Phases[PhaseIndex].OnStartPhase();            
+            _Phases[PhaseIndex].OnStartPhase();           
+
             bool IsComplete = _Phases[PhaseIndex].IsComplete();
             if (TurnBegin && PhaseIndex == 0)
             {

@@ -14,23 +14,12 @@ namespace GH.GameCard
         public bool dead;
         private bool _isOnAttack = false;
         private Transform originFieldTransform;
+        private int fieldIndex;
 
-        void Start()
+        public int FieldIndex
         {
-            viz = GetComponent<CardViz>();
-        }
-        public void OnClick()
-        {
-
-            if (currentLogic == null)
-                return;
-            currentLogic.OnClick(this);
-        }
-        public void OnHighlight()
-        {
-            if (currentLogic == null)
-                return;
-            currentLogic.OnHighlight(this);
+            set { fieldIndex = value; }
+            get { return fieldIndex; }
         }
         /// <summary>
         /// This function need changes 
@@ -41,10 +30,10 @@ namespace GH.GameCard
         public void ColorCard(bool justPlaced)
         {
             if (justPlaced)
-                viz.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.cyan;            
+                viz.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.cyan;
             else
-                viz.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;          
-        }        
+                viz.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
+        }
         public void CardInstanceToGrave()
         {
             //Card die
@@ -55,7 +44,7 @@ namespace GH.GameCard
         }
         public bool CanBeBlocked(CardInstance block, ref int count)
         {
-            bool result =  false;
+            bool result = false;
             if (owner.attackingCards == null)
             {
                 Setting.RegisterLog("Attacking cards error", Color.black);
@@ -67,7 +56,7 @@ namespace GH.GameCard
             {
                 Debug.Log("Can block");
                 result = owner.attackingCards.Contains(this);
-            }         
+            }
             if (result && viz.card.cardType.canAttack)
             {
                 result = true;
@@ -88,7 +77,7 @@ namespace GH.GameCard
         public bool GetCanAttack()
         {
             bool result = true;
-            if(viz.card.cardType.TypeAllowsAttack(this))
+            if (viz.card.cardType.TypeAllowsAttack(this))
             {
                 result = true;
             }
@@ -102,16 +91,34 @@ namespace GH.GameCard
         }
         public bool IsOnAttack
         {
-            get { return _isOnAttack;}
-            set { _isOnAttack = value;}
+            get { return _isOnAttack; }
+            set { _isOnAttack = value; }
         }
         public void SetOriginFieldLocation(Transform t)
         {
             originFieldTransform = t;
         }
         public Transform GetOriginFieldLocation()
-        {return originFieldTransform; }
+        { return originFieldTransform; }
 
+
+        void Start()
+        {
+            FieldIndex = -1;
+            viz = GetComponent<CardViz>();
+        }
+        public void OnClick()
+        {
+
+            if (currentLogic == null)
+                return;
+            currentLogic.OnClick(this);
+        }
+        public void OnHighlight()
+        {
+            if (currentLogic == null)
+                return;
+            currentLogic.OnHighlight(this);
+        }
     }
-
 }

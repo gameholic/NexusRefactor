@@ -29,6 +29,7 @@ namespace GH
         private CardGraveyard _CardGrave;
         [SerializeField]
         private ResourceManager _ResourceManager;
+
         private bool _IsMultiplayer;
         public GameEvent OnTurnChanged;
         public GameEvent OnPhaseChanged;
@@ -46,7 +47,6 @@ namespace GH
         private CheckPlayerCanUse _CheckOwner = new CheckPlayerCanUse();
         private LoadPlayerUI _LoadPlayerUI = new LoadPlayerUI();
         public PlayerHolder[] _Players;
-
         private bool startTurn = true; //Check the start of the turn
         private int turnCounter; //Count the turn. When both player plays, it increases by 1
         private bool isInit;
@@ -60,7 +60,7 @@ namespace GH
 
         /// <summary>
         /// Get/Set Methods/Properties
-        /// </summary>
+        /// </summary
         public PlayerHolder CurrentPlayer
         {
             set { _CurrentPlayer = value; }
@@ -129,6 +129,10 @@ namespace GH
         {
             get { return _ResourceManager; }
         }
+        public State CurrentState
+        {
+            get { return _CurrentState; }
+        }
         public bool IsMultiplay
         {
             set
@@ -154,11 +158,7 @@ namespace GH
             _Players = new PlayerHolder[_TurnLength];
             for (int i = 0; i < _TurnLength; i++)
             {
-                SetPlayer(i, GetTurns(i).ThisTurnPlayer);
-                if (GetPlayer(i).player == "Player1")
-                    GetPlayer(i).isBottomPos = true;
-                else
-                    GetPlayer(i).isBottomPos = false;
+                SetPlayer(i, GetTurns(i).ThisTurnPlayer);                
                 Setting.RegisterLog(GetPlayer(i).name + " joined the game successfully", GetPlayer(i).playerColor);
             }
             _CurrentPlayer = GetTurns(0).ThisTurnPlayer;
@@ -212,9 +212,9 @@ namespace GH
             {
                 GetPlayer(i).Init();
                 if (i == 0)
-                    GetPlayer(i).currentCardHolder = BottomCardHolder; // Player 1 is bottom card holder
+                    GetPlayer(i)._CardHolder = BottomCardHolder; // Player 1 is bottom card holder
                 else
-                    GetPlayer(i).currentCardHolder = TopCardHolder;  // Player 2 is top card holder
+                    GetPlayer(i)._CardHolder = TopCardHolder;  // Player 2 is top card holder
 
                 if (i < 2)
                 {
@@ -296,12 +296,11 @@ namespace GH
                 Vector3 m = manaObj[0].gameObject.transform.position;
                 manaObj[0].gameObject.transform.position = manaObj[1].gameObject.transform.position;
                 manaObj[1].gameObject.transform.position = m;
-
                 switchPlayer = false;
             }
-
             turnCountTextVariable.value = turnCounter.ToString();
             isComplete = GetTurns(turnIndex).Execute();
+
             if (!IsMultiplay)
             {
                 _CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
@@ -328,11 +327,9 @@ namespace GH
                     MultiplayManager.singleton.PlayerEndsTurn(CurrentPlayer.PhotonId);
                 }
             }
-
             if (_CurrentState != null)
                 _CurrentState.Tick(Time.deltaTime);
         }
-
         public int GetAnotherPlayerID()
         {
             int r = turnIndex;

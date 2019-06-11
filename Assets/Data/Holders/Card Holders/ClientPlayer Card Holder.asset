@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: ClientPlayer Card Holder
   m_EditorClassIdentifier: 
   handGrid: {fileID: 11400000, guid: 0bd1f3890ba453342a285de30c75abda, type: 2}
-  fieldGrid:
+  _FieldGrid:
   - {fileID: 11400000, guid: 853b7c66ca9453e4cb328186ccc3c2be, type: 2}
   - {fileID: 11400000, guid: 26e422f89f4fcf14a852a793461c2cf5, type: 2}
   - {fileID: 11400000, guid: 65d26e25e2756644cae47af940721160, type: 2}
   - {fileID: 11400000, guid: 0704584fbf8b6f34c8f19205ceb91ebb, type: 2}
   - {fileID: 11400000, guid: 674abe0beeba54f4d8a123faa2cd7cf7, type: 2}
+  - {fileID: 11400000, guid: fe9198cb5d5f1c44b91da6e8a62a02fb, type: 2}
   battleLine: {fileID: 11400000, guid: f31cb9fff3e5402439e7968a520568da, type: 2}
   thisPlayer: {fileID: 11400000, guid: bb002c96739fab942b2d4ed610a48793, type: 2}

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GH.GameElements;
 
 namespace GH
 {
@@ -12,7 +13,6 @@ namespace GH
         private GameElements.Instance_logic _FieldCardLogic;
         [SerializeField]
         private GameObject _CardPrefab;
-        
         
         public GameElements.Instance_logic HandCardLogic
         {

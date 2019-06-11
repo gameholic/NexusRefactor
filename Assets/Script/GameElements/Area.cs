@@ -7,7 +7,7 @@ namespace GH.GameElements
 
     public class Area : MonoBehaviour
     {
-        private bool _IsPlaced = false;
+        public bool _IsPlaced = false;
         [SerializeField]
         private AreaLogic _logic;
         public bool IsPlaced

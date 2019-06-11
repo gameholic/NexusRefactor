@@ -40,8 +40,6 @@ namespace GH
             //inst.isJustPlaced = true;
             //if card w/ special ability is placed, change to true
             SetParentForCard(c, p);
-
-            Debug.Log(card.Instance.GetOriginFieldLocation().parent.gameObject);
             card.Instance.ColorCard(true);
             gameController.CurrentPlayer.PayMana(card);
             gameController.CurrentPlayer.DropCardOnField(card.Instance);

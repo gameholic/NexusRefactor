@@ -23,12 +23,10 @@ namespace GH.GameTurn
             set { _PhaseForceExit = value;}
             get { return _PhaseForceExit; }
         }
-
         public string PhaseName
         {
             get{ return _PhaseName; }
         }
-
         public bool IsInit
         {
             set { _IsInit = value; }
