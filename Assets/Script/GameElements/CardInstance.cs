@@ -16,6 +16,7 @@ namespace GH.GameCard
         private Transform originFieldTransform;
         private int fieldIndex;
 
+        public bool _JustPlaced;
         public int FieldIndex
         {
             set { fieldIndex = value; }
@@ -29,6 +30,7 @@ namespace GH.GameCard
         /// <param name="justPlaced"></param>
         public void ColorCard(bool justPlaced)
         {
+            _JustPlaced = justPlaced;
             if (justPlaced)
                 viz.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.cyan;
             else

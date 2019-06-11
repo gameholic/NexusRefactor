@@ -285,7 +285,7 @@ namespace GH.Multiplay
                         card);
                     card.Instance.currentLogic = MainData.FieldCardLogic;
                     currentPlayer.manaResourceManager.UpdateCurrentMana(-(card.cardCost));
-                    card.Instance.SetCanAttack(true);                    
+                    card.Instance.SetCanAttack(false);                    
                     card.Instance.gameObject.SetActive(true);
                     break;
 

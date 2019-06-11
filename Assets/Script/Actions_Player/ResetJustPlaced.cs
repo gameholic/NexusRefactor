@@ -14,9 +14,10 @@ namespace GH.GameAction
             {
                 if (!c.GetCanAttack())
                 {
+
                     c.SetCanAttack(true);
                     c.ColorCard(false);
-                    //Debug.Log(c.viz.card.name + " can attack now");
+                    
                 }
             }
         }
