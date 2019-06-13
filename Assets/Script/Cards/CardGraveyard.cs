@@ -18,11 +18,13 @@ namespace GH.GameCard{
             PlayerHolder cardOwner = c.owner;
             GameObject graveyardObj = null;
             cardOwner.graveyard.Add(c);
+            
 
-            if (c.owner.player == "Player1")
-                graveyardObj = GetGraveYard(0).value.gameObject;
-            else if (c.owner.player == "Player2")
-                graveyardObj = GetGraveYard(1).value.gameObject;
+            //Should check owner to move card to graveyard
+            //if (c.owner.player == "Player1")
+            //    graveyardObj = GetGraveYard(0).value.gameObject;
+            //else if (c.owner.player == "Player2")
+            //    graveyardObj = GetGraveYard(1).value.gameObject;
 
 
             if (graveyardObj == null)

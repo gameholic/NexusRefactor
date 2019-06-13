@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using GH.GameStates;
-using GH.GameCard;  
+using GH.GameCard;
+using GH.Multiplay;
 namespace GH
 {
     [CreateAssetMenu(menuName = "Actions/SelectCardsToAttack")]
@@ -21,13 +22,8 @@ namespace GH
                     //Get card instance
                     CardInstance inst = hit.transform.gameObject.GetComponentInParent<CardInstance>();
                     PlayerHolder p = Setting.gameController.CurrentPlayer;
-
                     //Check inst is one of the current player's card (placed on field)                  
-                    if (!inst == p.fieldCard.Contains(inst))
-                    {
-                        //Action for card on field
-                        return;
-                    }
+                
 
                     if(inst == null)
                     {
@@ -35,23 +31,17 @@ namespace GH
                         return;
 
                     }
-                    if (!inst.GetCanAttack() || inst.IsOnAttack)
+                    if (!inst.GetCanAttack() /*|| inst.IsOnAttack*/)
                     {
                         if (!inst.GetCanAttack())
                             Setting.RegisterLog("This card can't attack. ", Color.black);
-                        else if (inst.IsOnAttack)
-                            Setting.RegisterLog("This card is already on attack", Color.black);
                         return;
                       
                     }
                     //Above if statements are for checking errors
                     else
                     {
-                        //Card can attack.
-                        p.attackingCards.Add(inst);
-                        //p.fieldCard.Remove(inst); // remove card from fieldcard
-                        //Debug.Log("Attacking card added Player: "+p.name);
-                        p._CardHolder.SetCardOnBattleLine(inst);
+                        MultiplayManager.singleton.PlayerTryToUseCard(inst.viz.card.InstId, p.PhotonId, MultiplayManager.CardOperation.setCardToAttack);
                     }
                 }
 

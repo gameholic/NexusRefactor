@@ -18,7 +18,7 @@ namespace GH.Multiplay
         public List<Card> CardDeck
         {
             get { return _CardDeck; }
-        }
+        } 
         private void AddCardToDeck(Card c)
         {
             _CardDeck.Add(c);

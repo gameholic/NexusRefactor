@@ -11,8 +11,6 @@ namespace GH
     {
         public string player;
         public string userID;
-        [SerializeField]
-        private bool _IsBottomPos;
         public bool isHumanPlayer;
 
         //public string[] startingCards;
@@ -37,10 +35,19 @@ namespace GH
         public List<string> allCards = new List<string>();
         [System.NonSerialized]
         public ManaManager manaResourceManager = new ManaManager();
-        [System.NonSerialized]
         public CardHolders _CardHolder;
-        [System.NonSerialized]
-        public int health;
+        
+        private int _health;
+
+        public int Health
+        {
+            set
+            {
+                _health = value;
+                statsUI.UpdateHealthUI();
+            }
+            get { return _health; }
+        }
 
 
         private List<int> _CardInstIds = new List<int>();
@@ -63,14 +70,10 @@ namespace GH
         {
             _AllCardInstances.Add(c);
         }
-        public bool IsBottom
-        {
-            get { return _IsBottomPos; }
-        }
-
+     
         public void Init()
         {
-            health = 20;
+            _health = 20;
             allCards.AddRange(startingDeck); 
         }
         public void DropCardOnField(CardInstance inst, bool registerEvent =true)
@@ -98,7 +101,7 @@ namespace GH
 
         public void DoDamage(int v)
         {
-            health -= v;
+            _health -= v;
             if(statsUI !=null)
             {
                 statsUI.UpdateHealthUI();
@@ -111,6 +114,10 @@ namespace GH
             {
                 statsUI.player = this;
                 statsUI.UpdateAll();
+            }
+            else
+            {
+                Debug.Log("StatsUI is null");
             }
         }
     }

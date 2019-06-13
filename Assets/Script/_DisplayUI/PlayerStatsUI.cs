@@ -33,7 +33,7 @@ namespace GH
         }
         public void UpdateHealthUI()
         {
-            health.text = player.health.ToString();
+            health.text = player.Health.ToString();
         }        
         public void UpdateAll()
         {

@@ -10,7 +10,7 @@ namespace GH.Multiplay
     {
         [SerializeField]
         private StringVariable logger;
-        private static bool _IsMaster;
+        private static bool _IsMaster; //Ismaster= true is local else it's client
         private int _CardInstIds;
         [SerializeField]
         private ResourceManager rm;
@@ -256,7 +256,6 @@ namespace GH.Multiplay
         {
             cards.Add(c.InstId, c);
         }
-
         public Card GetCard(int instId)
         {
             Card r = null;

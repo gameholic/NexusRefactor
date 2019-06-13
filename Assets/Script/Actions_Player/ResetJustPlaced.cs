@@ -1,25 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 using GH.GameCard;
+using GH.Multiplay;
 
 namespace GH.GameAction
 {
     [CreateAssetMenu(menuName = "Actions/Reset isJustPlaced")]
     public class ResetJustPlaced : PlayerAction
     {
-
         public override void Execute(PlayerHolder p)
         {
-            foreach(CardInstance c in p.fieldCard)
-            {
-                if (!c.GetCanAttack())
-                {
-
-                    c.SetCanAttack(true);
-                    c.ColorCard(false);
-                    
-                }
-            }
+            MultiplayManager.singleton.PlayerResetFlatFootedCard(p.PhotonId);
         }
     }
 }

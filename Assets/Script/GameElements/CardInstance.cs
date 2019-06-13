@@ -10,13 +10,12 @@ namespace GH.GameCard
         public PlayerHolder owner;
         public Instance_logic currentLogic;
         public CardViz viz;
-        public bool canAttack; //Indicates that card is just placed and can't attak this turn.
+        private bool canAttack =false ; //Indicates that card is just placed and can't attak this turn.
         public bool dead;
         private bool _isOnAttack = false;
         private Transform originFieldTransform;
         private int fieldIndex;
 
-        public bool _JustPlaced;
         public int FieldIndex
         {
             set { fieldIndex = value; }
@@ -27,14 +26,20 @@ namespace GH.GameCard
         /// Color of the card should automatically changed based on canAttack.
         /// I suggest move this method to 'GameController.cs" -- 190524 Hwan
         /// </summary>
-        /// <param name="justPlaced"></param>
-        public void ColorCard(bool justPlaced)
+        /// <param name="usable"></param>
+        public void IsAvailable(bool usable)
         {
-            _JustPlaced = justPlaced;
-            if (justPlaced)
+            if (usable)
+            {
                 viz.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.cyan;
+                this.gameObject.transform.Rotate(0,0,-45);
+
+            }
             else
+            {
                 viz.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
+                this.gameObject.transform.Rotate(0, 0, 45);
+            }
         }
         public void CardInstanceToGrave()
         {
@@ -79,6 +84,7 @@ namespace GH.GameCard
         public bool GetCanAttack()
         {
             bool result = true;
+
             if (viz.card.cardType.TypeAllowsAttack(this))
             {
                 result = true;

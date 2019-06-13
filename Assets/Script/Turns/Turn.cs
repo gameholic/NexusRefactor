@@ -38,6 +38,8 @@ namespace GH.GameTurn
             {
                 _TurnStartAction[i].Execute(_ThisTurnPlayer);
             }
+
+            Setting.RegisterLog(_ThisTurnPlayer.name + " started turn", _ThisTurnPlayer.playerColor);
             ///If current player has less than 10 mana resources, add 1. Nor, just initialise it.
             if (_ThisTurnPlayer.manaResourceManager.GetMaxMana() < 10)
                 _ThisTurnPlayer.manaResourceManager.UpdateMaxMana(1);

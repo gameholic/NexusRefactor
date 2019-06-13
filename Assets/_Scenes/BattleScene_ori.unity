@@ -501,7 +501,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: -558096259
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 1
 --- !u!1 &149680886
 GameObject:
   m_ObjectHideFlags: 0
@@ -2562,8 +2562,9 @@ MonoBehaviour:
   - {fileID: 826019339}
   - {fileID: 1624317818}
   turnIndex: 0
-  _Players: []
-  _MainDataHolder: {fileID: 11400000, guid: 0216281199d81384b97031a046bbbfe7, type: 2}
+  _Players:
+  - {fileID: 11400000, guid: 25a4d3d96a280a64dad6775ee15eff9f, type: 2}
+  - {fileID: 11400000, guid: bb002c96739fab942b2d4ed610a48793, type: 2}
   localPlayer: {fileID: 11400000, guid: 25a4d3d96a280a64dad6775ee15eff9f, type: 2}
   clientPlayer: {fileID: 11400000, guid: bb002c96739fab942b2d4ed610a48793, type: 2}
 --- !u!1 &755100762
@@ -2854,6 +2855,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 855965980}
+  - component: {fileID: 855965981}
   m_Layer: 0
   m_Name: TurnNotification
   m_TagString: Untagged
@@ -2869,7 +2871,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 855965979}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -68, y: 0, z: -2.5}
+  m_LocalPosition: {x: -84.28, y: 1, z: -11.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1703601261}
@@ -2878,6 +2880,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &855965981
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855965979}
+  m_Enabled: 1
+  m_SortingLayerID: -1491748935
+  m_SortingLayer: 3
+  m_SortingOrder: 0
 --- !u!1 &888477541
 GameObject:
   m_ObjectHideFlags: 0
@@ -3564,7 +3577,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1211898753}
-  m_Text: 111131
+  m_Text: TurnCount
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -3747,7 +3760,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1268152543}
-  - component: {fileID: 1268152544}
   - component: {fileID: 1268152545}
   m_Layer: 0
   m_Name: TopPlayer
@@ -3774,20 +3786,6 @@ Transform:
   m_Father: {fileID: 993307031}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1268152544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1268152542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0544ab97b2d66d14785e6a155cfb3ebe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 11400000, guid: bb002c96739fab942b2d4ed610a48793, type: 2}
-  cardHolder: {fileID: 11400000, guid: 38b61d5496fcf0a4ca0d556d1c15a2ee, type: 2}
 --- !u!114 &1268152545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4387,9 +4385,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1445030889}
-  m_Text: 'Control
-
-'
+  m_Text: Phase
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -4629,7 +4625,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1546491756}
-  - component: {fileID: 1546491757}
   - component: {fileID: 1546491758}
   m_Layer: 0
   m_Name: BottomPlayer
@@ -4656,20 +4651,6 @@ Transform:
   m_Father: {fileID: 993307031}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1546491757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1546491755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0544ab97b2d66d14785e6a155cfb3ebe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 11400000, guid: 25a4d3d96a280a64dad6775ee15eff9f, type: 2}
-  cardHolder: {fileID: 11400000, guid: de8c454d3de231243b2cce449a5de728, type: 2}
 --- !u!114 &1546491758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5311,7 +5292,7 @@ GameObject:
   - component: {fileID: 1703601259}
   - component: {fileID: 1703601262}
   m_Layer: 0
-  m_Name: Turn
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5325,7 +5306,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1703601258}
-  m_Text: 
+  m_Text: Player
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1

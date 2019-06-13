@@ -52,4 +52,9 @@ MonoBehaviour:
   - RPC_PlayerCreatesCard
   - RPC_PlayerTryToUseCard
   - RPC_PlayerUsesCard
+  - RPC_PlayerCanUseCard
+  - RPC_PlayerCanUseCard_Master
+  - RPC_BattleResolvesCallBack
+  - RPC_SyncPlayerHealth
+  - RPC_BattleResolve
   DisableAutoOpenWizard: 1
