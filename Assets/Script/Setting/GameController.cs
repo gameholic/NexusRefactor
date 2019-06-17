@@ -145,6 +145,8 @@ namespace GH
         /// <summary>
         /// Get/Set Properties
         /// </summary>
+        /// 
+        #region SetupForGame
         private void Awake()
         {
             Setting.gameController = this;
@@ -153,11 +155,7 @@ namespace GH
             switchPlayer = false;
             _TurnLength = _Turns.Length;
             _BlockManager.BlockInstDict = new Dictionary<CardInstance, BlockInstance>();
-            //_Players = new PlayerHolder[_TurnLength];
             _CurrentPlayer = GetTurns(0).ThisTurnPlayer;
-            //_BottomCardHolder = GetTurns(0).ThisTurnPlayer.currentCardHolder;
-            //_TopCardHolder = GetTurns(1).ThisTurnPlayer.currentCardHolder;
-
 
         }
         private void Start()
@@ -166,7 +164,6 @@ namespace GH
 
 
         }
-
         public void InitGameVer2(int startingPlayer)
         {
             Turn[] _tmpTurn = new Turn[2];
@@ -240,6 +237,8 @@ namespace GH
                 {
                     _tmpTurn[1] = GetTurns(i);
                 }
+
+                GetPlayer(i).Init();
             }
             _Turns = _tmpTurn;
 
@@ -250,13 +249,13 @@ namespace GH
             {                
                 if (GetPlayer(0) == GetPlayerUIInfo(i).player)
                 {
-                    Debug.Log("Getplayer(0) ui on");
+                    //Debug.Log("Getplayer(0) ui on");
                     GetPlayer(0).statsUI = GetPlayerUIInfo(i);
                     GetPlayerUIInfo(0).player.LoadPlayerOnStatsUI();
                 }
                 else
                 {
-                    Debug.Log("Getplayer(1) ui on");
+                    //Debug.Log("Getplayer(1) ui on");
                     GetPlayer(1).statsUI = GetPlayerUIInfo(i);
                     GetPlayerUIInfo(1).player.LoadPlayerOnStatsUI();
                 }
@@ -283,9 +282,12 @@ namespace GH
                 {
                     GetPlayer(i).statsUI = GetPlayerUIInfo(i);
                     GetPlayerUIInfo(i).player.LoadPlayerOnStatsUI();
+
                 }
             }
         }
+        #endregion
+
         /// <summary>
         /// Pick top card from deck
         /// Issue: Does this function should be at Gamecontroller?
@@ -310,32 +312,21 @@ namespace GH
         {
             //turnIndex is great but not in multiplay
             if (!isInit)
+            {
                 return;
+            }
+            CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
             UpdateMana();
+
             if (startTurn)
             {
                 GetTurns(turnIndex).TurnBegin = startTurn;
                 startTurn = false;
-            }
-            if (switchPlayer)
-            {
-                Setting.RegisterLog("Position Changed!! ", Color.green);
-                ///Switch UI's position.
-                Vector3 t = _PlayerStatsUI[0].gameObject.transform.position;
-                _PlayerStatsUI[0].gameObject.transform.position = _PlayerStatsUI[1].gameObject.transform.position;
-                _PlayerStatsUI[1].gameObject.transform.position = t;
-
-                Vector3 m = manaObj[0].gameObject.transform.position;
-                manaObj[0].gameObject.transform.position = manaObj[1].gameObject.transform.position;
-                manaObj[1].gameObject.transform.position = m;
-                switchPlayer = false;
-            }
+            }            
             turnCountTextVariable.value = turnCounter.ToString();
             isComplete = GetTurns(turnIndex).Execute();
-
             if (!IsMultiplay)
             {
-                _CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
                 if (isComplete)
                 {
                     turnIndex++;
@@ -357,6 +348,7 @@ namespace GH
                 if (isComplete)
                 {
                     MultiplayManager.singleton.PlayerEndsTurn(CurrentPlayer.PhotonId);
+                    CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
                 }
             }
             if (_CurrentState != null)
@@ -396,9 +388,9 @@ namespace GH
         }
         public void EndPhase()//Run by EndTurn button
         {
-            if (CurrentPlayer.isHumanPlayer)
-            { 
-                GetTurns(turnIndex).EndCurrentPhase();
+            if (CurrentPlayer.isHumanPlayer && CurrentPlayer ==localPlayer)
+            {
+               GetTurns(turnIndex).EndCurrentPhase();
             }
             //_CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
         }

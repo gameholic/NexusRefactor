@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GH.Multiplay;
+using GH.GameCard;
 
 namespace GH.GameTurn
 {
@@ -10,7 +11,7 @@ namespace GH.GameTurn
     {
         public override bool IsComplete()
         {
-            if(PhaseForceExit)
+            if(PhaseForceExit)  
             {
                 PhaseForceExit = false;
                 return true;
@@ -18,14 +19,7 @@ namespace GH.GameTurn
             
             return false;
         }
-        /*
-        BlockInstance GetBlockInstanceOfAttacker(CardInstance attck, Dictionary<CardInstance, BlockInstance> blockInst)
-        {
-            BlockInstance r = null;
-            blockInst.TryGetValue(attck, out r);
-            return r;
 
-        }*/
 
         public override void OnEndPhase()
         {

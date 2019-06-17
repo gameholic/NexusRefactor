@@ -39,7 +39,6 @@ namespace GH.GameTurn
                 Setting.gameController.OnPhaseChanged.Raise();
                 IsInit = true;
             }
-
             if(OnStartAction!= null)
             {
                 OnStartAction.Execute(Setting.gameController.CurrentPlayer);

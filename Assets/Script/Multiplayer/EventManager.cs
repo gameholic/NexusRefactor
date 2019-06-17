@@ -11,12 +11,12 @@ namespace GH.Multiplay
 
         public void CardIsDroppedDown(int instId, int ownerId)
         {
-            Card c = NetworkManager.singleton.GetCard(instId, ownerId);
+            //Card c = NetworkManager.singleton.GetCard(instId, ownerId);
         }
 
         public void CardIsPickedupFromDeck(int instId, int ownerId)
         {
-            Card c = NetworkManager.singleton.GetCard(instId, ownerId);
+            //Card c = NetworkManager.singleton.GetCard(instId, ownerId);
 
 
         }

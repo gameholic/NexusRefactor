@@ -24,7 +24,7 @@ namespace GH.GameTurn
 
         public override void OnStartPhase()
         {
-
+            PhaseForceExit = false;
         }
     }
 

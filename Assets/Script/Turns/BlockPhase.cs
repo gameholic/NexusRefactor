@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using GH.GameAction;
+using GH.GameCard;
 namespace GH.GameTurn
 {
     [CreateAssetMenu(menuName ="Turns/BlockPhase")]
     public class BlockPhase : Phase
     {
-        public PlayerAction changeActivePlayer;
         public GameStates.State playerControlState;
         public override bool IsComplete()
         {
@@ -36,26 +36,40 @@ namespace GH.GameTurn
                 gc.SetState(playerControlState);
                 gc.OnPhaseChanged.Raise();
                 IsInit = true;
-                //As attacking cards are on field without attack, forceExit is false (Which means can't getaway from loop)
-            }
-            
-            if(gc.CurrentPlayer.attackingCards.Count == 0)
-            {
-                PhaseForceExit = true;
-                return; 
-            }
-            if(gc.TopCardHolder.thisPlayer.isHumanPlayer /*&& forceExit == true*/)
-            {
-                gc.LoadPlayerUI.LoadPlayerOnActive(gc.TopCardHolder.thisPlayer);
-                //forceExit = true; // add code that other player blocks
-            }
-            else
-            {
+                int availableCards = 0;
+                PlayerHolder enemy = gc.GetOpponentOf(gc.CurrentPlayer);
 
+
+                if (enemy.attackingCards.Count == 0)
+                {
+                    PhaseForceExit = true;
+                    Debug.Log("ForceExit: " + PhaseForceExit);
+                    return;
+                }
+                foreach (CardInstance c in gc.CurrentPlayer.fieldCard)
+                {
+                    if(!c.GetCanAttack())
+                    {
+                        availableCards++;
+                        Debug.Log(gc.CurrentPlayer + "  " + availableCards);
+                    }
+                }
+                if (availableCards <= 0)
+                {
+                    Debug.Log("There are no available cards");
+                    PhaseForceExit = true;
+                    return;
+                }
+
+
+                //As attacking cards are on field without attack, forceExit is false (Which means can't get away from loop)
+                //if (gc.CurrentPlayer.attackingCards.Count == 0)
+                //if (gc.GetOpponentOf(gc.CurrentPlayer).attackingCards.Count == 0)
+                //{
+                //    PhaseForceExit = true;
+                //    return;
+                //}
             }
         }
-
     }
-
-
 }

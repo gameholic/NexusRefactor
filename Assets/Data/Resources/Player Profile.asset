@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Player Profile
   m_EditorClassIdentifier: 
   _CardId:
-  - Arcanist
-  - Tree element
-  - Arcanist
-  - Tree element
-  - Arcanist
+  - Diana_DarkWater
+  - Ashe_Championship
+  - Ashe_Project
+  - Jinx_Starguardian
+  - Ashe_Championship

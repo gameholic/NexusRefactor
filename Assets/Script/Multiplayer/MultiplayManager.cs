@@ -119,6 +119,7 @@ namespace GH.Multiplay
                     {
                         Card c = rm.GetCardInstFromDeck(id);
                         playerId.Add(p.photonId);
+                        
                         cardInstId.Add(c.InstId);
                         cardName.Add(id);
 
@@ -168,7 +169,6 @@ namespace GH.Multiplay
         {
             Card c = GC.ResourceManager.GetCardInstFromDeck(cardName);
             c.InstId = cardId;
-
             NetworkPrint p = GetPlayer(photonId);
             p.AddCard(c);
         }
@@ -367,7 +367,6 @@ namespace GH.Multiplay
         private void BattleResolveForPlayers()
         {
             GameController gc = Setting.gameController;
-            //Debug.Log("BattleResolvePhase IsComplete");
             PlayerHolder p = Setting.gameController.CurrentPlayer;
             PlayerHolder e = Setting.gameController.GetOpponentOf(p);
 
@@ -376,7 +375,7 @@ namespace GH.Multiplay
 
 
             if (p == e)
-                Debug.LogError("p = = e ");
+                Debug.LogError("p == e ");
             if (p.attackingCards.Count == 0)
             {
                 photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, p.PhotonId);
@@ -397,26 +396,27 @@ namespace GH.Multiplay
                 }
                 int attackValue = attack.intValue;
 
-                //Blocking is removed temporarily
-                //BlockInstance bi = gc.BlockManager.GetBlockInstanceOfAttacker(inst, defDic);
-                //if (bi != null)
-                //{
-                //    for (int defenders = 0; defenders < bi.defenders.Count; defenders++)
-                //    {
-                //        CardProperties def = c.GetProperties(elementHealth);
-                //        if (def == null)
-                //        {
-                //            Debug.LogWarning("You are trying to block with a card with no def element");
-                //            continue;
-                //        }
-                //        attackValue -= def.intValue;
-                //        if (def.intValue <= attackValue)
-                //        {
-                //            //Debug.Log("defendcard dead");
-                //            bi.defenders[i].CardInstanceToGrave();
-                //        }
-                //    }
-                //}
+
+                BlockInstance bi = gc.BlockManager.GetBlockInstanceOfAttacker(inst, defDic);
+                if (bi != null)
+                {
+                    for (int defenders = 0; defenders < bi.defenders.Count; defenders++)
+                    {
+                        CardProperties def = c.GetProperties(elementHealth);
+                        if (def == null)
+                        {
+                            Debug.LogWarning("You are trying to block with a card with no def element");
+                            continue;
+                        }
+                        attackValue -= def.intValue;
+                        if (def.intValue <= attackValue)
+                        {
+                            //Debug.Log("defendcard dead ");
+                            bi.defenders[i].CardInstanceToGrave();
+                        }
+                    }
+                }
+
                 if (attackValue <= 0)
                 {
                     attackValue = 0;
@@ -453,7 +453,6 @@ namespace GH.Multiplay
                 Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
             }
 
-
             photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, p.PhotonId);
             
         }
@@ -471,7 +470,6 @@ namespace GH.Multiplay
         public void RPC_BattleResolvesCallBack(int photonId)
         {
             Setting.gameController.BlockManager.ClearBlockInst();
-
             foreach(NetworkPrint p in Players)
             {
 
@@ -498,6 +496,44 @@ namespace GH.Multiplay
         }
 
         #endregion
+        #region Blocking
+
+        public void PlayerBlocksTargetCard(int blockingInstId, int photonId_blocker, int attackInstId, int photonId_attacker)
+        {
+            photonView.RPC("RPC_PlayerBlocksTargetCard", PhotonTargets.MasterClient, 
+                blockingInstId, photonId_blocker, attackInstId, photonId_attacker);
+        }
+
+        [PunRPC]
+        public void RPC_PlayerBlocksTargetCard_Master(int defendCard, int photonId_Defend, int invadeInstId, int photonId_invade)
+        {
+            NetworkPrint print_Defend = GetPlayer(photonId_Defend);
+            //PlayerHolder blocker = blockerPrint.ThisPlayer;
+            CardInstance card_Defend = print_Defend.GetCard(defendCard).Instance;
+
+            NetworkPrint print_Invade = GetPlayer(photonId_invade);
+            //PlayerHolder atker = atkPrint.ThisPlayer;
+            CardInstance card_Invade = print_Invade.GetCard(invadeInstId).Instance;
+
+
+            int count = 0;
+            Setting.gameController.BlockManager.AddBlockInstance(card_Invade,card_Defend ,ref count);
+
+            photonView.RPC("RPC_PlayerBlocksTargetCard_Client", PhotonTargets.All,
+                card_Defend, print_Defend, card_Invade, print_Invade, count);
+        }
+
+
+        [PunRPC]
+        public void RPC_PlayerBlocksTargetCard_Client(CardInstance card_Defend, NetworkPrint print_Defend, 
+            CardInstance card_Invade, NetworkPrint print_Invade, int count)
+        {
+            Setting.SetCardForblock(card_Defend.transform, card_Invade.transform, count);
+            
+        }
+        #endregion
+
+
 
         #region Multiple Cards Operations        
         #region FlatFooted Cards
@@ -531,7 +567,23 @@ namespace GH.Multiplay
         }
         #endregion
 
-        
+
+        #region Management
+        public void SendPhase(string holder, string phase)
+        {
+            //photonView.RPC("RPC_MessagePhase", PhotonTargets.All, phase, holder);
+        }
+        [PunRPC]
+        public void RPC_MessagePhase(string phase, string holder)
+        {
+            //Debug.Log("current phase: " + phase + "and holder: "+ holder);
+        }
+
+
+
+
+        #endregion
+
         #endregion
 
     }

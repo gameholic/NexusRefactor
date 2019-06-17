@@ -32,7 +32,11 @@ namespace GH.GameElements
                 return;
             }
             if (fieldArea.IsPlaced)
+            {
                 Debug.Log("There is something in area");
+                return;
+
+            }
 
             Card thisCard = _CardVar.value.viz.card;
             if (thisCard.cardType == _CreatureType)

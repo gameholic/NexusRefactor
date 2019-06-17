@@ -34,7 +34,10 @@ namespace GH
         {
             Card originCard = GetCard(id);
             if (originCard == null)
+            {
+                Debug.LogError("Card not found: "+id);
                 return null;
+            }
 
             Card newInst = Instantiate(originCard);
             newInst.name = originCard.name;

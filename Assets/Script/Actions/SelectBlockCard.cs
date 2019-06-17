@@ -33,12 +33,15 @@ namespace GH.GameStates
 
                     if (c != null)
                     {
-                        if(c.owner == enemy)
+                        if (c.owner != enemy && 
+                            gc.CurrentPlayer.fieldCard.Contains(c) && 
+                            c.GetCanAttack())
                         {
                             _SelectedCard.value = c;
                             //c.OnClick();
                             gc.SetState(_HoldingCardState);
                             _OnCardSelectEvent.Raise();
+                            
                         }
                         return;
                     }

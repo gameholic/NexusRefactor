@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using GH.GameTurn;
 using GH.GameCard;
+using GH.Multiplay;
 
 namespace GH.GameStates
 {
@@ -46,10 +47,18 @@ namespace GH.GameStates
                         {
                             int count = 0;
                             bool block = c.CanBeBlocked(_SelectedCard.value, ref count);
+                            Debug.Log(block);
                             if (block)
                             {
-                                Setting.SetCardForblock(_SelectedCard.value.transform, c.transform, count);
+                                CardInstance thisCard = _SelectedCard.value;
+                                MultiplayManager.singleton.PlayerBlocksTargetCard
+                                    (thisCard.viz.card.InstId, thisCard.owner.PhotonId,
+                                    c.viz.card.InstId, c.owner.PhotonId);
+                                    
+                                //Setting.SetCardForblock(_SelectedCard.value.transform, c.transform, count);
                             }
+
+
                             _SelectedCard.value.gameObject.SetActive(true);
                             _SelectedCard.value = null;
                             _OnPlayerControlState.Raise();

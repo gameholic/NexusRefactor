@@ -19,32 +19,29 @@ namespace GH
                 for (int i = 0; i < results.Length; i++)
                 {
                     RaycastHit hit = results[i];
-                    //Get card instance
-                    CardInstance inst = hit.transform.gameObject.GetComponentInParent<CardInstance>();
+                    CardInstance inst = hit.transform.gameObject.GetComponentInChildren<CardInstance>();
                     PlayerHolder p = Setting.gameController.CurrentPlayer;
                     //Check inst is one of the current player's card (placed on field)                  
                 
-
-                    if(inst == null)
+                    if(inst!=null)
                     {
-                        Setting.RegisterLog("InstIsNullError"+ " Obj: " + hit.transform.gameObject, Color.black);
-                        return;
-
-                    }
-                    if (!inst.GetCanAttack() /*|| inst.IsOnAttack*/)
-                    {
-                        if (!inst.GetCanAttack())
+                        if (!inst.GetCanAttack() /*|| inst.IsOnAttack*/)
+                        {
                             Setting.RegisterLog("This card can't attack. ", Color.black);
-                        return;
-                      
-                    }
-                    //Above if statements are for checking errors
-                    else
-                    {
+                            return;
+                        }
                         MultiplayManager.singleton.PlayerTryToUseCard(inst.viz.card.InstId, p.PhotonId, MultiplayManager.CardOperation.setCardToAttack);
                     }
-                }
+                    else
+                    {
+                        Setting.RegisterLog("InstIsNullError" + " Obj: " + hit.transform.gameObject, Color.black);
+                        return;
 
+                        
+                        //Above if statements are for checking errors
+
+                    }
+                }   
             }
         }
     }

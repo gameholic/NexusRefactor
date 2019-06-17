@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GH.GameAction;
+using GH.Multiplay;
 
 namespace GH.GameTurn
 {
@@ -24,7 +25,35 @@ namespace GH.GameTurn
         // Somehow, this is initialised different as I initialise. 
         // If I initialise as True, it becomes False
         // If I initialise as False, it becomes True;
-        
+
+
+        #region Get/SetFunctions
+        public void EndCurrentPhase()
+        {
+            _Phases[PhaseIndex].PhaseForceExit = true;
+        }
+        public PlayerHolder ThisTurnPlayer
+        {
+            set { _ThisTurnPlayer = value; }
+            get { return _ThisTurnPlayer; }
+        }
+        public bool TurnBegin
+        {
+            set { _TurnBegin = value; }
+            get { return _TurnBegin; }
+        }
+        public int PhaseIndex
+        {
+            get { return _PhaseIndex; }
+        }
+        public PhaseVariable CurrentPhase
+        {
+            set { _CurrentPhase = value; }
+            get { return _CurrentPhase; }
+        }
+
+        #endregion
+
         private void Awake()
         {
             _PhaseIndex = 0;
@@ -44,20 +73,21 @@ namespace GH.GameTurn
             if (_ThisTurnPlayer.manaResourceManager.GetMaxMana() < 10)
                 _ThisTurnPlayer.manaResourceManager.UpdateMaxMana(1);
             _ThisTurnPlayer.manaResourceManager.InitMana();
+
+
+            MultiplayManager.singleton.SendPhase(ThisTurnPlayer.name, _Phases[PhaseIndex].PhaseName);
         }
         public bool Execute()
         {
             bool result = false;
             _CurrentPhase.value = _Phases[PhaseIndex];
-            _Phases[PhaseIndex].OnStartPhase();           
-
+            _Phases[PhaseIndex].OnStartPhase();
             bool IsComplete = _Phases[PhaseIndex].IsComplete();
             if (TurnBegin && PhaseIndex == 0)
             {
                 TurnStart();
                 TurnBegin = false;
             }
-
 
             if (IsComplete)
             {
@@ -69,31 +99,11 @@ namespace GH.GameTurn
                     TurnBegin = true;
                     result = true;
                 }
+
+                MultiplayManager.singleton.SendPhase(ThisTurnPlayer.name, _Phases[PhaseIndex].PhaseName);
+
             }
             return result;
-        }
-        public void EndCurrentPhase()
-        {
-            _Phases[PhaseIndex].PhaseForceExit = true;
-        }       
-        public PlayerHolder ThisTurnPlayer
-        {
-            set { _ThisTurnPlayer = value; }
-            get{ return _ThisTurnPlayer; }
-        }
-        public bool TurnBegin
-        {
-            set { _TurnBegin = value;}
-            get { return _TurnBegin; }
-        }
-        public int PhaseIndex
-        {
-            get { return _PhaseIndex; }
-        }
-        public PhaseVariable CurrentPhase
-        {
-            set { _CurrentPhase = value; }
-            get { return _CurrentPhase; }
         }
     }
 }

@@ -71,7 +71,7 @@ namespace GH.GameCard
                 //Or cases like that should be here
                 if (result)
                 {
-                    Setting.gameController.BlockManager.AddBlockInstance(this, block, ref count);
+                   // Setting.gameController.BlockManager.AddBlockInstance(this, block, ref count);
                 }
                 return result;
             }
