@@ -47,7 +47,6 @@ namespace GH.GameStates
                         {
                             int count = 0;
                             bool block = c.CanBeBlocked(_SelectedCard.value, ref count);
-                            Debug.Log(block);
                             if (block)
                             {
                                 CardInstance thisCard = _SelectedCard.value;

@@ -35,11 +35,8 @@ namespace GH
                     else
                     {
                         Setting.RegisterLog("InstIsNullError" + " Obj: " + hit.transform.gameObject, Color.black);
-                        return;
-
-                        
+                        return;                        
                         //Above if statements are for checking errors
-
                     }
                 }   
             }

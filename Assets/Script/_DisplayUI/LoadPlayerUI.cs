@@ -11,19 +11,14 @@ namespace GH.Setup
         {
 
             GameController gc = Setting.gameController;
-            //At first run, bottomcardholder is player1, topCardHolder is player2
             PlayerHolder prevPlayer = gc.TopCardHolder.thisPlayer;
             if (loadedPlayer == gc.TopCardHolder.thisPlayer)
-            //It is run when player turn(or position) is changed
             {
-                //playerStats[0] = UIs at bottom / playerStats[1] = UIs at top
                 prevPlayer = gc.BottomCardHolder.thisPlayer;
 
                 LoadPlayerOnHolder(prevPlayer, gc.GetPlayer(1)._CardHolder, gc.GetPlayerUIInfo(0));
                 LoadPlayerOnHolder(loadedPlayer, gc.GetPlayer(0)._CardHolder, gc.GetPlayerUIInfo(1));
 
-                //LoadPlayerOnHolder(prevPlayer, gc.allPlayers[1].currentCardHolder, playerStats[0]);              
-                //LoadPlayerOnHolder(loadedPlayer, gc.allPlayers[0].currentCardHolder, playerStats[1]);
                 if (gc.GetTurns(gc.turnIndex).PhaseIndex != 2)
                 {
                     gc.TopCardHolder = prevPlayer._CardHolder;

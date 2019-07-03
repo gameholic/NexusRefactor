@@ -11,21 +11,18 @@ namespace GH.GameTurn
     {
         public override bool IsComplete()
         {
-            if(PhaseForceExit)  
+            if (PhaseForceExit)  
             {
                 PhaseForceExit = false;
                 return true;
             }
-            
             return false;
+
         }
-
-
         public override void OnEndPhase()
         {
             IsInit = false;
         }
-
         public override void OnStartPhase()
         {
             if(!IsInit)

@@ -35,7 +35,6 @@ namespace GH.Multiplay
         }
         public bool IsLocal
         {
-            set { isLocal = value; }
             get { return isLocal; }
         }
         public string[] GetStartingCardids()

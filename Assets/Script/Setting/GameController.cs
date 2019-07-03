@@ -2,10 +2,12 @@
 using GH.GameStates;
 using System.Collections.Generic;
 using UnityEngine;
+
 using GH.GameCard;
 using GH.GameTurn;
 using GH.Setup;
 using GH.Multiplay;
+using GH.UI;
 
 namespace GH
 {
@@ -35,10 +37,10 @@ namespace GH
         public GameEvent OnPhaseChanged;
         public StringVariable turnText;
         public StringVariable turnCountTextVariable;//Count the turn. When both player plays, it increases by 1
+        public UpdatePlayer updatePlayer;
         //public TransformVariable[] graveyard_transform;
         public GameObject cardPrefab;
         public GameObject[] manaObj;
-
         public int turnIndex = 0;
         private bool isComplete;
         private bool switchPlayer;
@@ -53,6 +55,7 @@ namespace GH
         /// <summary>
         /// Variables used for multiplay
         /// </summary>
+        /// 
         [SerializeField]
         private PlayerHolder localPlayer;
         [SerializeField]
@@ -164,53 +167,57 @@ namespace GH
 
 
         }
-        public void InitGameVer2(int startingPlayer)
-        {
-            Turn[] _tmpTurn = new Turn[2];
-            PlayerHolder[] _tmpPlayer = new PlayerHolder[2];
-            for (int i = 0; i < _Players.Length; i++)
-            {
+///// <summary>
+///// Initgame ver2.
+///// </summary>
+///// <param name="startingPlayer"></param>
+//        public void InitGameVer2(int startingPlayer)
+//        {
+//            Turn[] _tmpTurn = new Turn[2];
+//            PlayerHolder[] _tmpPlayer = new PlayerHolder[2];
+//            for (int i = 0; i < _Players.Length; i++)
+//            {
 
-                GetPlayer(i).statsUI = GetPlayerUIInfo(i);
-                GetPlayer(i).manaResourceManager.InitManaZero();
-                GetPlayerUIInfo(i).UpdateManaUI();
-                if (GetPlayer(i).PhotonId == startingPlayer)
-                {
-                    _tmpTurn[0] = GetTurns(i);
-                    _tmpPlayer[0] = GetTurns(i).ThisTurnPlayer;
-                }
-                else
-                {
-                    _tmpTurn[1] = GetTurns(i);
-                    _tmpPlayer[1] = GetTurns(i).ThisTurnPlayer;
-                }
-            }
-            _Turns = _tmpTurn;
-            _Players = _tmpPlayer;
-            BottomCardHolder = LocalPlayer._CardHolder;
-            TopCardHolder = ClientPlayer._CardHolder;
+//                GetPlayer(i).statsUI = GetPlayerUIInfo(i);
+//                GetPlayer(i).manaResourceManager.InitManaZero();
+//                GetPlayerUIInfo(i).UpdateManaUI();
+//                if (GetPlayer(i).PhotonId == startingPlayer)
+//                {
+//                    _tmpTurn[0] = GetTurns(i);
+//                    _tmpPlayer[0] = GetTurns(i).ThisTurnPlayer;
+//                }
+//                else
+//                {
+//                    _tmpTurn[1] = GetTurns(i);
+//                    _tmpPlayer[1] = GetTurns(i).ThisTurnPlayer;
+//                }
+//            }
+//            _Turns = _tmpTurn;
+//            _Players = _tmpPlayer;
+//            BottomCardHolder = LocalPlayer._CardHolder;
+//            TopCardHolder = ClientPlayer._CardHolder;
 
-            for (int i = 0; i < _Players.Length; i++)
-            {
-                if (GetPlayer(0) == GetPlayerUIInfo(i).player)
-                {
-                    GetPlayer(0).statsUI = GetPlayerUIInfo(i);
-                    GetPlayerUIInfo(0).player.LoadPlayerOnStatsUI();
-                }
-                else
-                {
-                    GetPlayer(1).statsUI = GetPlayerUIInfo(i);
-                    GetPlayerUIInfo(1).player.LoadPlayerOnStatsUI();
-                }
-            }
-            //SetupPlayers();
-            turnCounter = 1;
-            turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString(); // Visualize whose turn is now            
-            turnCountTextVariable.value = turnCounter.ToString();
-            OnTurnChanged.Raise();
-            isInit = true;
+//            for (int i = 0; i < _Players.Length; i++)
+//            {
+//                if (GetPlayer(0) == GetPlayerUIInfo(i).player)
+//                {
+//                    GetPlayer(0).statsUI = GetPlayerUIInfo(i);
+//                    GetPlayerUIInfo(0).player.LoadPlayerOnStatsUI();
+//                }
+//                else
+//                {
+//                    GetPlayer(1).statsUI = GetPlayerUIInfo(i);
+//                    GetPlayerUIInfo(1).player.LoadPlayerOnStatsUI();
+//                }
+//            }
+//            //SetupPlayers();
+//            turnCounter = 1;
+//            turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString(); // Visualize whose turn is now            
+//            turnCountTextVariable.value = turnCounter.ToString();
+//            OnTurnChanged.Raise();
+//            isInit = true;
 
-        }
+//        }
         public void InitGame(int startingPlayer)
         {
 
@@ -264,6 +271,7 @@ namespace GH
             turnCounter = 1;
             turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString(); // Visualize whose turn is now            
             turnCountTextVariable.value = turnCounter.ToString();
+
             OnTurnChanged.Raise();
             isInit = true;
 
@@ -309,12 +317,9 @@ namespace GH
             }
         }
         private void Update()
-        {
-            //turnIndex is great but not in multiplay
+        {          
             if (!isInit)
-            {
                 return;
-            }
             CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
             UpdateMana();
 
@@ -324,6 +329,7 @@ namespace GH
                 startTurn = false;
             }            
             turnCountTextVariable.value = turnCounter.ToString();
+            updatePlayer.UpdatePlayerText(CurrentPlayer);
             isComplete = GetTurns(turnIndex).Execute();
             if (!IsMultiplay)
             {
@@ -348,7 +354,6 @@ namespace GH
                 if (isComplete)
                 {
                     MultiplayManager.singleton.PlayerEndsTurn(CurrentPlayer.PhotonId);
-                    CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
                 }
             }
             if (_CurrentState != null)
@@ -358,7 +363,7 @@ namespace GH
         {
             int r = turnIndex;
             r++;
-            if (r > _TurnLength - 1)
+            if (r > _TurnLength-1)
             {
                 r = 0;
             }
@@ -386,13 +391,22 @@ namespace GH
         {
             _CurrentState = state;
         }
-        public void EndPhase()//Run by EndTurn button
+        public void EndPhaseByBattleResolve()
         {
-            if (CurrentPlayer.isHumanPlayer && CurrentPlayer ==localPlayer)
+            EndPhase();
+        }
+
+        public void EndPhaseByButton()
+        {
+            EndPhase();
+        }
+
+        private void EndPhase()
+        {
+            if (CurrentPlayer.isHumanPlayer && CurrentPlayer == localPlayer)
             {
-               GetTurns(turnIndex).EndCurrentPhase();
+                GetTurns(turnIndex).EndCurrentPhase();
             }
-            //_CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
         }
         public void PutCardToGrave(CardInstance c)
         {

@@ -8,8 +8,8 @@ namespace GH.GameTurn
     [CreateAssetMenu(menuName = "Turns/phase")]
     public abstract class Phase : ScriptableObject
     {
-        //[SerializeField]
-        private bool _PhaseForceExit = false;
+        [SerializeField]
+        private bool _PhaseForceExit;
         [SerializeField]
         private string _PhaseName;
         [System.NonSerialized]

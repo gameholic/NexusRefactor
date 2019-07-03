@@ -13,7 +13,7 @@ namespace GH.GameCard
         private bool canAttack =false ; //Indicates that card is just placed and can't attak this turn.
         public bool dead;
         private bool _isOnAttack = false;
-        private Transform originFieldTransform;
+        private Transform parentFieldTransform;
         private int fieldIndex;
 
         public int FieldIndex
@@ -55,7 +55,6 @@ namespace GH.GameCard
             if (owner.attackingCards == null)
             {
                 Setting.RegisterLog("Attacking cards error", Color.black);
-                Debug.Log("CanbeBlockedErr");
                 return false;
 
             }
@@ -102,12 +101,21 @@ namespace GH.GameCard
             get { return _isOnAttack; }
             set { _isOnAttack = value; }
         }
-        public void SetOriginFieldLocation(Transform t)
+        public void SetOriginFieldLocation(Transform fieldTransform)
         {
-            originFieldTransform = t;
+            parentFieldTransform = fieldTransform;
+            Debug.Log("ParentFieldSET: " + parentFieldTransform + "/ Card: " + this.viz.card.name);
+
         }
         public Transform GetOriginFieldLocation()
-        { return originFieldTransform; }
+        {
+            if(parentFieldTransform==null)
+            {
+                Debug.Log("ParentFieldNULL/ Card: " +this.viz.card.name);
+                return null;
+            }
+            return parentFieldTransform;
+        }
 
 
         void Start()

@@ -16,6 +16,8 @@ namespace GH.UI
         /// </summary>
         public override void Raise()
         {
+            //PlayerHolder currentPlayer = Setting.gameController.CurrentPlayer;
+            //targetText.text = currentPlayer.player;
             targetText.text = targetString.value;
         }
         

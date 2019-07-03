@@ -7,12 +7,9 @@ using GH.GameCard;
 namespace GH
 {
     public class Setting : MonoBehaviour
-
     {
-
         private static ResourceManager resmanager;
         private static ConsoleHook _consoleHook;
-
         public static GameController gameController;
 
         public static ResourceManager GetResourceManager()
@@ -35,11 +32,11 @@ namespace GH
         }
 
     
-        public static void DropCreatureCard(Transform c, Transform p, Card card)
+        public static void DropCreatureCard(Transform cardTransform, Transform destTransform, Card card)
         {
             //inst.isJustPlaced = true;
             //if card w/ special ability is placed, change to true
-            SetParentForCard(c, p);
+            SetParentForCard(cardTransform, destTransform);
             card.Instance.IsAvailable(true);
             gameController.CurrentPlayer.PayMana(card);
             gameController.CurrentPlayer.DropCardOnField(card.Instance);
@@ -61,7 +58,10 @@ namespace GH
         public static void SetParentForCard(Transform c, Transform p)
         /// Move card 'c' to 'p'
         {
-
+            if(c==null || p==null)
+            {
+                Debug.LogError("C is " + c.name + "\tP is " + p.name);
+            }
             c.SetParent(p);
             c.rotation = p.rotation;
             c.localPosition = Vector3.zero;

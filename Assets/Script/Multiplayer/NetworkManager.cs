@@ -8,6 +8,9 @@ namespace GH.Multiplay
 {
     public class NetworkManager : Photon.PunBehaviour
     {
+        public static NetworkManager singleton;
+
+
         [SerializeField]
         private StringVariable logger;
         private static bool _IsMaster; //Ismaster= true is local else it's client
@@ -15,16 +18,12 @@ namespace GH.Multiplay
         [SerializeField]
         private ResourceManager rm;
         List<MultiplayerHolder> multiplayerHolders = new List<MultiplayerHolder>();
-        public static NetworkManager singleton;
 
         public GameEvent loggerUpdated;
         public GameEvent onConnected;
         public GameEvent failedToConnect;
         public GameEvent waitingForPlayer;
 
-        /// <summary>
-        /// Property & Set/Get field
-        /// </summary>
         public MultiplayerHolder GetHolder(int photonId)
         {
             for (int i = 0; i < multiplayerHolders.Count; i++)
@@ -53,14 +52,13 @@ namespace GH.Multiplay
             set { _CardInstIds = value; }
             get { return _CardInstIds; }
         }
-        public bool IsMaster
+        public static  bool IsMaster
         {
             set { _IsMaster = value; }
             get { return _IsMaster; }
         }
-        /// <summary>
-        /// Property & Set/Get field
-        /// </summary>
+
+
 
         private void Awake()
         {
@@ -86,8 +84,7 @@ namespace GH.Multiplay
             PhotonNetwork.automaticallySyncScene = false;
             Init();
 
-        }
-      
+        }      
         public void Init()
         {
             PhotonNetwork.ConnectUsingSettings("1");
@@ -97,8 +94,6 @@ namespace GH.Multiplay
         }
        
         #region MyCalls
-
-
         public void OnPlayGame()
         {
             JoinRandomRoom();        
@@ -135,8 +130,6 @@ namespace GH.Multiplay
                 //Rpc 
             }
         }
-
-
         public Card CreateCardMaster(string cardId)
         {
             Card card = rm.GetCardInstFromDeck(cardId);
@@ -183,13 +176,11 @@ namespace GH.Multiplay
             base.OnPhotonRandomJoinFailed(codeAndMsg);
             CreateRoom();
         }
-
         public override void OnCreatedRoom()
         {
             base.OnCreatedRoom();
             IsMaster = true;
         }
-
         public override void OnJoinedRoom()
         {
             base.OnJoinedRoom();
@@ -197,7 +188,6 @@ namespace GH.Multiplay
             loggerUpdated.Raise();
             waitingForPlayer.Raise();
         }
-
         public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
         {
             if(IsMaster)
@@ -215,6 +205,7 @@ namespace GH.Multiplay
         {
             SessionManager.singleton.LoadGameLevel(OnGameSceneLoaded);
         }
+
 
         /// <summary>
         /// Responsible for getting data from n/w manager about BattleScene

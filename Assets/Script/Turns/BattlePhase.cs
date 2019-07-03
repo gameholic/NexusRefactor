@@ -19,7 +19,6 @@ namespace GH.GameTurn
             }
             return false;
         }
-
         public override void OnEndPhase()
         {
             if (IsInit)
@@ -28,7 +27,6 @@ namespace GH.GameTurn
                 IsInit = false;
             }            
         }
-
         public override void OnStartPhase()
         {
             if (!IsInit)

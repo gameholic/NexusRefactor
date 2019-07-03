@@ -8,11 +8,10 @@ namespace GH.GameCard
     [CreateAssetMenu(menuName ="Card")]
     public class Card : ScriptableObject
     {
-        
+        public int cardCost;
         public CardType cardType;
         public CardProperties[] properties;
         
-        public int cardCost;
         public bool canAttack;
 
 

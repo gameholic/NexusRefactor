@@ -27,7 +27,6 @@ namespace GH.GameTurn
             }
 
         }
-
         public override void OnStartPhase()
         {
             GameController gc = Setting.gameController;
@@ -36,27 +35,24 @@ namespace GH.GameTurn
                 gc.SetState(playerControlState);
                 gc.OnPhaseChanged.Raise();
                 IsInit = true;
-                int availableCards = 0;
+                int usableCards = 0;
                 PlayerHolder enemy = gc.GetOpponentOf(gc.CurrentPlayer);
-
-
                 if (enemy.attackingCards.Count == 0)
                 {
+                    Debug.Log(" 0 AttackingCards");
                     PhaseForceExit = true;
-                    Debug.Log("ForceExit: " + PhaseForceExit);
                     return;
                 }
                 foreach (CardInstance c in gc.CurrentPlayer.fieldCard)
                 {
-                    if(!c.GetCanAttack())
+                    if (!c.GetCanAttack())
                     {
-                        availableCards++;
-                        Debug.Log(gc.CurrentPlayer + "  " + availableCards);
+                        usableCards++;
                     }
                 }
-                if (availableCards <= 0)
+                if (usableCards < 1)
                 {
-                    Debug.Log("There are no available cards");
+                    Debug.Log("No UsableCards");
                     PhaseForceExit = true;
                     return;
                 }

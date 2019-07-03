@@ -222,10 +222,6 @@
     <Compile Include="Assets\Script\Actions\MouseOverDetection.cs" />
     <Compile Include="Assets\Script\Actions\SelectBlockCard.cs" />
     <Compile Include="Assets\Script\Actions\SelectCardsToAttack.cs" />
-    <Compile Include="Assets\Script\Actions_Player\LoadOnActiveHolder.cs" />
-    <Compile Include="Assets\Script\Actions_Player\PickCardFromDeck.cs" />
-    <Compile Include="Assets\Script\Actions_Player\PlayerAction.cs" />
-    <Compile Include="Assets\Script\Actions_Player\ResetJustPlaced.cs" />
     <Compile Include="Assets\Script\CardDeck\HandDeck\Card_handOrder.cs" />
     <Compile Include="Assets\Script\Cards\Card.cs" />
     <Compile Include="Assets\Script\Cards\CardGraveyard.cs" />
@@ -277,6 +273,7 @@
     <Compile Include="Assets\Script\Scriptable\UI\UIPropertyUpdater.cs" />
     <Compile Include="Assets\Script\Scriptable\UI\UpdateButtonInteractability.cs" />
     <Compile Include="Assets\Script\Scriptable\UI\UpdateImage.cs" />
+    <Compile Include="Assets\Script\Scriptable\UI\UpdatePlayer.cs" />
     <Compile Include="Assets\Script\Scriptable\UI\UpdateSlider.cs" />
     <Compile Include="Assets\Script\Scriptable\UI\UpdateText.cs" />
     <Compile Include="Assets\Script\Scriptable\UI\UpdateTextMash.cs" />
@@ -298,6 +295,10 @@
     <Compile Include="Assets\Script\Setting\GameController_AI.cs" />
     <Compile Include="Assets\Script\Setting\Setting.cs" />
     <Compile Include="Assets\Script\State\State.cs" />
+    <Compile Include="Assets\Script\Turn Start Actions\LoadOnActiveHolder.cs" />
+    <Compile Include="Assets\Script\Turn Start Actions\PickCardFromDeck.cs" />
+    <Compile Include="Assets\Script\Turn Start Actions\PlayerAction.cs" />
+    <Compile Include="Assets\Script\Turn Start Actions\ResetJustPlaced.cs" />
     <Compile Include="Assets\Script\Turns\BattlePhase.cs" />
     <Compile Include="Assets\Script\Turns\BattleResolvePhase.cs" />
     <Compile Include="Assets\Script\Turns\BlockPhase.cs" />

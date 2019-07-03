@@ -53,14 +53,19 @@ namespace GH.GameElements
                             fieldCode = i;
                             break;
                         }
-                        else
-                        {
-                            //If there is no field area for this card, send it to trashArea.
-                            //This is for checking error. So when game is on release, delete this code.
-                            fieldCode = 6;
-                        }
+
                     }
-                      
+                    
+                    if(fieldCode ==0)
+                    { 
+                        //If there is no field area for this card, send it to trashArea.
+                        //This is for checking error. So when game is on release, delete this code.
+                        Debug.LogError("Cant find fieldCode ");
+                    }
+                    else
+                    {
+                        Debug.Log("Feildcode is " + fieldCode);
+                    }
                     fieldArea.IsPlaced = true;
                     MultiplayManager.singleton.PlayerTryToUseCard
                         (thisCard.InstId, GameController.singleton.LocalPlayer.PhotonId,
