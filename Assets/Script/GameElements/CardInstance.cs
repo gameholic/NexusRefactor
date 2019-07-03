@@ -16,6 +16,7 @@ namespace GH.GameCard
         private Transform parentFieldTransform;
         private int fieldIndex;
 
+
         public int FieldIndex
         {
             set { fieldIndex = value; }
@@ -27,7 +28,7 @@ namespace GH.GameCard
         /// I suggest move this method to 'GameController.cs" -- 190524 Hwan
         /// </summary>
         /// <param name="usable"></param>
-        public void IsAvailable(bool usable)
+        public void CantUse(bool usable)
         {
             if (usable)
             {
@@ -123,6 +124,7 @@ namespace GH.GameCard
             FieldIndex = -1;
             viz = GetComponent<CardViz>();
         }
+
         public void OnClick()
         {
 

@@ -34,8 +34,6 @@ namespace GH
         public void SetCardOnBattleLine(CardInstance card)
         {
             Vector3 position = card.viz.gameObject.transform.position;
-
-            Debug.LogFormat("BattleLine transform {0}", battleLine.value);
             Setting.SetParentForCard(card.transform, battleLine.value);
 
             /*

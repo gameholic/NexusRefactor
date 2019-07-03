@@ -117,7 +117,7 @@ namespace GH.Multiplay
 
             if (NetworkManager.IsMaster)
             {
-                Debug.Log("ISMASTER");
+                Debug.Log("This client is room manager client");
                 List<int> playerId = new List<int>();
                 List<int> cardInstId = new List<int>();
                 List<string> cardName = new List<string>();
@@ -154,7 +154,7 @@ namespace GH.Multiplay
 
             else
             {
-                Debug.Log("IsNotMaster");                
+                Debug.Log("This client is room guest client");                
                 foreach (NetworkPrint p in Players)
                 {
                     if (p.IsLocal)
@@ -204,16 +204,12 @@ namespace GH.Multiplay
         [PunRPC]
         public void RPC_PlayerEndsTurn(int photonId)
         {
-            NetworkPrint p = GetPlayer(photonId);
-
             //Debug.LogFormat("{0} ends turn.", p.ThisPlayer.player);
 
             if (photonId == GC.CurrentPlayer.PhotonId)
             {
                 int targetId = GC.GetAnotherPlayerID();
-                photonView.RPC("RPC_PlayerStartsTurn", PhotonTargets.All, targetId);
-                
-                
+                photonView.RPC("RPC_PlayerStartsTurn", PhotonTargets.All, targetId);    
                 //if (NetworkManager.IsMaster)
                 //{
                 //    int targetId = GC.GetAnotherPlayerID();
@@ -403,6 +399,7 @@ namespace GH.Multiplay
         {
             if (!NetworkManager.IsMaster)
             {
+                Debug.LogFormat("{0} is not Network Master. BattleResolve out", GC.CurrentPlayer.player);
                 Setting.gameController.EndPhaseByBattleResolve();
                 return;
             }
@@ -422,9 +419,10 @@ namespace GH.Multiplay
 
 
             if (p == e)
-                Debug.LogError("p == e ");
+                Debug.LogError("BattleResolve_Error: This Player and Opponent Player is same");
             if (p.attackingCards.Count == 0)
             {
+                Debug.Log("BattleResolve CallBack: Player don't have attacking cards now");
                 photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, p.PhotonId);
             }
             Dictionary<CardInstance, BlockInstance> defDic = gc.BlockManager.BlockInstDict;
@@ -437,7 +435,7 @@ namespace GH.Multiplay
                 CardProperties attack = c.GetProperties(elementAttack);
                 if (attack == null)
                 {
-                    Setting.RegisterLog("Attack of the " + c.name + "is null. This card can't attack", Color.red);
+                    Debug.LogFormat("BattleResolveError_CardCantAttack: {0} 's attack ability is null.",c.Viz.card.name);
                     continue;
                 }
                 int attackValue = attack.intValue;
@@ -457,7 +455,6 @@ namespace GH.Multiplay
                         attackValue -= def.intValue;
                         if (def.intValue <= attackValue)
                         {
-                            //Debug.Log("defendcard dead ");
                             bi.defenders[i].CardInstanceToGrave();
                         }
                     }
@@ -472,7 +469,7 @@ namespace GH.Multiplay
                 {
                     p.DropCardOnField(inst, false);
                     p._CardHolder.SetCardDown(inst);
-                    inst.IsAvailable(true);
+                    inst.CantUse(true);
                     photonView.RPC("RPC_SyncPlayerHealth", PhotonTargets.All ,e.PhotonId, e.Health);
                 }
                 ////////
@@ -487,10 +484,9 @@ namespace GH.Multiplay
             {
                 if (c.dead)
                 {
-                    Debug.Log("this card is dead");
                     break;
                 }
-                c.IsAvailable(false);
+                c.CantUse(false);
                 Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
             }
             if(e.fieldCard.Count!=0)
@@ -518,11 +514,7 @@ namespace GH.Multiplay
         {
             Setting.gameController.BlockManager.ClearBlockInst();
 
-            //NetworkPrint p = GetPlayer(photonId);
-            //if(p==localPlayerNWPrint)
-            //{
-            //    Setting.gameController.EndPhaseByMultiManager();
-            //}
+
             foreach(NetworkPrint p in Players)
             {
                 bool isAttacker = false;
@@ -532,13 +524,12 @@ namespace GH.Multiplay
                     {
                         isAttacker = true;
                         Setting.gameController.EndPhaseByBattleResolve();
-
                     }
                 }
                 foreach (CardInstance c in p.ThisPlayer.attackingCards)
                 {
                     p.ThisPlayer._CardHolder.SetCardDown(c);
-                    c.IsAvailable(true);
+                    c.CantUse(true);
                 }
 
                 p.ThisPlayer.attackingCards.Clear();
@@ -558,11 +549,9 @@ namespace GH.Multiplay
         public void RPC_PlayerBlocksTargetCard_Master(int defendCard, int photonId_Defend, int invadeInstId, int photonId_invade)
         {
             NetworkPrint print_Defend = GetPlayer(photonId_Defend);
-            //PlayerHolder blocker = blockerPrint.ThisPlayer;
             CardInstance card_Defend = print_Defend.GetCard(defendCard).Instance;
 
             NetworkPrint print_Invade = GetPlayer(photonId_invade);
-            //PlayerHolder atker = atkPrint.ThisPlayer;
             CardInstance card_Invade = print_Invade.GetCard(invadeInstId).Instance;
 
 
@@ -578,7 +567,7 @@ namespace GH.Multiplay
         public void RPC_PlayerBlocksTargetCard_Client(CardInstance card_Defend, NetworkPrint print_Defend, 
             CardInstance card_Invade, NetworkPrint print_Invade, int count)
         {
-            Setting.SetCardForblock(card_Defend.transform, card_Invade.transform, count);
+            Setting.SetCardsForBlock(card_Defend.transform, card_Invade.transform, count);
             
         }
         #endregion
@@ -598,6 +587,10 @@ namespace GH.Multiplay
             {
                 photonView.RPC("RPC_PlayerCanUseCard", PhotonTargets.All, photonId);
             }
+            else
+            {
+                Debug.Log("RPC_PlayerCanUseCard_Error: This turn player is different with current player");
+            }
         }
 
         [PunRPC]
@@ -609,8 +602,10 @@ namespace GH.Multiplay
                 if (!c.GetCanAttack())
                 {
                     c.SetCanAttack(true);
-                    c.IsAvailable(false);
+                    c.CantUse(false);
+                    Debug.LogFormat("{0} is reset. Now this card can attack ",c.viz.card.name);
                 }
+
             }
         }
         #endregion

@@ -39,6 +39,7 @@ namespace GH.GameTurn
                 PlayerHolder enemy = gc.GetOpponentOf(gc.CurrentPlayer);
                 if (enemy.attackingCards.Count == 0)
                 {
+                    Debug.LogFormat("{0}, BlockPhase_OnStart: Can't find enemy attacking cards", gc.CurrentPlayer.player);
                     PhaseForceExit = true;
                     return;
                 }
@@ -51,19 +52,11 @@ namespace GH.GameTurn
                 }
                 if (usableCards < 1)
                 {
-                    Debug.Log("No UsableCards");
+                    Debug.LogFormat("{0}, BlockPhase_OnStart: There is no blockable cards", gc.CurrentPlayer.player);
                     PhaseForceExit = true;
                     return;
                 }
 
-
-                //As attacking cards are on field without attack, forceExit is false (Which means can't get away from loop)
-                //if (gc.CurrentPlayer.attackingCards.Count == 0)
-                //if (gc.GetOpponentOf(gc.CurrentPlayer).attackingCards.Count == 0)
-                //{
-                //    PhaseForceExit = true;
-                //    return;
-                //}
             }
         }
     }

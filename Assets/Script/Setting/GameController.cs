@@ -43,7 +43,7 @@ namespace GH
         public GameObject[] manaObj;
         public int turnIndex = 0;
         private bool isComplete;
-        private bool switchPlayer;
+        //private bool switchPlayer;
         private int _TurnLength = 0;
         private BlockInstanceManager _BlockManager = new BlockInstanceManager();
         private CheckPlayerCanUse _CheckOwner = new CheckPlayerCanUse();
@@ -155,7 +155,7 @@ namespace GH
             Setting.gameController = this;
             singleton = this;
             isComplete = false;
-            switchPlayer = false;
+            //switchPlayer = false;
             _TurnLength = _Turns.Length;
             _BlockManager.BlockInstDict = new Dictionary<CardInstance, BlockInstance>();
             _CurrentPlayer = GetTurns(0).ThisTurnPlayer;
@@ -223,7 +223,6 @@ namespace GH
 
             //Debug.Log("Test master : This client is " + NetworkManager.singleton.IsMaster);
             Turn[] _tmpTurn = new Turn[2];
-            PlayerHolder[] _tmpPlayer = new PlayerHolder[2];
             for (int i = 0; i < _Players.Length; i++)
             {
                 
@@ -345,7 +344,7 @@ namespace GH
 
                     startTurn = true;
                     turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString();
-                    switchPlayer = true;
+                    //switchPlayer = true;
                     OnTurnChanged.Raise();
                 }
             }

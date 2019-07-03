@@ -1,8 +1,5 @@
-﻿ using System.Collections;
-using System.Collections.Generic;
+﻿using GH.GameCard;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using GH.GameCard;
 
 namespace GH
 {
@@ -34,10 +31,8 @@ namespace GH
     
         public static void DropCreatureCard(Transform cardTransform, Transform destTransform, Card card)
         {
-            //inst.isJustPlaced = true;
-            //if card w/ special ability is placed, change to true
             SetParentForCard(cardTransform, destTransform);
-            card.Instance.IsAvailable(true);
+            card.Instance.CantUse(true);
             gameController.CurrentPlayer.PayMana(card);
             gameController.CurrentPlayer.DropCardOnField(card.Instance);
 
@@ -76,13 +71,14 @@ namespace GH
         }
 
        
-        public static void SetCardForblock(Transform c, Transform p, int count)
+        public static void SetCardsForBlock(Transform c, Transform p, int count)
         {
             //Change numbers that looks good to player
             Vector3 blockPosition = Vector3.zero;
             blockPosition.x += 2 * count;
             blockPosition.y -= 2;
             SetParentForCard(c, p, blockPosition, Vector3.zero);
+            Debug.Log("SetCardForBlock: Works well");
 
         }
     }
