@@ -16,27 +16,34 @@ namespace GH
             {
                 RaycastHit[] results = Setting.GetUIObjs();
                 
+
+                //Raycast all objects that user clicked.
+                // If user selects card that can attack enemy, send card instance id and player's photon id to MultiplayManager.
+                //   In MultiplayManager.PlayerTryToUseCard, Card on field move to 'BattleLine'Obj and 'attackingCards' list of playerholder for 'BattleResolvePhase'
                 for (int i = 0; i < results.Length; i++)
                 {
                     RaycastHit hit = results[i];
                     CardInstance inst = hit.transform.gameObject.GetComponentInChildren<CardInstance>();
+
+                    //Get Current player to send its photon id                   
                     PlayerHolder p = Setting.gameController.CurrentPlayer;
-                    //Check inst is one of the current player's card (placed on field)                  
                 
+                    //Check 'CardInstance' existance to let player can select card objects only
                     if(inst!=null)
                     {
-                        if (!inst.GetCanAttack() /*|| inst.IsOnAttack*/)
+                        //If selected card can't perform attack in whatever reason, finish codes with error message
+                        if (!inst.GetCanAttack())
                         {
-                            Setting.RegisterLog("This card can't attack. ", Color.black);
+                            Debug.LogWarningFormat("{0} can't attack.", inst.viz.card.name);
                             return;
                         }
                         MultiplayManager.singleton.PlayerTryToUseCard(inst.viz.card.InstId, p.PhotonId, MultiplayManager.CardOperation.setCardToAttack);
                     }
                     else
                     {
-                        Setting.RegisterLog("InstIsNullError" + " Obj: " + hit.transform.gameObject, Color.black);
-                        return;                        
-                        //Above if statements are for checking errors
+                        //Send error message if 'CardInstance' is null
+                        Debug.LogErrorFormat("Card Instance is null");
+                        return;            
                     }
                 }   
             }

@@ -37,7 +37,17 @@ namespace GH.Multiplay
             get { return GameController.singleton; }
         }
 
-        public NetworkPrint AddPlayers
+
+        public void AddPlayer(NetworkPrint nw_print)
+        {
+            if (nw_print.IsLocal)
+            {
+                localPlayerNWPrint = nw_print;
+            }
+            AddPlayerNetworkPrint = nw_print;
+            nw_print.transform.parent = MultiplayerReferences;
+        }
+        public NetworkPrint AddPlayerNetworkPrint
         {
             set { _Players.Add(value); }
         }
@@ -64,8 +74,6 @@ namespace GH.Multiplay
             }
             return null;
         }
-
-
         #region Init
         void OnPhotonInstantiate(PhotonMessageInfo info)
         {
@@ -185,28 +193,6 @@ namespace GH.Multiplay
         }
 
 
-        public void AddPlayer(NetworkPrint nw_print)
-        {
-            if (nw_print.IsLocal)
-            {
-                localPlayerNWPrint = nw_print;
-            }
-            AddPlayers = nw_print;
-            nw_print.transform.parent = MultiplayerReferences;
-        }
-        public NetworkPrint GetPlayers(int photonId)
-        {
-            for (int i = 0; i < Players.Count; i++)
-            {
-                if (Players[i].photonId == photonId)
-                {
-                    return Players[i];
-                }
-            }
-            return null;
-        }
-
-
         #endregion
 
         #region End Turn
@@ -220,7 +206,7 @@ namespace GH.Multiplay
         {
             NetworkPrint p = GetPlayer(photonId);
 
-            Debug.LogFormat("{0} ends turn.", p.ThisPlayer.player);
+            //Debug.LogFormat("{0} ends turn.", p.ThisPlayer.player);
 
             if (photonId == GC.CurrentPlayer.PhotonId)
             {
@@ -251,29 +237,51 @@ namespace GH.Multiplay
 
         #region Card Checks
 
+        /// <summary>
+        /// Use RPC to call proper functions player wants
+        /// Parameters are all clear and should be checked before this statement
+        /// 
+        /// </summary>
+        /// <param name="cardInst"> Card instance id</param>
+        /// <param name="photonId"> Player Photon id</param>
+        /// <param name="operation"> Action that player wants to perform </param>
+        /// <param name="cardArea"> Card area which is 0 when it's not passed to use number of 'field' obj</param>
         public void PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation, int cardArea = 0)
         {
             photonView.RPC("RPC_PlayerTryToUseCard", PhotonTargets.MasterClient, cardInst, photonId, operation, cardArea);
         }
+
         [PunRPC]
         public void RPC_PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation, int cardArea = 0)
         {
-            if (!NetworkManager.IsMaster)
-                return;
+            //if (!NetworkManager.IsMaster)
+            //    return;
 
+            // 
             bool hasCard = PlayerHasCard(cardInst, photonId);
             if (hasCard)
             {
                 photonView.RPC("RPC_PlayerUsesCard", PhotonTargets.All, cardInst, photonId, operation, cardArea);
             }
+            else
+            {
+                Debug.LogErrorFormat("PlayerDontOwnCard: {0} don't have selected card", GetPlayer(photonId));
+            }
         }
 
+        /// <summary>
+        /// Check if player has the card
+        /// </summary>
+        /// <param name="cardInst"> Card instance id to be checked</param>
+        /// <param name="photonId"> Player's photon id</param>
+        /// <returns></returns>
         private bool PlayerHasCard(int cardInst, int photonId)
         {
             NetworkPrint p = GetPlayer(photonId);
             Card c = p.GetCard(cardInst);
             return (c != null);
         }
+
         #endregion
 
         #region Card Operations
@@ -300,15 +308,21 @@ namespace GH.Multiplay
         }
 
 
-
+        /// <summary>
+        /// Play cards base on parameter 'CardOperation'
+        /// All actions with card is performed in this function.
+        /// </summary>
+        /// <param name="instId"> Card instance id </param>
+        /// <param name="photonId"> Player photon id </param>
+        /// <param name="operation"> Action to perform </param>
+        /// <param name="cardArea"> Area number that is used only at dropCreatureCard. If it's null, it is passed as 0 </param>
+        /// <param name="info"></param>
         [PunRPC]
         public void RPC_PlayerUsesCard(int instId, int photonId, CardOperation operation, int cardArea, PhotonMessageInfo info)
         {
             NetworkPrint nwPrint = GetPlayer(photonId);
             PlayerHolder currentPlayer = nwPrint.ThisPlayer;
             Card card = nwPrint.GetCard(instId);
-
-
 
             switch (operation)
             {
@@ -343,19 +357,29 @@ namespace GH.Multiplay
                     break;
 
                 case CardOperation.setCardToAttack:
-                    if (currentPlayer.attackingCards.Contains(card.Instance))
-                    {
-                        //If card is already on attack
-                        currentPlayer.attackingCards.Remove(card.Instance);
-                        currentPlayer._CardHolder.SetCardDown(card.Instance);                           
-                    }
-                    else
-                    {
-                        currentPlayer.attackingCards.Add(card.Instance);
-                        currentPlayer._CardHolder.SetCardOnBattleLine(card.Instance);
-                    }
+                    ///Below Codes must be changed.
+                    ///Reason 1: SetCardDown don't work as expected because 'OriginFieldLocation' isn't saved in card instance id
+                    ///when we call card instance through instance id.
+                    ///Reason 2: Somehow, eventhough this card isn't on attackingCard list it is recognized as so.
+                    ///This error occurs only to client.
+                    ///Expecting Error : What if there is same card attacking together?
+                    ///If selected is already on attack, remove that card from 'attackingCards' list and place back to original field location
+                    ///if (currentPlayer.attackingCards.Contains(card.Instance))
+                    ///{
+                    ///    currentPlayer.attackingCards.Remove(card.Instance);
+                    ///    currentPlayer._CardHolder.SetCardDown(card.Instance);                           
+                    ///}
+                    ///
 
+                    // Deleting same position of line: alt + shif + arrow
+                    //If card isn't on attack, move card to 'BattleLine'obj and add at 'attackingCards' list
+                    //else
+                    //{
+                    currentPlayer.attackingCards.Add(card.Instance);
+                        currentPlayer._CardHolder.SetCardOnBattleLine(card.Instance);
+                    //}
                     break;
+
                 case CardOperation.cardToGraveyard:
                     card.Instance.CardInstanceToGrave();
 
@@ -558,9 +582,7 @@ namespace GH.Multiplay
             
         }
         #endregion
-
-
-
+               
         #region Multiple Cards Operations        
         #region FlatFooted Cards
         public void PlayerResetFlatFootedCard(int photonId)

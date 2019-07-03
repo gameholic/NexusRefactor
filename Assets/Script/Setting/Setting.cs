@@ -58,10 +58,6 @@ namespace GH
         public static void SetParentForCard(Transform c, Transform p)
         /// Move card 'c' to 'p'
         {
-            if(c==null || p==null)
-            {
-                Debug.LogError("C is " + c.name + "\tP is " + p.name);
-            }
             c.SetParent(p);
             c.rotation = p.rotation;
             c.localPosition = Vector3.zero;

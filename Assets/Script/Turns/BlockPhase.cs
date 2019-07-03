@@ -39,7 +39,6 @@ namespace GH.GameTurn
                 PlayerHolder enemy = gc.GetOpponentOf(gc.CurrentPlayer);
                 if (enemy.attackingCards.Count == 0)
                 {
-                    Debug.Log(" 0 AttackingCards");
                     PhaseForceExit = true;
                     return;
                 }

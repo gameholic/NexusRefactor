@@ -104,7 +104,7 @@ namespace GH.GameCard
         public void SetOriginFieldLocation(Transform fieldTransform)
         {
             parentFieldTransform = fieldTransform;
-            Debug.Log("ParentFieldSET: " + parentFieldTransform + "/ Card: " + this.viz.card.name);
+            //Debug.Log("ParentFieldSET: " + parentFieldTransform + "/ Card: " + this.viz.card.name);
 
         }
         public Transform GetOriginFieldLocation()

@@ -62,10 +62,7 @@ namespace GH.GameElements
                         //This is for checking error. So when game is on release, delete this code.
                         Debug.LogError("Cant find fieldCode ");
                     }
-                    else
-                    {
-                        Debug.Log("Feildcode is " + fieldCode);
-                    }
+
                     fieldArea.IsPlaced = true;
                     MultiplayManager.singleton.PlayerTryToUseCard
                         (thisCard.InstId, GameController.singleton.LocalPlayer.PhotonId,

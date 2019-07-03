@@ -25,18 +25,31 @@ namespace GH
             return _FieldGrid;
         }
 
+        /// <summary>
+        /// Set card to 'BattleLine' Obj
+        /// This need to get changed. There should be a battle line, 
+        /// but card should be placed at little towards enemy from original position
+        /// </summary>
+        /// <param name="card"></param>
         public void SetCardOnBattleLine(CardInstance card)
         {
             Vector3 position = card.viz.gameObject.transform.position;
-            Setting.SetParentForCard(card.transform, battleLine.value.transform);
 
+            Debug.LogFormat("BattleLine transform {0}", battleLine.value);
+            Setting.SetParentForCard(card.transform, battleLine.value);
+
+            /*
             position.z = card.viz.gameObject.transform.position.z;
             position.y = card.viz.gameObject.transform.position.y;
+
+
             card.viz.gameObject.transform.position = position;
-           // card.SetIsOnAttack();
+            */
+
             card.IsOnAttack = true;
             
         }
+
         public void SetCardDown(CardInstance card)
         {
 
