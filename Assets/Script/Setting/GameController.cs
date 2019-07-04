@@ -32,6 +32,8 @@ namespace GH
         [SerializeField]
         private ResourceManager _ResourceManager;
 
+
+        public Phase CurrentPhase;
         private bool _IsMultiplayer;
         public GameEvent OnTurnChanged;
         public GameEvent OnPhaseChanged;
@@ -320,6 +322,7 @@ namespace GH
             if (!isInit)
                 return;
             CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
+            CurrentPhase = GetTurns(turnIndex).CurrentPhase.value;
             UpdateMana();
 
             if (startTurn)

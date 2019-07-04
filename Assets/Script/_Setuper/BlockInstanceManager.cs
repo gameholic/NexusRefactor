@@ -4,6 +4,8 @@ using GH.GameCard;
 using GH;
 using System;
 
+
+//This Class needs Explanations and logs
 namespace GH.Setup
 {
     public class BlockInstanceManager 

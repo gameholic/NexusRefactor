@@ -422,11 +422,14 @@ namespace GH.Multiplay
                 Debug.LogError("BattleResolve_Error: This Player and Opponent Player is same");
             if (p.attackingCards.Count == 0)
             {
-                Debug.Log("BattleResolve CallBack: Player don't have attacking cards now");
+                Debug.LogError("BattleResolve_CallBackRun: Player don't have attacking cards now");
                 photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, p.PhotonId);
             }
             Dictionary<CardInstance, BlockInstance> defDic = gc.BlockManager.BlockInstDict;
-
+            if(defDic == null)
+            {
+                Debug.LogError("BattleResolve_Error: Defending card instance dictionary is null");
+            }
 
             for (int i = 0; i < p.attackingCards.Count; i++)
             {
@@ -438,9 +441,8 @@ namespace GH.Multiplay
                     Debug.LogFormat("BattleResolveError_CardCantAttack: {0} 's attack ability is null.",c.Viz.card.name);
                     continue;
                 }
+
                 int attackValue = attack.intValue;
-
-
                 BlockInstance bi = gc.BlockManager.GetBlockInstanceOfAttacker(inst, defDic);
                 if (bi != null)
                 {
@@ -452,12 +454,17 @@ namespace GH.Multiplay
                             Debug.LogWarning("You are trying to block with a card with no def element");
                             continue;
                         }
+
                         attackValue -= def.intValue;
                         if (def.intValue <= attackValue)
                         {
                             bi.defenders[i].CardInstanceToGrave();
                         }
                     }
+                }
+                else
+                {
+                    Debug.LogError("BattleResolve_Error: Attacking card instance dictionary is null");
                 }
 
                 if (attackValue <= 0)
@@ -480,6 +487,7 @@ namespace GH.Multiplay
             Dictionary<CardInstance, BlockInstance> blockInstances = gc.BlockManager.BlockInstDict;
 
 
+            //Return all alive cards to its original location
             foreach (CardInstance c in blockInstances.Keys)
             {
                 if (c.dead)
@@ -557,6 +565,7 @@ namespace GH.Multiplay
 
             int count = 0;
             Setting.gameController.BlockManager.AddBlockInstance(card_Invade,card_Defend ,ref count);
+            Debug.Log("PlayerBlocksTargetCard: Blocking cards Sucessful");
 
             photonView.RPC("RPC_PlayerBlocksTargetCard_Client", PhotonTargets.All,
                 card_Defend, print_Defend, card_Invade, print_Invade, count);
@@ -568,6 +577,7 @@ namespace GH.Multiplay
             CardInstance card_Invade, NetworkPrint print_Invade, int count)
         {
             Setting.SetCardsForBlock(card_Defend.transform, card_Invade.transform, count);
+            Debug.Log("PlayerBlocksTargetCard: Move Cards to Defend Location Sucessful");
             
         }
         #endregion

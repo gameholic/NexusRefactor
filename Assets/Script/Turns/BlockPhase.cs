@@ -39,13 +39,13 @@ namespace GH.GameTurn
                 PlayerHolder enemy = gc.GetOpponentOf(gc.CurrentPlayer);
                 if (enemy.attackingCards.Count == 0)
                 {
-                    Debug.LogFormat("{0}, BlockPhase_OnStart: Can't find enemy attacking cards", gc.CurrentPlayer.player);
+                    Debug.LogFormat("{0}, BlockPhase_OnStart: Can't find enemy ({1}) attacking cards", gc.CurrentPlayer.player, enemy.player);
                     PhaseForceExit = true;
                     return;
                 }
                 foreach (CardInstance c in gc.CurrentPlayer.fieldCard)
                 {
-                    if (!c.GetCanAttack())
+                    if (c.GetCanAttack())
                     {
                         usableCards++;
                     }

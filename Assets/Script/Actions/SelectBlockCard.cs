@@ -32,18 +32,28 @@ namespace GH.GameStates
 
 
                     if (c != null)
-                    {
+                    {                        
                         if (c.owner != enemy && 
                             gc.CurrentPlayer.fieldCard.Contains(c) && 
                             c.GetCanAttack())
                         {
                             _SelectedCard.value = c;
-                            //c.OnClick();
                             gc.SetState(_HoldingCardState);
-                            _OnCardSelectEvent.Raise();
-                            
+                            _OnCardSelectEvent.Raise();                            
+                        }
+                        else if(!c.GetCanAttack())
+                        {
+                            Debug.LogErrorFormat("SelectBlockCardError: This {0} can't attack now", c.viz.card.name);
+                        }
+                        else if (!gc.CurrentPlayer.fieldCard.Contains(c))
+                        {
+                            Debug.LogErrorFormat("SelectBlockCardError: {0} don't have {1}", gc.CurrentPlayer,c.viz.card.name);
                         }
                         return;
+                    }
+                    else
+                    {
+                        Debug.LogError("SelectBlockCard_This card has no instance");
                     }
                 }
 

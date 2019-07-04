@@ -60,7 +60,7 @@ namespace GH.GameStates
                             }
                             else
                             {
-                                Debug.LogFormat("MouseHoldWithCard: can't block card.", gc.CurrentPlayer.player, c.viz.card.name);
+                                Debug.LogFormat("MouseHoldWithCard_{0}: {1} can't block card.", gc.CurrentPlayer.player, c.viz.card.name);
                             }
 
 
@@ -88,6 +88,10 @@ namespace GH.GameStates
                         {
                             a.OnDrop(a);
                             break;
+                        }
+                        else
+                        {
+                            Debug.LogError("MouseHoldWithCard: Card Can't be placed. Area is null");
                         }
                     }
                     _SelectedCard.value.gameObject.SetActive(true);

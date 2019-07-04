@@ -17,8 +17,7 @@ namespace GH.GameElements
         }
         public void OnDrop(Area a)
         {
-            //if (isPlaced == false)
-                _logic.Execute(a);
+            _logic.Execute(a);
         }
 
     }
