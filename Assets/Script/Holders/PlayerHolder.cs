@@ -52,6 +52,7 @@ namespace GH
 
         private List<int> _CardInstIds = new List<int>();
         private List<Card> _AllCardInstances = new List<Card>();
+        [SerializeField]//To check photon Id easily. This should be NonSerialized
         private int _PhotonId = -1;
         public int PhotonId
         {

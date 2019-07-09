@@ -409,6 +409,10 @@ namespace GH
             {
                 GetTurns(turnIndex).EndCurrentPhase();
             }
+            else
+            {
+                Debug.LogFormat("EndPhaseException: Current Player_ {0}", CurrentPlayer);
+            }
         }
         public void PutCardToGrave(CardInstance c)
         {

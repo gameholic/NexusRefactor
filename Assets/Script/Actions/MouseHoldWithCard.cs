@@ -39,14 +39,12 @@ namespace GH.GameStates
 
                 if (currentPhase == _PlayerBlockPhase)
                 {
-                    Debug.Log("MouseHoldWithCard: Block Phase is on");
                     for (int i = 0; i < results.Length; i++)
                     {
                         RaycastHit hit = results[i];
                         CardInstance c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
                         if (c != null)
                         {
-                            Debug.LogFormat("MouseHoldWithCard: {0} selected {1} for blocking.", gc.CurrentPlayer.player, c.viz.card.name);
                             int count = 0;
                             bool block = c.CanBeBlocked(_SelectedCard.value, ref count);
                             if (block)
@@ -60,7 +58,7 @@ namespace GH.GameStates
                             }
                             else
                             {
-                                Debug.LogFormat("MouseHoldWithCard_{0}: {1} can't block card.", gc.CurrentPlayer.player, c.viz.card.name);
+                                Debug.LogFormat("MouseHoldWithCard_{0}: {1} can't be blocked card.", gc.CurrentPlayer.player, c.viz.card.name);
                             }
 
 

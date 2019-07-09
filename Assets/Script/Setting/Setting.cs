@@ -32,7 +32,9 @@ namespace GH
         public static void DropCreatureCard(Transform cardTransform, Transform destTransform, Card card)
         {
             SetParentForCard(cardTransform, destTransform);
-            card.Instance.CantUse(true);
+            card.Instance.CanUseViz(false);
+            card.Instance.SetCanAttack(false);
+            card.Instance.gameObject.SetActive(true);
             gameController.CurrentPlayer.PayMana(card);
             gameController.CurrentPlayer.DropCardOnField(card.Instance);
 
@@ -62,7 +64,6 @@ namespace GH
         public static void SetParentForCard(Transform c, Transform p, Vector3 newLocalPosition, Vector3 newEuler)
         /// Move card 'c' to 'p'
         {
-
             c.SetParent(p.parent);
             //c.rotation = Quaternion.Euler(newEuler);
             c.rotation = p.rotation;
@@ -71,15 +72,14 @@ namespace GH
         }
 
        
-        public static void SetCardsForBlock(Transform c, Transform p, int count)
+        public static void SetCardsForBlock(Transform defendCard, Transform attackingCard, int count)
         {
             //Change numbers that looks good to player
             Vector3 blockPosition = Vector3.zero;
             blockPosition.x += 2 * count;
             blockPosition.y -= 2;
-            SetParentForCard(c, p, blockPosition, Vector3.zero);
+            SetParentForCard(defendCard, attackingCard, blockPosition, Vector3.zero);
             Debug.Log("SetCardForBlock: Works well");
-
         }
     }
 

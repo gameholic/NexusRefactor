@@ -30,6 +30,10 @@ namespace GH.GameTurn
                 IsInit = true;
                 MultiplayManager.singleton.SetBattleResolvePhase();
             }
+            else
+            {
+                Debug.LogError("BattleResolveOnStartPhase: IsInit is true. BattleResolveOut");
+            }
         }
     }
 }

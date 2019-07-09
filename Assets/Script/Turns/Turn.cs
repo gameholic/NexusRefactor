@@ -84,12 +84,9 @@ namespace GH.GameTurn
 
         public bool Execute()
         {
-
             //Return value. Only gets true when turn runs all phases.
             bool result = false;
-
             _CurrentPhase.value = _Phases[PhaseIndex];
-
             //At the first phase, which is beginning of the turn runs TurnStartActions
             if (PhaseIndex == 0 && TurnBegin == true)
             {
@@ -99,6 +96,7 @@ namespace GH.GameTurn
 
             if(phaseStart)
             {
+                Debug.Log("Turn_PhaseStat: "+ _Phases[PhaseIndex].PhaseName);
                 _Phases[PhaseIndex].OnStartPhase();
                 phaseStart = false;
 
@@ -112,47 +110,17 @@ namespace GH.GameTurn
                 _Phases[PhaseIndex].OnEndPhase();
                 PhaseIndex++;
                 phaseStart = true;
-                if (PhaseIndex + 1 >= _Phases.Length)
+                if (PhaseIndex + 1 > _Phases.Length)
                 {
                     TurnBegin = true;
                     result = true;
                     PhaseIndex = 0;
                 }
                 MultiplayManager.singleton.SendPhase(ThisTurnPlayer.name, _Phases[PhaseIndex].PhaseName);
-
             }
             return result;
-
-            //bool result = false;
-            //_CurrentPhase.value = _Phases[PhaseIndex];
-            //if (TurnBegin)
-            //{
-            //    TurnStartActions();
-            //    TurnBegin = false;
-            //}
-
-            //_Phases[PhaseIndex].OnStartPhase();
-            //bool IsComplete = _Phases[PhaseIndex].IsComplete();
-
-            //if (IsComplete)
-            //{
-            //    _Phases[PhaseIndex].OnEndPhase();
-            //    _PhaseIndex++;
-            //    if (PhaseIndex > _Phases.Length - 1)
-            //    {
-            //        _PhaseIndex = 0;
-            //        TurnBegin = true;
-            //        result = true;
-            //    }
-            //    MultiplayManager.singleton.SendPhase(ThisTurnPlayer.name, _Phases[PhaseIndex].PhaseName);
-            //}
-            //return result;
         }
-
         #endregion
-
-
-
     }
 }
 

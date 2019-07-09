@@ -10,6 +10,7 @@ namespace GH.GameAction
     {
         public override void Execute(PlayerHolder p)
         {
+            Debug.Log("ResetCard_Current Player: " + p.player);
             MultiplayManager.singleton.PlayerResetFlatFootedCard(p.PhotonId);
         }
     }

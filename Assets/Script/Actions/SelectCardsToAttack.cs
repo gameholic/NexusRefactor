@@ -42,7 +42,7 @@ namespace GH
                     else
                     {
                         //Send error message if 'CardInstance' is null
-                        Debug.LogErrorFormat("Card Instance is null");
+                        Debug.LogErrorFormat("Card Instance ({0}) is null", inst.viz.card.name);
                         return;            
                     }
                 }   
