@@ -32,7 +32,7 @@ namespace GH
         public static void DropCreatureCard(Transform cardTransform, Transform destTransform, Card card)
         {
             SetParentForCard(cardTransform, destTransform);
-            card.Instance.CanUseViz(false);
+            card.Instance.CanUseByViz(false);
             card.Instance.SetCanAttack(false);
             card.Instance.gameObject.SetActive(true);
             gameController.CurrentPlayer.PayMana(card);

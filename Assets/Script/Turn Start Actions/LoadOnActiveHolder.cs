@@ -12,7 +12,7 @@ namespace GH.GameAction
         public override void Execute(PlayerHolder p)
         {
             //GameController.singleton.LoadPlayerOnActive(p);
-            GameController.singleton.LoadPlayerUI.LoadPlayerOnActive(p);
+            //GameController.singleton.LoadPlayerUI.LoadPlayerOnActive(p);
         }
     }
 }

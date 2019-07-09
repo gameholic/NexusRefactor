@@ -30,7 +30,7 @@ namespace GH.GameStates
                     //Debug.Log("Check Obj Owner: " + check);
                     if (!check)//break when the gameObject is unclickable (other player's gameObject);
                     {
-                        Debug.Log("This isn't your control");
+                        Debug.LogWarning("MouseOnClick:You can't select enemy card.");
                         break;
                     }
 

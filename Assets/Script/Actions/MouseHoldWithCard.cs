@@ -39,6 +39,7 @@ namespace GH.GameStates
 
                 if (currentPhase == _PlayerBlockPhase)
                 {
+                    //Selecting card to block enemy attacking card
                     for (int i = 0; i < results.Length; i++)
                     {
                         RaycastHit hit = results[i];

@@ -69,11 +69,13 @@ namespace GH.GameTurn
         {
             if (_TurnStartAction == null)
                 return;
+
             for (int i = 0; i < _TurnStartAction.Length; i++)
             {
+                Debug.LogFormat("Turn_TurnStartAction_{0} Run", _TurnStartAction[i].name);
                 _TurnStartAction[i].Execute(ThisTurnPlayer);
             }
-            Setting.RegisterLog(ThisTurnPlayer.name + " started turn", ThisTurnPlayer.playerColor);
+
 
             if (ThisTurnPlayer.manaResourceManager.GetMaxMana() < 10)
                 ThisTurnPlayer.manaResourceManager.UpdateMaxMana(1);
@@ -90,13 +92,14 @@ namespace GH.GameTurn
             //At the first phase, which is beginning of the turn runs TurnStartActions
             if (PhaseIndex == 0 && TurnBegin == true)
             {
+                Debug.Log("Turn: Execute Turn Start Action");
                 TurnStartActions();
                 TurnBegin = false;
             }
 
             if(phaseStart)
             {
-                Debug.Log("Turn_PhaseStat: "+ _Phases[PhaseIndex].PhaseName);
+                Debug.Log("Turn_PhaseStart: "+ _Phases[PhaseIndex].PhaseName);
                 _Phases[PhaseIndex].OnStartPhase();
                 phaseStart = false;
 

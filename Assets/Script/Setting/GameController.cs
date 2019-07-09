@@ -344,7 +344,6 @@ namespace GH
                         GetTurns(turnIndex).TurnBegin = startTurn;
                         turnCounter++;
                     }
-
                     startTurn = true;
                     turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString();
                     //switchPlayer = true;
@@ -393,16 +392,19 @@ namespace GH
         {
             _CurrentState = state;
         }
+
+        public void ForceEndPhase()
+        {
+            GetTurns(turnIndex).EndCurrentPhase();
+        }
         public void EndPhaseByBattleResolve()
         {
             EndPhase();
         }
-
         public void EndPhaseByButton()
         {
             EndPhase();
         }
-
         private void EndPhase()
         {
             if (CurrentPlayer.isHumanPlayer && CurrentPlayer == localPlayer)

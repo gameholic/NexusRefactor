@@ -66,8 +66,9 @@ namespace GH.GameCard
         /// 
         /// </summary>
         /// <param name="usable"></param>
-        public void CanUseViz(bool usable)
+        public void CanUseByViz(bool usable)
         {
+            Debug.Log("CanUseByVizRun");
             if (usable)
             {
                 Debug.LogFormat("This card_{0} can use now", this.viz.card.name);
@@ -128,7 +129,6 @@ namespace GH.GameCard
 
         public void OnClick()
         {
-
             if (currentLogic == null)
                 return;
             currentLogic.OnClick(this);

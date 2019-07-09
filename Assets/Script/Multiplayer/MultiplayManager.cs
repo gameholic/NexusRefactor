@@ -206,7 +206,7 @@ namespace GH.Multiplay
         [PunRPC]
         public void RPC_PlayerEndsTurn(int photonId)
         {
-            //Debug.LogFormat("{0} ends turn.", p.ThisPlayer.player);
+            Debug.LogFormat("RPC_PlayerEndsTurn: {0} ends turn.", GC.CurrentPlayer.player);
 
             if (photonId == GC.CurrentPlayer.PhotonId)
             {
@@ -400,20 +400,21 @@ namespace GH.Multiplay
         [PunRPC]
         public void RPC_BattleResolve()
         {
+            Debug.LogFormat("RPC_BattleResolve_CurrentPlayer: {0}. Network Master Check: {1}",GC.CurrentPlayer.player,NetworkManager.IsMaster);
             if (!NetworkManager.IsMaster)
             {
-                Debug.LogFormat("{0} is not Network Master. BattleResolve out", GC.CurrentPlayer.player);
+                Debug.LogWarning("This Player is not network master. Battle Resolve End");
                 Setting.gameController.EndPhaseByBattleResolve();
                 return;
             }
             else
             {
+                Debug.Log("This Player is Network Master. Battle Resolve Starts");
                 BattleResolveForPlayers();
             }
         }
         private void BattleResolveForPlayers()
         {
-            Debug.Log("BattleResolveForPlayerStarted");
             GameController gc = Setting.gameController;
             PlayerHolder p = Setting.gameController.CurrentPlayer;
             PlayerHolder e = Setting.gameController.GetOpponentOf(p);
@@ -427,15 +428,14 @@ namespace GH.Multiplay
             if (p.attackingCards.Count == 0)
             {
                 photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, p.PhotonId);
-                Debug.LogError("BattleResolveCallBackFailed");
-                Debug.LogError("BattleResolveForPlayers_PlayerNoAttackingCards: Force Exit current phase.");
+                Debug.LogWarning("BattleResolveCallBackFailed_ForceExit Won't Work");
             }
 
 
             Dictionary<CardInstance, BlockInstance> defDic = gc.BlockManager.BlockInstDict;
             if(defDic == null)
             {
-                Debug.LogError("BattleResolve_Error: Defending card instance dictionary is null");
+                Debug.LogWarning("BattleResolve_Error: Defending card instance dictionary is null");
             }
 
             for (int i = 0; i < p.attackingCards.Count; i++)
@@ -483,7 +483,7 @@ namespace GH.Multiplay
                 {
                     p.DropCardOnField(inst, false);
                     p._CardHolder.SetCardDown(inst);
-                    inst.CanUseViz(false);
+                    inst.CanUseByViz(false);
                     photonView.RPC("RPC_SyncPlayerHealth", PhotonTargets.All ,e.PhotonId, e.Health);
                 }
                 ////////
@@ -502,17 +502,20 @@ namespace GH.Multiplay
                     break;
                 }
                 Debug.Log("BattleResolveForPlayer_ResetCard");
-                c.CanUseViz(true);
+                c.CanUseByViz(true);
                 //This Makes Card Rotation at first turn
                 Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
             }
-            if(e.fieldCard.Count!=0)
+            if(e.attackingCards.Count!=0)
             {
                 foreach (CardInstance c in e.fieldCard)
                 {
+                    Debug.Log("BattleResolveForPlayer_ResetEnemyCards");
                     Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
                 }
             }
+
+            Debug.Log("BattleResolveForPlayer: EndOfCode_CallBackRun");
             photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, p.PhotonId);
             
         }
@@ -537,7 +540,7 @@ namespace GH.Multiplay
                 bool isAttacker = false;
                 if(p.photonId == photonId)
                 {
-                    Debug.LogFormat("RPC_BattleResolveCallBack: LocalPlayerNWCheck__Current Player: {0} // This local: {1}",
+                    Debug.LogFormat("RPC_BattleResolveCallBack: LocalPlayerNWCheck__Current Player: {0} // The local player: {1}",
                        p.ThisPlayer, localPlayerNWPrint.ThisPlayer);
                     if (p == localPlayerNWPrint)
                     {
@@ -547,14 +550,16 @@ namespace GH.Multiplay
                     }
                     else
                     {
-                        Debug.Log("RPC_BattleResolveCallBack: Err");
+                        Debug.Log("RPC_BattleResolveCallBack: FailedToEnd_ThisPlayerIsNotLocalPlayer");
+                        //Setting.gameController.ForceEndPhase();
                     }
                 }
 
                 foreach (CardInstance c in p.ThisPlayer.attackingCards)
                 {
+                    Debug.LogFormat("{0} was attacking. Call back",c.viz.card.name);
                     p.ThisPlayer._CardHolder.SetCardDown(c);
-                    c.CanUseViz(false);
+                    c.CanUseByViz(false);
                 }
 
                 p.ThisPlayer.attackingCards.Clear();
@@ -642,7 +647,7 @@ namespace GH.Multiplay
                 if (!c.GetCanAttack())
                 {
                     c.SetCanAttack(true);
-                    c.CanUseViz(true);
+                    c.CanUseByViz(true);
                     Debug.LogFormat("PlayerCanUseCard: {0} can use {1} to Attack ",nw_Player.ThisPlayer.userID,c.viz.card.name);
                 }
             }
