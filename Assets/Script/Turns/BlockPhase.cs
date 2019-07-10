@@ -37,6 +37,8 @@ namespace GH.GameTurn
                 IsInit = true;
                 int usableCards = 0;
                 PlayerHolder enemy = gc.GetOpponentOf(gc.CurrentPlayer);
+
+                //Exit logic 1: If there is no attacking cards to block. this phase don't need to be initiated. End turn
                 if (enemy.attackingCards.Count == 0)
                 {
                     Debug.LogFormat("{0}, BlockPhase_OnStart: Can't find enemy ({1}) attacking cards", gc.CurrentPlayer.player, enemy.player);
@@ -45,11 +47,13 @@ namespace GH.GameTurn
                 }
                 foreach (CardInstance c in gc.CurrentPlayer.fieldCard)
                 {
-                    if (c.GetCanAttack())
+                    if (c.GetAttackable())
                     {
                         usableCards++;
                     }
                 }
+
+                //Exit logic 2: If there is no cards to block enemy card, this phase don't need to be initiated. End turn
                 if (usableCards < 1)
                 {
                     Debug.LogFormat("{0}, BlockPhase_OnStart: There is no blockable cards", gc.CurrentPlayer.player);

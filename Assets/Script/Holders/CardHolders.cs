@@ -48,8 +48,11 @@ namespace GH
             
         }
 
-        public void SetCardDown(CardInstance card)
+        public void SetCardBackToOrigin(CardInstance card)
         {
+            Debug.LogFormat("{0} is going back to its original field location, {1}", card.viz.card.name,
+                card.GetOriginFieldLocation().transform.gameObject.name);
+
 
             Setting.SetParentForCard(card.transform, card.GetOriginFieldLocation()); 
             //Replace card to original place from battle line or whereever

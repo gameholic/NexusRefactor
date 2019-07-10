@@ -33,7 +33,7 @@ namespace GH
         {
             SetParentForCard(cardTransform, destTransform);
             card.Instance.CanUseByViz(false);
-            card.Instance.SetCanAttack(false);
+            card.Instance.SetAttackable(false);
             card.Instance.gameObject.SetActive(true);
             gameController.CurrentPlayer.PayMana(card);
             gameController.CurrentPlayer.DropCardOnField(card.Instance);
@@ -72,6 +72,13 @@ namespace GH
         }
 
        
+        /// <summary>
+        /// This function only changes gameobject's location.
+        /// Move 'defendingCard' position to near 'attackingCard'.
+        /// </summary>
+        /// <param name="defendCard"></param>
+        /// <param name="attackingCard"></param>
+        /// <param name="count"></param>
         public static void SetCardsForBlock(Transform defendCard, Transform attackingCard, int count)
         {
             //Change numbers that looks good to player
@@ -79,7 +86,6 @@ namespace GH
             blockPosition.x += 2 * count;
             blockPosition.y -= 2;
             SetParentForCard(defendCard, attackingCard, blockPosition, Vector3.zero);
-            Debug.Log("SetCardForBlock: Works well");
         }
     }
 

@@ -11,13 +11,13 @@ namespace GH.GameCard
         public Instance_logic currentLogic;
         public CardViz viz;
         [SerializeField] //This needs to be deleted
-        private bool canAttack =false ; //Indicates that card is just placed and can't attak this turn.
+        private bool attackable =false ; //Indicates that card is just placed and can't attak this turn.
         public bool dead;
         private bool _isOnAttack = false;
         private Transform parentFieldTransform;
         private int fieldIndex;
 
-        public bool GetCanAttack()
+        public bool GetAttackable()
         {
             bool result = true;
 
@@ -25,13 +25,13 @@ namespace GH.GameCard
             {
                 result = true;
             }
-            if (!canAttack)
+            if (!attackable)
                 result = false;
             return result;
         }
-        public void SetCanAttack(bool available)
+        public void SetAttackable(bool available)
         {
-            canAttack = available;
+            attackable = available;
         }
         public bool IsOnAttack
         {
@@ -48,8 +48,10 @@ namespace GH.GameCard
         {
             if (parentFieldTransform == null)
             {
-                Debug.Log("ParentFieldNULL/ Card: " + this.viz.card.name);
-                return null;
+                //This might occur if card instance is called by its id
+                Debug.LogErrorFormat("GetOriginalFieldLocationError: Field Location isn't saved");
+                this.transform.position = new Vector3(-65, 1, 25);
+                return this.transform;
             }
             return parentFieldTransform;
         }
@@ -68,7 +70,7 @@ namespace GH.GameCard
         /// <param name="usable"></param>
         public void CanUseByViz(bool usable)
         {
-            Debug.Log("CanUseByVizRun");
+            Debug.Log("CanUseByViz: This card owner "+owner.player);
             if (usable)
             {
                 Debug.LogFormat("This card_{0} can use now", this.viz.card.name);
@@ -86,7 +88,7 @@ namespace GH.GameCard
         public void CardInstanceToGrave()
         {
             //Card die
-            canAttack = false;
+            attackable = false;
             Setting.gameController.PutCardToGrave(this);
             Setting.RegisterLog(this.viz.card + "Card die", Color.black);
 

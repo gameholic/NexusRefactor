@@ -35,13 +35,13 @@ namespace GH.GameStates
                     {                        
                         if (c.owner != enemy && 
                             gc.CurrentPlayer.fieldCard.Contains(c) && 
-                            c.GetCanAttack())
+                            c.GetAttackable())
                         {
                             _SelectedCard.value = c;
                             gc.SetState(_HoldingCardState);
                             _OnCardSelectEvent.Raise();                            
                         }
-                        else if(!c.GetCanAttack())
+                        else if(!c.GetAttackable())
                         {
                             Debug.LogErrorFormat("SelectBlockCardError: This {0} can't attack now", c.viz.card.name);
                         }

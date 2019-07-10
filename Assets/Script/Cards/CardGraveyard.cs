@@ -6,19 +6,18 @@ namespace GH.GameCard{
     public class CardGraveyard : ScriptableObject
     {
         [SerializeField]
-        private TransformVariable[] _GraveYard;
+        private TransformVariable _GraveYard;
 
 
-        public TransformVariable GetGraveYard(int playerCode)
+        public TransformVariable GetGraveYard()
         {
-             return _GraveYard[playerCode];
+             return _GraveYard;
         }
         public void PutCardToGrave(CardInstance c)
         {
             PlayerHolder cardOwner = c.owner;
             GameObject graveyardObj = null;
             cardOwner.graveyard.Add(c);
-            
 
             //Should check owner to move card to graveyard
             //if (c.owner.player == "Player1")
@@ -27,13 +26,13 @@ namespace GH.GameCard{
             //    graveyardObj = GetGraveYard(1).value.gameObject;
 
 
-            if (graveyardObj == null)
+            if (_GraveYard == null)
             {
                 Debug.LogError("Failed to check obj");
             }
             else
             {
-                Setting.SetParentForCard(c.transform, graveyardObj.transform);
+                Setting.SetParentForCard(c.transform, _GraveYard.value);
             }
 
             if (cardOwner.fieldCard.Contains(c))
@@ -50,8 +49,9 @@ namespace GH.GameCard{
             {
                 cardOwner.attackingCards.Remove(c);
             }
-            Area a = c.GetComponentInParent<Area>();
-            a.IsPlaced = false;
+
+            //Area a = c.GetComponentInParent<Area>();
+            //a.IsPlaced = false;
             c.dead = true;
             c.gameObject.SetActive(false);
             c.gameObject.GetComponentInChildren<CardInstance>().enabled = false;

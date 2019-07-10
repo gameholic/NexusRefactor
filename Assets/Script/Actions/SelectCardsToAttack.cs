@@ -32,7 +32,7 @@ namespace GH
                     if(inst!=null)
                     {
                         //If selected card can't perform attack in whatever reason, finish codes with error message
-                        if (!inst.GetCanAttack())
+                        if (!inst.GetAttackable())
                         {
                             Debug.LogWarningFormat("{0} can't attack.", inst.viz.card.name);
                             return;

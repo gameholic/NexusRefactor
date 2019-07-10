@@ -363,20 +363,22 @@ namespace GH.Multiplay
                     ///This error occurs only to client.
                     ///Expecting Error : What if there is same card attacking together?
                     ///If selected is already on attack, remove that card from 'attackingCards' list and place back to original field location
-                    ///if (currentPlayer.attackingCards.Contains(card.Instance))
-                    ///{
-                    ///    currentPlayer.attackingCards.Remove(card.Instance);
-                    ///    currentPlayer._CardHolder.SetCardDown(card.Instance);                           
-                    ///}
-                    ///
-
                     // Deleting same position of line: alt + shif + arrow
+
+
                     //If card isn't on attack, move card to 'BattleLine'obj and add at 'attackingCards' list
-                    //else
-                    //{
-                    currentPlayer.attackingCards.Add(card.Instance);
+                    if (currentPlayer.attackingCards.Contains(card.Instance))
+                    {
+                        currentPlayer.attackingCards.Remove(card.Instance);
+                        currentPlayer._CardHolder.SetCardBackToOrigin(card.Instance);
+                    }
+                    else
+                    {
+                        currentPlayer.attackingCards.Add(card.Instance);
                         currentPlayer._CardHolder.SetCardOnBattleLine(card.Instance);
-                    //}
+                        Debug.LogFormat("RPC_PlayerUsesCard: {0} selected {1} to attack. {0} has {2} attacking cards"
+                            , currentPlayer.player, card.Instance.viz.card.name, currentPlayer.attackingCards.Count);
+                    }
                     break;
 
                 case CardOperation.cardToGraveyard:
@@ -416,31 +418,35 @@ namespace GH.Multiplay
         private void BattleResolveForPlayers()
         {
             GameController gc = Setting.gameController;
-            PlayerHolder p = Setting.gameController.CurrentPlayer;
-            PlayerHolder e = Setting.gameController.GetOpponentOf(p);
+            PlayerHolder currentPlayer = Setting.gameController.CurrentPlayer;
+            PlayerHolder enemyPlayer = Setting.gameController.GetOpponentOf(currentPlayer);
 
             Element elementAttack = MainData.AttackElement;
             Element elementHealth = MainData.HealthElement;
 
 
-            if (p == e)
-                Debug.LogError("BattleResolve_Error: This Player and Opponent Player is same");
-            if (p.attackingCards.Count == 0)
+            //When there is no attacking card, Battle resolve don't need to be run. End the phase
+            if (enemyPlayer.attackingCards.Count == 0)
             {
-                photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, p.PhotonId);
+                photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, currentPlayer.PhotonId);
                 Debug.LogWarning("BattleResolveCallBackFailed_ForceExit Won't Work");
+                return;
             }
 
-
-            Dictionary<CardInstance, BlockInstance> defDic = gc.BlockManager.BlockInstDict;
-            if(defDic == null)
+            //Get defending cards from the manager
+            //Dictionary<CardInstance, BlockInstance> defDic = gc.BlockManager.BlockInstDict;
+            Dictionary<CardInstance, BlockInstance> blockInstDict = gc.BlockManager.BlockInstDict;
+            if (blockInstDict == null)
             {
                 Debug.LogWarning("BattleResolve_Error: Defending card instance dictionary is null");
+                return;
             }
 
-            for (int i = 0; i < p.attackingCards.Count; i++)
+
+            //Every current player's attacking card, 
+            for (int i = 0; i < enemyPlayer.attackingCards.Count; i++)
             {
-                CardInstance inst = p.attackingCards[i];
+                CardInstance inst = enemyPlayer.attackingCards[i];
                 Card c = inst.viz.card;
                 CardProperties attack = c.GetProperties(elementAttack);
                 if (attack == null)
@@ -450,74 +456,85 @@ namespace GH.Multiplay
                 }
 
                 int attackValue = attack.intValue;
-                BlockInstance bi = gc.BlockManager.GetBlockInstanceOfAttacker(inst, defDic);
-                if (bi != null)
+
+                BlockInstance blockInstance = gc.BlockManager.GetBlockInstanceByAttacker(inst, blockInstDict);
+                if (blockInstance != null)
                 {
-                    for (int defenders = 0; defenders < bi.defenders.Count; defenders++)
+                    Debug.Log("BattleResolve: There is block instance for "+inst.viz.card.name);
+                    for (int defenders = 0; defenders < blockInstance.defenders.Count; defenders++)
                     {
                         CardProperties def = c.GetProperties(elementHealth);
                         if (def == null)
                         {
-                            Debug.LogWarning("You are trying to block with a card with no def element");
+                            Debug.LogWarning("You are trying to block with a card with no health element");
                             continue;
-                        }
-
+                        }                         
                         attackValue -= def.intValue;
                         if (def.intValue <= attackValue)
                         {
-                            bi.defenders[i].CardInstanceToGrave();
+                            blockInstance.defenders[i].CardInstanceToGrave();
                         }
                     }
                 }
                 else
                 {
-                    Debug.LogError("BattleResolve_Error: Attacking card instance dictionary is null");
+                    Debug.LogWarning("BattleResolve_Error: Attacking card instance dictionary is null");
                 }
 
+
+                Debug.Log("BattleResolve: Attacking card damage calculation");
                 if (attackValue <= 0)
                 {
                     attackValue = 0;
-                    PlayerTryToUseCard(inst.viz.card.InstId, p.PhotonId, CardOperation.cardToGraveyard);
+                    PlayerTryToUseCard(inst.viz.card.InstId, enemyPlayer.PhotonId, CardOperation.cardToGraveyard);
+                    Debug.Log("BattleResolve: Attacked card died. this card goes to grave");
                 }
                 else
                 {
-                    p.DropCardOnField(inst, false);
-                    p._CardHolder.SetCardDown(inst);
-                    inst.CanUseByViz(false);
-                    photonView.RPC("RPC_SyncPlayerHealth", PhotonTargets.All ,e.PhotonId, e.Health);
+                    enemyPlayer.DropCardOnField(inst, false);
+                    //p._CardHolder.SetCardDown(inst);
+                    //inst.CanUseByViz(false);
+                    currentPlayer.DoDamage(attackValue);
+                    Debug.LogFormat("BattleResolve: {0} took damage of {1}", currentPlayer.player, attackValue);
+                    photonView.RPC("RPC_SyncPlayerHealth", PhotonTargets.All , currentPlayer.PhotonId, currentPlayer.Health);
                 }
                 ////////
                 Setting.RegisterLog("Attack damage is " + attackValue, Color.red);
-                e.DoDamage(attackValue);
+                enemyPlayer.DoDamage(attackValue);
             }
 
-            Dictionary<CardInstance, BlockInstance> blockInstances = gc.BlockManager.BlockInstDict;
 
 
-            //Return all alive cards to its original location
-            foreach (CardInstance c in blockInstances.Keys)
+
+
+
+            //Dictionary<CardInstance, BlockInstance> blockInstDict = gc.BlockManager.BlockInstDict;
+            //Return all alive blocking cards to its original field location
+            //'BlockInstDict' Key is card instances 
+            foreach (CardInstance c in blockInstDict.Keys)
             {
                 if (c.dead)
                 {
+                    Debug.LogFormat("BattleResolve_BattleFinished: {0} is dead", c.viz.card.name);
                     break;
                 }
-                Debug.Log("BattleResolveForPlayer_ResetCard");
+                Debug.Log("BattleResolveForPlayer_BattleFinished: ResetCard. Move Card to its original field location");
                 c.CanUseByViz(true);
-                //This Makes Card Rotation at first turn
                 Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
             }
-            if(e.attackingCards.Count!=0)
+            if(enemyPlayer.fieldCard.Count!=0)
+            //if (e.attackingCards.Count!=0)
             {
-                foreach (CardInstance c in e.fieldCard)
+                foreach (CardInstance c in enemyPlayer.fieldCard)
                 {
                     Debug.Log("BattleResolveForPlayer_ResetEnemyCards");
                     Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
                 }
             }
 
-            Debug.Log("BattleResolveForPlayer: EndOfCode_CallBackRun");
-            photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, p.PhotonId);
-            
+            Debug.Log("BattleResolveForPlayer: EndOfCode_CallBack_Run");
+            //After all battle logics are finished, run callback to clean up remaining variables
+            photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, currentPlayer.PhotonId);            
         }
 
 
@@ -526,26 +543,30 @@ namespace GH.Multiplay
         {
             NetworkPrint nw_player = GetPlayer(photonId);
             nw_player.ThisPlayer.Health = health;
-
-
         }
         [PunRPC]
         public void RPC_BattleResolvesCallBack(int photonId)
         {
-            Setting.gameController.BlockManager.ClearBlockInst();
-
-
             foreach(NetworkPrint p in Players)
             {
-                bool isAttacker = false;
-                if(p.photonId == photonId)
+                //Enemy player, who tryed to attack on his/her last turn needs their attacking cards reset                
+                //Move all enemy attacking cards to its original position and set visual of card to 'cant use'                
+                foreach (CardInstance c in p.ThisPlayer.attackingCards)
                 {
-                    Debug.LogFormat("RPC_BattleResolveCallBack: LocalPlayerNWCheck__Current Player: {0} // The local player: {1}",
-                       p.ThisPlayer, localPlayerNWPrint.ThisPlayer);
+                    Debug.LogFormat("{0} was attacking. Call back", c.viz.card.name);
+                    p.ThisPlayer._CardHolder.SetCardBackToOrigin(c);
+
+                    c.CanUseByViz(false);
+                    c.SetAttackable(false);
+                }
+
+                //Find Current Player NetworkPrint
+                if (p.photonId == photonId)
+                {
                     if (p == localPlayerNWPrint)
                     {
-                        isAttacker = true;
                         Debug.Log("RPC_BattleResolvesCallBack: End");
+                        //As Current Player, who is defender don't have attacking card, can finish phase here
                         Setting.gameController.EndPhaseByBattleResolve();
                     }
                     else
@@ -554,16 +575,23 @@ namespace GH.Multiplay
                         //Setting.gameController.ForceEndPhase();
                     }
                 }
+                Debug.LogWarningFormat("RPC_BattleResolveCallback: {0}'s attacking cards are going to be cleared.", p.ThisPlayer);
+                //Clear all attacking cards.
+                p.ThisPlayer.attackingCards.Clear();                
+            }
 
-                foreach (CardInstance c in p.ThisPlayer.attackingCards)
+            foreach(BlockInstance bi in Setting.gameController.BlockManager.BlockInstDict.Values)
+            {
+                foreach(CardInstance c in bi.defenders)
                 {
-                    Debug.LogFormat("{0} was attacking. Call back",c.viz.card.name);
-                    p.ThisPlayer._CardHolder.SetCardDown(c);
-                    c.CanUseByViz(false);
+                    c.owner._CardHolder.SetCardBackToOrigin(c);
                 }
 
-                p.ThisPlayer.attackingCards.Clear();
             }
+
+
+            //Clear block instances. All attacking and defending cards are deleted from dictionary
+            Setting.gameController.BlockManager.ClearBlockInst();
         }
 
         #endregion
@@ -586,16 +614,21 @@ namespace GH.Multiplay
             CardInstance card_Invade = print_Invade.GetCard(attackCardInstId).Instance;
             
             int count = 0;
+
+            //Make new BlockInstance wth 'card_Invade' and 'card_Defend'
+            //If there is BlockInstance with 'card_Invade', it will automatically add 'card_Defend' in existing BlockInstance with increasing 'count'
             Setting.gameController.BlockManager.AddBlockInstance(card_Invade,card_Defend ,ref count);
 
             Debug.Log("PlayerBlocksTargetCard_Master: Blocking cards successfully added");
-            
+
+            photonView.RPC("RPC_PlayerBlocksTargetCard_Client", PhotonTargets.All,
+                defendCardInstId, defenderPhotonId, attackCardInstId, attackerPhotonId, count);
+
             //Sending CardInstance and NetworkPrint through RPC can't be done
             //Those types must be serialized
             //photonView.RPC("RPC_PlayerBlocksTargetCard_Client", PhotonTargets.All,
             //    card_Defend, print_Defend, card_Invade, print_Invade, count);
-            photonView.RPC("RPC_PlayerBlocksTargetCard_Client", PhotonTargets.All,
-                defendCardInstId, defenderPhotonId, attackCardInstId, attackerPhotonId, count);
+
         }
 
 
@@ -644,9 +677,9 @@ namespace GH.Multiplay
             NetworkPrint nw_Player = GetPlayer(photonId);
             foreach (CardInstance c in nw_Player.ThisPlayer.fieldCard)
             {
-                if (!c.GetCanAttack())
+                if (!c.GetAttackable())
                 {
-                    c.SetCanAttack(true);
+                    c.SetAttackable(true);
                     c.CanUseByViz(true);
                     Debug.LogFormat("PlayerCanUseCard: {0} can use {1} to Attack ",nw_Player.ThisPlayer.userID,c.viz.card.name);
                 }
