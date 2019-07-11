@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224117018312307500}
   - component: {fileID: 212778573941502386}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: info_background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1114191846875136}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -116,7 +116,6 @@ Transform:
   - {fileID: 7868231209745646146}
   - {fileID: 4486485594454064}
   - {fileID: 4079521648294344}
-  - {fileID: 525885713297444609}
   m_Father: {fileID: 2285028165252863233}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -127,9 +126,9 @@ SortingGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1114191846875136}
-  m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_Enabled: 0
+  m_SortingLayerID: -1983456377
+  m_SortingLayer: 7
   m_SortingOrder: 0
 --- !u!1 &1241017477130548
 GameObject:
@@ -143,7 +142,7 @@ GameObject:
   - component: {fileID: 222623796117388176}
   - component: {fileID: 23922405270534788}
   - component: {fileID: 102964036181191226}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Type_txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +350,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224734894568555522}
   - component: {fileID: 212566199332236922}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: life
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,6 +433,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4079521648294344}
+  - component: {fileID: 5746893959610000017}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -455,9 +455,21 @@ Transform:
   - {fileID: 5134311786454837938}
   - {fileID: 224828152699737026}
   - {fileID: 224462583746478266}
+  - {fileID: 224048225198659574}
   m_Father: {fileID: 4184818562495592}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &5746893959610000017
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586275683725876}
+  m_Enabled: 1
+  m_SortingLayerID: -777759451
+  m_SortingLayer: 10
+  m_SortingOrder: 0
 --- !u!1 &1587274964943410
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,7 +481,7 @@ GameObject:
   - component: {fileID: 224553740122744430}
   - component: {fileID: 222517730854822280}
   - component: {fileID: 212847337323093776}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: card_outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -563,7 +575,7 @@ GameObject:
   - component: {fileID: 222675681078521444}
   - component: {fileID: 23378370734363156}
   - component: {fileID: 102844141485720846}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Ability_txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -668,7 +680,7 @@ GameObject:
   - component: {fileID: 222000048116195534}
   - component: {fileID: 23248409925976838}
   - component: {fileID: 102256164771601844}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: mana_txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -686,12 +698,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.7, y: 0.70000166, z: 1}
   m_Children: []
-  m_Father: {fileID: 525885713297444609}
-  m_RootOrder: 1
+  m_Father: {fileID: 4079521648294344}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.15, y: -0.15}
+  m_AnchoredPosition: {x: -5.4500003, y: 7.75}
   m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222000048116195534
@@ -772,7 +784,7 @@ GameObject:
   - component: {fileID: 224094100676776864}
   - component: {fileID: 222534231495617842}
   - component: {fileID: 212289908514709976}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: card_innerline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -865,7 +877,7 @@ GameObject:
   - component: {fileID: 224776361550568528}
   - component: {fileID: 222679504838910904}
   - component: {fileID: 212357242044682726}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: art
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -933,8 +945,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 177896511
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1c54b07cb5157dd43ae57f24eb14beff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -956,6 +968,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4486485594454064}
+  - component: {fileID: 6186130095245993618}
   m_Layer: 0
   m_Name: UI Image
   m_TagString: Untagged
@@ -978,9 +991,21 @@ Transform:
   - {fileID: 224094100676776864}
   - {fileID: 224553740122744430}
   - {fileID: 224049249424241782}
+  - {fileID: 224461138951224722}
   m_Father: {fileID: 4184818562495592}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &6186130095245993618
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755973111840330}
+  m_Enabled: 1
+  m_SortingLayerID: -1452370971
+  m_SortingLayer: 9
+  m_SortingOrder: 0
 --- !u!1 &1791560745095846
 GameObject:
   m_ObjectHideFlags: 0
@@ -993,9 +1018,10 @@ GameObject:
   - component: {fileID: 114853251582968266}
   - component: {fileID: 3473977918341262483}
   - component: {fileID: 4744352514864121406}
+  - component: {fileID: 4302408073900396733}
   m_Layer: 0
   m_Name: card
-  m_TagString: Untagged
+  m_TagString: Card
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1007,15 +1033,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1791560745095846}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.059999943, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4184818562495592}
   - {fileID: 224025300660884164}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114853251582968266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1070,8 +1096,9 @@ MonoBehaviour:
   owner: {fileID: 0}
   currentLogic: {fileID: 0}
   viz: {fileID: 114853251582968266}
-  canAttack: 0
+  attackable: 0
   dead: 0
+  parentFieldTransform: {fileID: 0}
 --- !u!65 &4744352514864121406
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1085,6 +1112,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 14, y: 19, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!210 &4302408073900396733
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791560745095846}
+  m_Enabled: 1
+  m_SortingLayerID: -1513407745
+  m_SortingLayer: 4
+  m_SortingOrder: 0
 --- !u!1 &1795133718465786
 GameObject:
   m_ObjectHideFlags: 0
@@ -1095,7 +1133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224669859414801814}
   - component: {fileID: 212400041421666410}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1179,7 +1217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224025300660884164}
   - component: {fileID: 212433830253698354}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1193,8 +1231,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1891719841537940}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.10000006}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2285028165252863233}
@@ -1265,7 +1303,7 @@ GameObject:
   - component: {fileID: 222308323594225020}
   - component: {fileID: 23029470157016258}
   - component: {fileID: 102073407120123148}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: CardName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1368,7 +1406,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224049249424241782}
   - component: {fileID: 212066926323804954}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: card_manabox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1452,7 +1490,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224461138951224722}
   - component: {fileID: 212317409041405050}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: mana_image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1470,12 +1508,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children: []
-  m_Father: {fileID: 525885713297444609}
-  m_RootOrder: 0
+  m_Father: {fileID: 4486485594454064}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -5.3, y: 7.9}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &212317409041405050
@@ -1538,7 +1576,7 @@ GameObject:
   - component: {fileID: 222571275284312240}
   - component: {fileID: 23991048490320008}
   - component: {fileID: 102675189214248958}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Attack_txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1640,7 +1678,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3295167812528368019}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1672,6 +1710,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7868231209745646146}
+  - component: {fileID: 3796501778783179255}
   m_Layer: 0
   m_Name: stats
   m_TagString: Untagged
@@ -1695,38 +1734,17 @@ Transform:
   m_Father: {fileID: 4184818562495592}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4972201289530808643
-GameObject:
+--- !u!210 &3796501778783179255
+SortingGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 525885713297444609}
-  m_Layer: 0
-  m_Name: mana
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &525885713297444609
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4972201289530808643}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.3, y: 7.9, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 224461138951224722}
-  - {fileID: 224048225198659574}
-  m_Father: {fileID: 4184818562495592}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 2615458804702308790}
+  m_Enabled: 1
+  m_SortingLayerID: -1452370971
+  m_SortingLayer: 9
+  m_SortingOrder: 1
 --- !u!1 &4989105111357502854
 GameObject:
   m_ObjectHideFlags: 0

@@ -119,7 +119,7 @@ namespace GH.Multiplay
 
             if (NetworkManager.IsMaster)
             {
-                Debug.Log("This client is room manager client");
+                Debug.Log("NOTIFICATION: This client is room manager client");
                 List<int> playerId = new List<int>();
                 List<int> cardInstId = new List<int>();
                 List<string> cardName = new List<string>();
@@ -156,7 +156,7 @@ namespace GH.Multiplay
 
             else
             {
-                Debug.Log("This client is room guest client");                
+                Debug.Log("NOTIFICATION: This client is room guest client");                
                 foreach (NetworkPrint p in Players)
                 {
                     if (p.IsLocal)
@@ -331,8 +331,9 @@ namespace GH.Multiplay
                         card);
                     card.Instance.currentLogic = MainData.FieldCardLogic;
                     currentPlayer.manaResourceManager.UpdateCurrentMana(-(card.cardCost));
-                    //card.Instance.SetCanAttack(false);
-                    //card.Instance.gameObject.SetActive(true);
+
+                    Debug.LogFormat("DropCreatureCardCheck: {0}'s {1} is dropped. it's origin field location is {2}",
+                        currentPlayer.player, card.Instance.viz.card.name, currentPlayer.fieldCard.Find(x=>x.viz == card.Instance.viz).GetOriginFieldLocation());
                     break;
 
                 case CardOperation.useSpellCard:
@@ -367,18 +368,19 @@ namespace GH.Multiplay
 
 
                     //If card isn't on attack, move card to 'BattleLine'obj and add at 'attackingCards' list
-                    if (currentPlayer.attackingCards.Contains(card.Instance))
-                    {
-                        currentPlayer.attackingCards.Remove(card.Instance);
-                        currentPlayer._CardHolder.SetCardBackToOrigin(card.Instance);
-                    }
-                    else
+                    if (!currentPlayer.attackingCards.Contains(card.Instance))
                     {
                         currentPlayer.attackingCards.Add(card.Instance);
                         currentPlayer._CardHolder.SetCardOnBattleLine(card.Instance);
                         Debug.LogFormat("RPC_PlayerUsesCard: {0} selected {1} to attack. {0} has {2} attacking cards"
                             , currentPlayer.player, card.Instance.viz.card.name, currentPlayer.attackingCards.Count);
                     }
+                    //Move this function as another case.
+                    //else
+                    //{
+                    //    currentPlayer.attackingCards.Remove(card.Instance);
+                    //    currentPlayer._CardHolder.SetCardBackToOrigin(card.Instance);
+                    //}
                     break;
 
                 case CardOperation.cardToGraveyard:
@@ -402,16 +404,16 @@ namespace GH.Multiplay
         [PunRPC]
         public void RPC_BattleResolve()
         {
-            Debug.LogFormat("RPC_BattleResolve_CurrentPlayer: {0}. Network Master Check: {1}",GC.CurrentPlayer.player,NetworkManager.IsMaster);
+            //Debug.LogFormat("RPC_BattleResolve_CurrentPlayer: {0}. Network Master Check: {1}",GC.CurrentPlayer.player,NetworkManager.IsMaster);
             if (!NetworkManager.IsMaster)
             {
                 Debug.LogWarning("This Player is not network master. Battle Resolve End");
-                Setting.gameController.EndPhaseByBattleResolve();
+                //Setting.gameController.EndPhaseByBattleResolve();
                 return;
             }
             else
             {
-                Debug.Log("This Player is Network Master. Battle Resolve Starts");
+                //Debug.Log("This Player is Network Master. Battle Resolve Starts");
                 BattleResolveForPlayers();
             }
         }
@@ -429,7 +431,7 @@ namespace GH.Multiplay
             if (enemyPlayer.attackingCards.Count == 0)
             {
                 photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, currentPlayer.PhotonId);
-                Debug.LogWarning("BattleResolveCallBackFailed_ForceExit Won't Work");
+                //GC.EndPhaseByBattleResolve();
                 return;
             }
 
@@ -508,6 +510,8 @@ namespace GH.Multiplay
 
 
 
+
+            ///What are these logics for?
             //Dictionary<CardInstance, BlockInstance> blockInstDict = gc.BlockManager.BlockInstDict;
             //Return all alive blocking cards to its original field location
             //'BlockInstDict' Key is card instances 
@@ -523,7 +527,6 @@ namespace GH.Multiplay
                 Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
             }
             if(enemyPlayer.fieldCard.Count!=0)
-            //if (e.attackingCards.Count!=0)
             {
                 foreach (CardInstance c in enemyPlayer.fieldCard)
                 {
@@ -534,7 +537,8 @@ namespace GH.Multiplay
 
             Debug.Log("BattleResolveForPlayer: EndOfCode_CallBack_Run");
             //After all battle logics are finished, run callback to clean up remaining variables
-            photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, currentPlayer.PhotonId);            
+            photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, currentPlayer.PhotonId);
+            //GC.EndPhaseByBattleResolve();
         }
 
 
@@ -544,6 +548,8 @@ namespace GH.Multiplay
             NetworkPrint nw_player = GetPlayer(photonId);
             nw_player.ThisPlayer.Health = health;
         }
+
+
         [PunRPC]
         public void RPC_BattleResolvesCallBack(int photonId)
         {
@@ -568,22 +574,26 @@ namespace GH.Multiplay
                         Debug.Log("RPC_BattleResolvesCallBack: End");
                         //As Current Player, who is defender don't have attacking card, can finish phase here
                         Setting.gameController.EndPhaseByBattleResolve();
+
                     }
                     else
                     {
                         Debug.Log("RPC_BattleResolveCallBack: FailedToEnd_ThisPlayerIsNotLocalPlayer");
-                        //Setting.gameController.ForceEndPhase();
                     }
                 }
                 Debug.LogWarningFormat("RPC_BattleResolveCallback: {0}'s attacking cards are going to be cleared.", p.ThisPlayer);
                 //Clear all attacking cards.
-                p.ThisPlayer.attackingCards.Clear();                
+                p.ThisPlayer.attackingCards.Clear();       
+                
             }
 
-            foreach(BlockInstance bi in Setting.gameController.BlockManager.BlockInstDict.Values)
+
+            Debug.Log("RPC_BattleResolveCallBack: Block Inst Dic size: "+ GC.BlockManager.BlockInstDict.Count);
+            foreach(BlockInstance bi in GC.BlockManager.BlockInstDict.Values)
             {
                 foreach(CardInstance c in bi.defenders)
                 {
+                    Debug.LogFormat("RPC_BattleResolveCallBack: {0} go back to origin field location",c.viz.card.name);
                     c.owner._CardHolder.SetCardBackToOrigin(c);
                 }
 
@@ -599,7 +609,7 @@ namespace GH.Multiplay
 
         public void PlayerBlocksTargetCard(int blockingInstId, int photonId_blocker, int attackInstId, int photonId_attacker)
         {
-            photonView.RPC("RPC_PlayerBlocksTargetCard_Master", PhotonTargets.MasterClient, 
+            photonView.RPC("RPC_PlayerBlocksTargetCard_Master", PhotonTargets.All, 
                 blockingInstId, photonId_blocker, attackInstId, photonId_attacker);
         }
 

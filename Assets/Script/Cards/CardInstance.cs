@@ -14,6 +14,7 @@ namespace GH.GameCard
         private bool attackable =false ; //Indicates that card is just placed and can't attak this turn.
         public bool dead;
         private bool _isOnAttack = false;
+        [SerializeField]
         private Transform parentFieldTransform;
         private int fieldIndex;
 
@@ -38,20 +39,23 @@ namespace GH.GameCard
             get { return _isOnAttack; }
             set { _isOnAttack = value; }
         }
+
         public void SetOriginFieldLocation(Transform fieldTransform)
         {
             parentFieldTransform = fieldTransform;
-            //Debug.Log("ParentFieldSET: " + parentFieldTransform + "/ Card: " + this.viz.card.name);
-
         }
+        /// <summary>
+        /// Get this card instance's original field location.
+        /// Field location is saved to return back to its position after moves.
+        /// </summary>
+        /// <returns></returns>
         public Transform GetOriginFieldLocation()
         {
             if (parentFieldTransform == null)
             {
                 //This might occur if card instance is called by its id
-                Debug.LogErrorFormat("GetOriginalFieldLocationError: Field Location isn't saved");
-                this.transform.position = new Vector3(-65, 1, 25);
-                return this.transform;
+                Debug.LogErrorFormat("GetOriginalFieldLocationError: {0}'s {1} Field Location isn't saved",this.owner.player,this.viz.card.name);
+                return null;
             }
             return parentFieldTransform;
         }
@@ -70,17 +74,17 @@ namespace GH.GameCard
         /// <param name="usable"></param>
         public void CanUseByViz(bool usable)
         {
-            Debug.Log("CanUseByViz: This card owner "+owner.player);
+            //Debug.Log("CanUseByViz: This card owner "+owner.player);
             if (usable)
             {
-                Debug.LogFormat("This card_{0} can use now", this.viz.card.name);
+                //Debug.LogFormat("This card_{0} can use now", this.viz.card.name);
                 viz.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
                 this.gameObject.transform.localRotation= Quaternion.Euler(0,0,0);
 
             }
             else
             {
-                Debug.LogFormat("This card_{0} cant use now", this.viz.card.name);
+                //Debug.LogFormat("This card_{0} cant use now", this.viz.card.name);
                 viz.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.cyan;
                 this.gameObject.transform.localRotation = Quaternion.Euler(0, 0, -45);
             }

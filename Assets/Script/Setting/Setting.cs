@@ -1,6 +1,5 @@
 ﻿using GH.GameCard;
 using UnityEngine;
-
 namespace GH
 {
     public class Setting : MonoBehaviour
@@ -29,12 +28,14 @@ namespace GH
         }
 
     
-        public static void DropCreatureCard(Transform cardTransform, Transform destTransform, Card card)
+        public static void DropCreatureCard(Transform cardTransform, Transform fieldTransform, Card card)
         {
-            SetParentForCard(cardTransform, destTransform);
+            Debug.LogFormat("DropCreatureCard: Field Transform is {0}", fieldTransform);
+            SetParentForCard(cardTransform, fieldTransform);
             card.Instance.CanUseByViz(false);
             card.Instance.SetAttackable(false);
             card.Instance.gameObject.SetActive(true);
+            card.Instance.SetOriginFieldLocation(fieldTransform.transform);
             gameController.CurrentPlayer.PayMana(card);
             gameController.CurrentPlayer.DropCardOnField(card.Instance);
 
@@ -51,24 +52,38 @@ namespace GH
             _consoleHook.RegisterEvent(s, c);
         }
 
-
+        /// <summary>
+        /// Move 'c' to 'p'
+        /// </summary>
+        /// <param name="c">Moving Transform</param>
+        /// <param name="p">target transform</param>
         public static void SetParentForCard(Transform c, Transform p)
-        /// Move card 'c' to 'p'
         {
             c.SetParent(p);
-            c.rotation = p.rotation;
+            if (p.name != "BattleLine")
+                c.rotation = p.rotation;
             c.localPosition = Vector3.zero;
             c.localScale = p.localScale;
+
         }
 
-        public static void SetParentForCard(Transform c, Transform p, Vector3 newLocalPosition, Vector3 newEuler)
-        /// Move card 'c' to 'p'
+
+        /// <summary>
+        /// This is for placing defending cards to attacking card
+        /// </summary>
+        /// <param name="defendCard"></param>
+        /// <param name="attackingCard"></param>
+        /// <param name="newLocalPosition"></param>
+        /// <param name="newEuler"></param>
+        public static void SetParentForCard(Transform defendCard, Transform attackingCard, Vector3 newLocalPosition, Vector3 newEuler)
         {
-            c.SetParent(p.parent);
+            //When Card move position, Blocking card's art don't shown. 
+            //But for client's view, art is shown very well
+            defendCard.SetParent(attackingCard.parent);
             //c.rotation = Quaternion.Euler(newEuler);
-            c.rotation = p.rotation;
-            c.localPosition = newLocalPosition;
-            c.localScale = p.localScale;
+            defendCard.rotation = attackingCard.rotation;
+            defendCard.localPosition = newLocalPosition;
+            defendCard.localScale = attackingCard.localScale;
         }
 
        
@@ -81,10 +96,10 @@ namespace GH
         /// <param name="count"></param>
         public static void SetCardsForBlock(Transform defendCard, Transform attackingCard, int count)
         {
-            //Change numbers that looks good to player
             Vector3 blockPosition = Vector3.zero;
-            blockPosition.x += 2 * count;
-            blockPosition.y -= 2;
+            blockPosition.x += 5 * count;
+            //blockPosition.y -= 0.2f;
+            blockPosition.z-= 5;
             SetParentForCard(defendCard, attackingCard, blockPosition, Vector3.zero);
         }
     }

@@ -47,12 +47,16 @@ namespace GH.Setup
                 b = new BlockInstance();
                 b.attacker = attk;
                 BlockInstDict.Add(attk, b);
+                Debug.Log("BlockInstDic added in dictionary.");
             }
-
+            else
+            {
+                Debug.LogWarningFormat("BlockInst For Attacker, {0} AlreadyExist", attk.viz.card.name);
+            }
             //If 'def' isn't in the 'defenders' of the BlockInstance 'b', add it in list
             if (!b.defenders.Contains(def))
             {
-                b.defenders.Add(def);
+                b.defenders.Add(def);                
             }
             count = b.defenders.Count;
         }

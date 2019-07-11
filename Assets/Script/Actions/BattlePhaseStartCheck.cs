@@ -14,12 +14,12 @@ namespace GH
             GameController controller = GameController.singleton;
             if (controller.CurrentPlayer.fieldCard.Count > 0 && _CanStartBattle)
             {
-                Debug.Log("BattlePhaseStartCheck: Start Battle Phase");
+                //Debug.Log("BattlePhaseStartCheck: Start Battle Phase");
                 return true;
             }
             else
             {
-                Debug.Log("BattlePhaseStartCheck: Can't start battle phase");
+                Debug.LogWarning("BattlePhaseStartCheck: Can't start battle phase");
                 return false;
             }
         }

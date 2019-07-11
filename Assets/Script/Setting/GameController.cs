@@ -163,12 +163,6 @@ namespace GH
             _CurrentPlayer = GetTurns(0).ThisTurnPlayer;
 
         }
-        private void Start()
-        {
-
-
-
-        }
 ///// <summary>
 ///// Initgame ver2.
 ///// </summary>
@@ -222,8 +216,7 @@ namespace GH
 //        }
         public void InitGame(int startingPlayer)
         {
-
-            //Debug.Log("Test master : This client is " + NetworkManager.singleton.IsMaster);
+            Debug.Log("INITIALISING GAME...");
             Turn[] _tmpTurn = new Turn[2];
             for (int i = 0; i < _Players.Length; i++)
             {

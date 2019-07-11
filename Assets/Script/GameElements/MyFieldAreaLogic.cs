@@ -45,8 +45,8 @@ namespace GH.GameElements
                 if (canUse)
                 {
                     int fieldCode = 0;
-                    thisCard.Instance.SetOriginFieldLocation(fieldArea.transform);
-                    for(int i =0; i<p._CardHolder.GetFieldGrid().Length; i++)
+                    //thisCard.Instance.SetOriginFieldLocation(fieldArea.transform); //Maybe this should go to setting
+                    for (int i =0; i<p._CardHolder.GetFieldGrid().Length; i++)
                     {
                         if (fieldArea.transform.name == p._CardHolder.GetFieldGrid(i).value.name)
                         {

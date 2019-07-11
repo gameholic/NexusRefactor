@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 using GH.GameAction;
 using GH.Multiplay;
+using UnityEditor;
 
 namespace GH.GameTurn
 {
@@ -72,7 +72,7 @@ namespace GH.GameTurn
 
             for (int i = 0; i < _TurnStartAction.Length; i++)
             {
-                Debug.LogFormat("Turn_TurnStartAction_{0} Run", _TurnStartAction[i].name);
+                //Debug.LogFormat("Turn_TurnStartAction_{0} Run", _TurnStartAction[i].name);
                 _TurnStartAction[i].Execute(ThisTurnPlayer);
             }
 
@@ -92,7 +92,7 @@ namespace GH.GameTurn
             //At the first phase, which is beginning of the turn runs TurnStartActions
             if (PhaseIndex == 0 && TurnBegin == true)
             {
-                Debug.Log("Turn: Execute Turn Start Action");
+                //Debug.Log("Turn: Execute Turn Start Action");
                 TurnStartActions();
                 TurnBegin = false;
             }
@@ -102,7 +102,6 @@ namespace GH.GameTurn
                 Debug.Log("Turn_PhaseStart: "+ _Phases[PhaseIndex].PhaseName);
                 _Phases[PhaseIndex].OnStartPhase();
                 phaseStart = false;
-
             }
 
             //Run Current Phase until 'IsComplete' is true
@@ -111,6 +110,8 @@ namespace GH.GameTurn
             if (IsComplete)
             {
                 _Phases[PhaseIndex].OnEndPhase();
+                Debug.Log("Turn_PhaseEnd: " + _Phases[PhaseIndex].PhaseName);
+                
                 PhaseIndex++;
                 phaseStart = true;
                 if (PhaseIndex + 1 > _Phases.Length)

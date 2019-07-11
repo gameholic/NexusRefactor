@@ -24,7 +24,7 @@ namespace GH.GameTurn
             if (IsInit)
             {
                 Setting.gameController.SetState(null);
-                Debug.Log("BattlePhase_EndPhase");
+                //Debug.Log("BattlePhase_EndPhase");
                 IsInit = false;
             }            
         }

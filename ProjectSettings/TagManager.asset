@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Card
   layers:
   - Default
   - TransparentFX
@@ -13,12 +14,12 @@ TagManager:
   - UI
   - 
   - 
-  - Gamefield
+  - GameBackground
+  - GameField
+  - GameFieldUI
+  - UserUI
   - CardOnField
-  - CardAtHand
-  - CardSelected
-  - 
-  - 
+  - CardOnHand
   - 
   - 
   - 
@@ -47,18 +48,27 @@ TagManager:
   - name: BattleField
     uniqueID: 603051009
     locked: 0
-  - name: UIOfBackground
+  - name: UI
     uniqueID: 2803218361
     locked: 0
-  - name: CardsOnField
+  - name: Card
+    uniqueID: 2781559551
+    locked: 0
+  - name: CardInGame
+    uniqueID: 4191679909
+    locked: 0
+  - name: CardBack
     uniqueID: 2046279033
     locked: 0
-  - name: CardsOnHand
+  - name: CardFront
     uniqueID: 2311510919
     locked: 0
-  - name: 6
+  - name: CardArt
     uniqueID: 177896511
     locked: 0
-  - name: 7
+  - name: CardUI
     uniqueID: 2842596325
+    locked: 0
+  - name: CardText
+    uniqueID: 3517207845
     locked: 0

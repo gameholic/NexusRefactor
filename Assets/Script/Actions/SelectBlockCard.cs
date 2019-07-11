@@ -53,7 +53,6 @@ namespace GH.GameStates
                     }
                     else
                     {
-                        hit.transform.gameObject.name = "Empty";
                         Debug.LogErrorFormat("SelectBlockCard_This gameobject ({0}) has no instance", hit.transform.gameObject.name);
                     }
                 }

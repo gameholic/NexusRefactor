@@ -80,7 +80,7 @@ namespace GH.GameStates
                         GameElements.Area a
                             = hit.transform.gameObject.GetComponentInParent<GameElements.Area>();
 
-                        if (gc.CurrentPlayer == _PlayerControlState && a != null)
+                        if (gc.CurrentState == _PlayerControlState && a != null)
                             break;
 
                         if (a != null)
