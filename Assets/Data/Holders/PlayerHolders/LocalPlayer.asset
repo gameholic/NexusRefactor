@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a4ee6e47004b224d891637cfb57d24a, type: 3}
   m_Name: LocalPlayer
   m_EditorClassIdentifier: 
-  player: Local
+  player: Room Manager
   userID: Fiora
   isHumanPlayer: 1
   playerColor: {r: 0, g: 0.4081595, b: 1, a: 1}
@@ -22,3 +22,5 @@ MonoBehaviour:
   fieldLogic: {fileID: 11400000, guid: e5493222b1cc06546bacc56bb9c7b13a, type: 2}
   startingDeck: []
   _CardHolder: {fileID: 11400000, guid: de8c454d3de231243b2cce449a5de728, type: 2}
+  _Graveyard: {fileID: 11400000, guid: 553de3490dc4f134482f3f24d6a62f35, type: 2}
+  _PhotonId: 1

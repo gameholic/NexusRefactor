@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc3adf59e05c82a46aac4e5302146e9e, type: 3}
   m_Name: Card Graveyard
   m_EditorClassIdentifier: 
-  _GraveYard: {fileID: 11400000, guid: 553de3490dc4f134482f3f24d6a62f35, type: 2}
+  _GraveYard:
+  - {fileID: 11400000, guid: 553de3490dc4f134482f3f24d6a62f35, type: 2}
+  - {fileID: 11400000, guid: f5b0c88b5ae1cc04f8650080bff8a8a5, type: 2}

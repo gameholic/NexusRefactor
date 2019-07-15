@@ -77,7 +77,7 @@ namespace GH.Setup
         /// <returns></returns>
         public BlockInstance GetBlockInstanceByAttacker(CardInstance attck, Dictionary<CardInstance, BlockInstance> dic)
         {
-            Debug.LogFormat("GetBlockInstanceByAttacker: {0} try to search BlockInstance with {1}", attck.owner.player, attck.viz.card.name);
+            Debug.LogFormat("GetBlockInstanceByAttacker: {0} try to search {1} in Block Instance", attck.owner.player, attck.viz.card.name);
             BlockInstance r = null;
             dic.TryGetValue(attck, out r);
             return r;

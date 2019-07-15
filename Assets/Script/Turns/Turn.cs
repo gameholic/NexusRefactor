@@ -103,15 +103,12 @@ namespace GH.GameTurn
                 _Phases[PhaseIndex].OnStartPhase();
                 phaseStart = false;
             }
-
             //Run Current Phase until 'IsComplete' is true
             bool IsComplete = _Phases[PhaseIndex].IsComplete();
-
             if (IsComplete)
             {
                 _Phases[PhaseIndex].OnEndPhase();
-                Debug.Log("Turn_PhaseEnd: " + _Phases[PhaseIndex].PhaseName);
-                
+                Debug.Log("Turn_PhaseEnd: " + _Phases[PhaseIndex].PhaseName);                
                 PhaseIndex++;
                 phaseStart = true;
                 if (PhaseIndex + 1 > _Phases.Length)

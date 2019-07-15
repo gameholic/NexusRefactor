@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _PhaseForceExit: 0
   _PhaseName: Block Phase
-  changeActivePlayer: {fileID: 11400000, guid: 6d38ad579436d1f4eb6ccd6946b8002b, type: 2}
-  playerControlState: {fileID: 11400000, guid: 4349ec2c97a85d948b242d4e6841e202, type: 2}
+  playerBlockState: {fileID: 11400000, guid: 4349ec2c97a85d948b242d4e6841e202, type: 2}

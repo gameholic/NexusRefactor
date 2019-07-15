@@ -147,6 +147,10 @@ namespace GH
                 return _IsMultiplayer;
             }
         }
+        public CardGraveyard cardgraveLogic
+        {
+            get { return _CardGrave; }
+        }
         /// <summary>
         /// Get/Set Properties
         /// </summary>

@@ -21,12 +21,10 @@ namespace GH.GameTurn
         }
         public override void OnEndPhase()
         {
-            Debug.Log("Check How Many Time Battle Resolve Ends");
             IsInit = false;
         }
         public override void OnStartPhase()
         {
-            Debug.Log("Check How Many Time Battle Resolve Starts");
             if(!IsInit)
             {
                 IsInit = true;

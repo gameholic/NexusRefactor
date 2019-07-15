@@ -223,6 +223,7 @@
     <Compile Include="Assets\Script\Actions\SelectBlockCard.cs" />
     <Compile Include="Assets\Script\Actions\SelectCardsToAttack.cs" />
     <Compile Include="Assets\Script\CardDeck\HandDeck\Card_handOrder.cs" />
+    <Compile Include="Assets\Script\CardFieldLogics\BattleLogics.cs" />
     <Compile Include="Assets\Script\Cards\Card.cs" />
     <Compile Include="Assets\Script\Cards\CardGraveyard.cs" />
     <Compile Include="Assets\Script\Cards\CardInstance.cs" />

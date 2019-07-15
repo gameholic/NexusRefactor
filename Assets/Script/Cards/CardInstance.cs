@@ -92,6 +92,7 @@ namespace GH.GameCard
         public void CardInstanceToGrave()
         {
             //Card die
+            Debug.LogFormat("CardInstanceToGrave: {0}'s {1} Died", this.owner.player, this.viz.card.name);
             attackable = false;
             Setting.gameController.PutCardToGrave(this);
             Setting.RegisterLog(this.viz.card + "Card die", Color.black);

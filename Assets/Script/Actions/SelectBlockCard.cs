@@ -49,6 +49,10 @@ namespace GH.GameStates
                         {
                             Debug.LogErrorFormat("SelectBlockCardError: {0} don't have {1}", gc.CurrentPlayer,c.viz.card.name);
                         }
+                        else if (c.owner == enemy)
+                        {
+                            Debug.LogErrorFormat("SelectBlockCardError: This card owner is enemy");
+                        }
                         return;
                     }
                     else

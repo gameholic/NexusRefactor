@@ -15,8 +15,6 @@ namespace GH
             if (Input.GetMouseButtonDown(0))
             {
                 RaycastHit[] results = Setting.GetUIObjs();
-                
-
                 //Raycast all objects that user clicked.
                 // If user selects card that can attack enemy, send card instance id and player's photon id to MultiplayManager.
                 //   In MultiplayManager.PlayerTryToUseCard, Card on field move to 'BattleLine'Obj and 'attackingCards' list of playerholder for 'BattleResolvePhase'
@@ -38,6 +36,7 @@ namespace GH
                             return;
                         }
                         MultiplayManager.singleton.PlayerTryToUseCard(inst.viz.card.InstId, p.PhotonId, MultiplayManager.CardOperation.setCardToAttack);
+              
                     }
                     else
                     {

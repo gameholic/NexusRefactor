@@ -7,7 +7,7 @@ namespace GH.GameTurn
     [CreateAssetMenu(menuName ="Turns/BlockPhase")]
     public class BlockPhase : Phase
     {
-        public GameStates.State playerControlState;
+        public GameStates.State playerBlockState;
         public override bool IsComplete()
         {
             if (PhaseForceExit)
@@ -32,8 +32,6 @@ namespace GH.GameTurn
             GameController gc = Setting.gameController;
             if (!IsInit)
             {
-                gc.SetState(playerControlState);
-                gc.OnPhaseChanged.Raise();
                 IsInit = true;
                 int usableCards = 0;
                 PlayerHolder enemy = gc.GetOpponentOf(gc.CurrentPlayer);
@@ -60,6 +58,8 @@ namespace GH.GameTurn
                     PhaseForceExit = true;
                     return;
                 }
+                gc.SetState(playerBlockState);
+                gc.OnPhaseChanged.Raise();
 
             }
         }

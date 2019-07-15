@@ -30,15 +30,21 @@ namespace GH
         [System.NonSerialized]
         public List<CardInstance> attackingCards = new List<CardInstance>();
         [System.NonSerialized]
-        public List<CardInstance> graveyard = new List<CardInstance>();
+        public List<CardInstance> deadCards = new List<CardInstance>();
         [System.NonSerialized]
         public List<string> allCards = new List<string>();
         [System.NonSerialized]
         public ManaManager manaResourceManager = new ManaManager();
         public CardHolders _CardHolder;
-        
-        private int _health;
+        [SerializeField]
+        private TransformVariable _Graveyard;
 
+
+        private int _health;
+        public TransformVariable graveyard
+        {
+            get { return _Graveyard; }
+        }
         public int Health
         {
             set
@@ -102,6 +108,7 @@ namespace GH
 
         public void DoDamage(int v)
         {
+            Debug.LogFormat("PlayerTookDamagE: {0} took {1} damage", this.player, v);
             _health -= v;
             if(statsUI !=null)
             {
