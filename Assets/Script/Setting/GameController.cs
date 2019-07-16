@@ -11,7 +11,7 @@ using GH.UI;
 
 namespace GH
 {
-    public class GameController : MonoBehaviour
+    public class GameController : Photon.MonoBehaviour
     {
         public static GameController singleton;
 
@@ -28,13 +28,10 @@ namespace GH
         [SerializeField]
         private PlayerStatsUI[] _PlayerStatsUI;
         [SerializeField]
-        private CardGraveyard _CardGrave;
-        [SerializeField]
         private ResourceManager _ResourceManager;
 
 
         public Phase CurrentPhase;
-        private bool _IsMultiplayer;
         public GameEvent OnTurnChanged;
         public GameEvent OnPhaseChanged;
         public StringVariable turnText;
@@ -44,6 +41,14 @@ namespace GH
         public GameObject cardPrefab;
         public GameObject[] manaObj;
         public int turnIndex = 0;
+        /// <summary>
+        /// Variables used for multiplay
+        /// </summary>
+        /// 
+        [SerializeField]
+        private PlayerHolder localPlayer;
+        [SerializeField]
+        private PlayerHolder clientPlayer;
         private bool isComplete;
         //private bool switchPlayer;
         private int _TurnLength = 0;
@@ -54,18 +59,9 @@ namespace GH
         private bool startTurn = true; //Check the start of the turn
         private int turnCounter; //Count the turn. When both player plays, it increases by 1
         private bool isInit;
-        /// <summary>
-        /// Variables used for multiplay
-        /// </summary>
-        /// 
-        [SerializeField]
-        private PlayerHolder localPlayer;
-        [SerializeField]
-        private PlayerHolder clientPlayer;
-
-        /// <summary>
-        /// Get/Set Methods/Properties
-        /// </summary
+        private bool _IsMultiplayer;
+        private CardGraveLogic _CardGraveLogic;
+        #region GetSetProperties
         public PlayerHolder CurrentPlayer
         {
             set { _CurrentPlayer = value; }
@@ -147,14 +143,12 @@ namespace GH
                 return _IsMultiplayer;
             }
         }
-        public CardGraveyard cardgraveLogic
+        public CardGraveLogic CardGraveLogic
         {
-            get { return _CardGrave; }
+            set { _CardGraveLogic = value; }
+            get { return _CardGraveLogic; }
         }
-        /// <summary>
-        /// Get/Set Properties
-        /// </summary>
-        /// 
+        #endregion
         #region SetupForGame
         private void Awake()
         {
@@ -271,6 +265,7 @@ namespace GH
             turnCountTextVariable.value = turnCounter.ToString();
 
             OnTurnChanged.Raise();
+            SetUpMultiplay();
             isInit = true;
 
         }
@@ -291,6 +286,15 @@ namespace GH
 
                 }
             }
+        }
+        private void SetUpMultiplay()
+        {
+            SetUpGraveLogic();
+        }
+        private void SetUpGraveLogic()
+        {
+            PhotonNetwork.Instantiate("GraveLogic", Vector3.zero, Quaternion.identity,0);
+
         }
         #endregion
 
@@ -415,7 +419,11 @@ namespace GH
         }
         public void PutCardToGrave(CardInstance c)
         {
-            _CardGrave.PutCardToGrave(c);
+
+            if (CardGraveLogic != null)
+                CardGraveLogic.PutCardToGrave(c);
+            else
+                Debug.LogError("CardGraveLogicIsNull");
         }
     }
 }

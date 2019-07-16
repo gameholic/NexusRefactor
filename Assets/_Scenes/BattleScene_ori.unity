@@ -2084,6 +2084,7 @@ GameObject:
   m_Component:
   - component: {fileID: 745006556}
   - component: {fileID: 745006557}
+  - component: {fileID: 745006558}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2127,7 +2128,6 @@ MonoBehaviour:
   _PlayerStatsUI:
   - {fileID: 1443482414}
   - {fileID: 755100765}
-  _CardGrave: {fileID: 11400000, guid: f392d83252196cc4894d2e5024dbc58c, type: 2}
   _ResourceManager: {fileID: 11400000, guid: 55d29187ac16eeb45b096b64b7fad185, type: 2}
   CurrentPhase: {fileID: 0}
   OnTurnChanged: {fileID: 11400000, guid: dccb11963692fa1409bef9ae22746af8, type: 2}
@@ -2141,11 +2141,38 @@ MonoBehaviour:
   - {fileID: 826019339}
   - {fileID: 1624317818}
   turnIndex: 0
+  localPlayer: {fileID: 11400000, guid: 25a4d3d96a280a64dad6775ee15eff9f, type: 2}
+  clientPlayer: {fileID: 11400000, guid: bb002c96739fab942b2d4ed610a48793, type: 2}
   _Players:
   - {fileID: 11400000, guid: 25a4d3d96a280a64dad6775ee15eff9f, type: 2}
   - {fileID: 11400000, guid: bb002c96739fab942b2d4ed610a48793, type: 2}
-  localPlayer: {fileID: 11400000, guid: 25a4d3d96a280a64dad6775ee15eff9f, type: 2}
-  clientPlayer: {fileID: 11400000, guid: bb002c96739fab942b2d4ed610a48793, type: 2}
+--- !u!114 &745006558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745006555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 2
+  instantiationId: 2
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &755100762
 GameObject:
   m_ObjectHideFlags: 0

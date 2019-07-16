@@ -62,4 +62,5 @@ MonoBehaviour:
   - RPC_PlayerBlocksTargetCard_Client
   - RPC_PlayerBlocksTargetCard_Master
   - RPC_SendCardToGrave
+  - RPC_PutCardToGrave
   DisableAutoOpenWizard: 1

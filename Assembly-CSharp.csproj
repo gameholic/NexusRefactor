@@ -225,7 +225,7 @@
     <Compile Include="Assets\Script\CardDeck\HandDeck\Card_handOrder.cs" />
     <Compile Include="Assets\Script\CardFieldLogics\BattleLogics.cs" />
     <Compile Include="Assets\Script\Cards\Card.cs" />
-    <Compile Include="Assets\Script\Cards\CardGraveyard.cs" />
+    <Compile Include="Assets\Script\Cards\CardGraveLogic.cs" />
     <Compile Include="Assets\Script\Cards\CardInstance.cs" />
     <Compile Include="Assets\Script\Cards\CardProperties.cs" />
     <Compile Include="Assets\Script\Cards\CardType.cs" />
