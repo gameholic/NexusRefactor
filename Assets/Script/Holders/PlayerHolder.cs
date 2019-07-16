@@ -108,7 +108,7 @@ namespace GH
 
         public void DoDamage(int v)
         {
-            Debug.LogFormat("PlayerTookDamagE: {0} took {1} damage", this.player, v);
+            //Debug.LogFormat("PlayerTookDamagE: {0} took {1} damage", this.player, v);
             _health -= v;
             if(statsUI !=null)
             {

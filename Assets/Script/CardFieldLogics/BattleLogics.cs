@@ -44,7 +44,6 @@ namespace GH.CardBattle
                 return result;
             }
 
-            Debug.Log("BattleLogics: Card Battle Begins");
             int atkLife = defProperty.intValue;
             int atkAttack = atkProperty.intValue;
 
@@ -62,18 +61,31 @@ namespace GH.CardBattle
                 int defAttack = defenderStr.intValue;
 
 
+                Debug.LogFormat("CARD BATTLE STARTS: Attcker({0}) Health: {1} Attack: {2} VS Defender({3}) Health: {4} Attack: {5}",
+                    atkInst.owner.player, atkLife, atkAttack,
+                    defInst.owner.player, defLife, defAttack);
 
 
+
+                int tmpAtk = atkAttack;
                 atkAttack -= defLife;
+
+                defLife -= tmpAtk;
+                atkLife -= defAttack;
+
+                Debug.LogFormat("CARD BATTLE RESULT: Attcker({0}) Health: {1}. Defender({2}) Health: {3}", 
+                    atkInst.owner.player, atkLife, 
+                    defInst.owner.player, defLife);
                 if (defLife <= atkAttack)
                 {
-                    Debug.LogFormat("CardBattle: {0}'s {1} Killed {2}",atkInst.owner.player, atkInst.viz.card.name, defInst.viz.card.name);
-                    SetCardToGrave(blockInstance.defenders[index]);
+                    Debug.LogFormat("CardBattle: Defender( {0} )'s Card {1} Killed by {2}", 
+                        defInst.owner.player, defInst.viz.card.name, atkInst.viz.card.name);
+                    SetCardToGrave(defInst);
                 }
-                atkLife -= defAttack;
                 if(atkLife<=0)
                 {
-                    Debug.LogFormat("CardBattle: {0}'s {1} Killed by {2} during attack ", atkInst.owner.player, atkInst.viz.card.name, defInst.viz.card.name);
+                    Debug.LogFormat("CardBattle: Attacker( {0} )'s Card {1} is Killed by {2} during attack ",
+                        atkInst.owner.player, atkInst.viz.card.name, defInst.viz.card.name);
                     atkLife = 0;
                     SetCardToGrave(atkInst);
                     break;
@@ -94,7 +106,8 @@ namespace GH.CardBattle
 
             enemy.DropCardOnField(atkInst, false);
             currentPlayer.DoDamage(damage);
-            Debug.LogFormat("BattleResult_AttackerWin: {0} took damage of {1}", currentPlayer.player, damage);
+            if(damage>0)
+                Debug.LogFormat("BattleResult_AttackerWin: {0} took damage of {1}", currentPlayer.player, damage);
         }
     }
 }

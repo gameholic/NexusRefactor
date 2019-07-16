@@ -409,13 +409,13 @@ namespace GH.Multiplay
             //Debug.LogFormat("RPC_BattleResolve_CurrentPlayer: {0}. Network Master Check: {1}",GC.CurrentPlayer.player,NetworkManager.IsMaster);
             if (!NetworkManager.IsMaster)
             {
-                Debug.LogWarning("This Player is not network master. Battle Resolve End");
+                Debug.LogError("This Player is not network master. Battle Resolve End");
                 //Setting.gameController.EndPhaseByBattleResolve();
                 return;
             }
             else
             {
-                Debug.Log("This Player is Network Master. Battle Resolve Starts");
+                //Debug.Log("This Player is Network Master. Battle Resolve Starts");
                 BattleResolveForPlayers();
             }
         }
@@ -430,6 +430,7 @@ namespace GH.Multiplay
             Element elementHealth = MainData.HealthElement;
             int battleResult = 0;
 
+            Debug.LogErrorFormat ("CurrentPlayer is {0}. Is he owns photonview?: {1}",  GC.CurrentPlayer.player ,photonView.isMine);
             //When there is no attacking card, Battle resolve don't need to be run. End the phase
             if (enemyPlayer.attackingCards.Count == 0)
             {
@@ -521,19 +522,30 @@ namespace GH.Multiplay
             {
                 if (c.dead)
                 {
-                    Debug.LogFormat("BattleResolve_BattleFinished: {0} is dead", c.viz.card.name);
+                    Debug.LogWarningFormat("BattleResolve_FieldCardError: {0} is dead", c.viz.card.name);
                     continue;
                 }
-                Debug.Log("BattleResolveForPlayer_BattleFinished: ResetCard. Move Card to its original field location");
-                c.CanUseByViz(true);
-                Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
+                else
+                {
+                    Debug.LogFormat("BattleResolveForPlayer_BattleFinished: Card ( {0} ) Reset. Move Card to its original field location", c.viz.card.name);
+                    c.CanUseByViz(true);
+                    Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
+                }
             }
             if(enemyPlayer.fieldCard.Count!=0)
             {
                 foreach (CardInstance c in enemyPlayer.fieldCard)
                 {
-                    Debug.Log("BattleResolveForPlayer_ResetEnemyCards");
-                    Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
+                    if(c.dead)
+                    {
+                        Debug.LogWarningFormat("BattleResolve_FieldCardError: {0} is dead", c.viz.card.name);
+                        continue;
+                    }
+                    else
+                    {
+                        Debug.LogFormat("BattleResolveForPlayer_ResetEnemyCard__{0}", c.viz.card.name);
+                        Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
+                    }
                 }
             }
 
@@ -553,10 +565,11 @@ namespace GH.Multiplay
         {
             PlayerHolder p = GetPlayer(photonId).ThisPlayer;
             CardGraveyard cardGrave = GC.cardgraveLogic;
+
             foreach (CardInstance c in p.deadCards)
             {
                 Transform graveyardTransform = c.owner.graveyard.value;
-                Debug.LogFormat("RPC_SendCardToGrave: {0} is dead. It's going to graveyard: {1}", p.player, graveyardTransform);
+                Debug.LogFormat("RPC_SendCardToGrave: Player({0})'s {1} is dead. It's going to graveyard: {2}", p.player, c.viz.card.name,graveyardTransform);
                 cardGrave.MoveCardToGrave(c, graveyardTransform);
             }
         }
@@ -610,8 +623,15 @@ namespace GH.Multiplay
             {
                 foreach(CardInstance c in bi.defenders)
                 {
-                    //Debug.LogFormat("RPC_BattleResolveCallBack: {0} go back to origin field location",c.viz.card.name);
-                    c.owner._CardHolder.SetCardBackToOrigin(c);
+                    if(!c.dead)
+                    {
+                        //Debug.LogFormat("RPC_BattleResolveCallBack: {0} go back to origin field location",c.viz.card.name);
+                        c.owner._CardHolder.SetCardBackToOrigin(c);
+                    }
+                    else
+                    {
+                        Debug.LogErrorFormat("{0} is dead. Cant go back to origin", c.viz.card.name);
+                    }
                 }
 
             }
@@ -669,7 +689,7 @@ namespace GH.Multiplay
             CardInstance card_Invade = print_Invade.GetCard(attackCardInstId).Instance;
 
             Setting.SetCardsForBlock(card_Defend.transform, card_Invade.transform, count);
-            Debug.Log("PlayerBlocksTargetCard: Move Cards to Defend Location Sucessful");
+            //Debug.Log("PlayerBlocksTargetCard: Move Cards to Defend Location Sucessful");
             
         }
         #endregion
