@@ -454,14 +454,9 @@ namespace GH.Multiplay
                 CardInstance atkInst = enemyPlayer.attackingCards[atkCardIndex];
 
                 BlockInstance blockInstance = GC.BlockManager.GetBlockInstanceByAttacker(atkInst, blockInstDict);
-                if (blockInstance != null)
-                {
-                    battleResult = battleLogic.CardBattle(atkInst, blockInstance, MainData);
-                }
-                else
-                {
-                    Debug.LogWarning("BattleResolve_Error: Attacking card instance dictionary is null");
-                }
+                
+                battleResult = battleLogic.CardBattle(atkInst, blockInstance, MainData);
+         
                 if(battleResult == -1)
                 {
                     continue;
