@@ -377,12 +377,6 @@ namespace GH.Multiplay
                         Debug.LogFormat("RPC_PlayerUsesCard: {0} selected {1} to attack. {0} has {2} attacking cards"
                             , currentPlayer.player, card.Instance.viz.card.name, currentPlayer.attackingCards.Count);
                     }
-                    //Move this function as another case.
-                    //else
-                    //{
-                    //    currentPlayer.attackingCards.Remove(card.Instance);
-                    //    currentPlayer._CardHolder.SetCardBackToOrigin(card.Instance);
-                    //}
                     break;
 
                 //case CardOperation.cardToGraveyard:
@@ -642,7 +636,7 @@ namespace GH.Multiplay
             NetworkPrint print_Invade = GetPlayer(attackerPhotonId);
             CardInstance card_Invade = print_Invade.GetCard(attackCardInstId).Instance;
 
-            Setting.SetCardsForBlock(card_Defend.transform, card_Invade.transform, count);
+            Setting.SetCardsForBlock(card_Defend, card_Invade, count);
             //Debug.Log("PlayerBlocksTargetCard: Move Cards to Defend Location Sucessful");
             
         }

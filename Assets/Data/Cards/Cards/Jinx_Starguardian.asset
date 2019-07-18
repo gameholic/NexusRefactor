@@ -15,28 +15,27 @@ MonoBehaviour:
   cardCost: 2
   cardType: {fileID: 11400000, guid: e25c4b9a397215f4bb568c82379670fd, type: 2}
   properties:
-  - stringValue: Starguardian Junx
+  - element: {fileID: 11400000, guid: 0bed7a25b5ff2cb43847014df8c920bd, type: 2}
+    stringValue: Starguardian Junx
     intValue: 0
     sprite: {fileID: 0}
-    element: {fileID: 11400000, guid: 0bed7a25b5ff2cb43847014df8c920bd, type: 2}
-  - stringValue: Restore 3 Health
+  - element: {fileID: 11400000, guid: 8a7b7b2c17d7b1a4d920e3b534438b6d, type: 2}
+    stringValue: Restore 3 Health
     intValue: 0
     sprite: {fileID: 0}
-    element: {fileID: 11400000, guid: 8a7b7b2c17d7b1a4d920e3b534438b6d, type: 2}
-  - stringValue: 
+  - element: {fileID: 11400000, guid: c0d1fa25ce595e74eab7c64ddd9fadb6, type: 2}
+    stringValue: 
     intValue: 4
     sprite: {fileID: 0}
-    element: {fileID: 11400000, guid: c0d1fa25ce595e74eab7c64ddd9fadb6, type: 2}
-  - stringValue: 
+  - element: {fileID: 11400000, guid: 53c97bee58bf3d34d8676099f908d2ed, type: 2}
+    stringValue: 
     intValue: 5
     sprite: {fileID: 0}
-    element: {fileID: 11400000, guid: 53c97bee58bf3d34d8676099f908d2ed, type: 2}
-  - stringValue: 
+  - element: {fileID: 11400000, guid: 876444c86d82be94e88c398eb0fb7d5c, type: 2}
+    stringValue: 
     intValue: 5
     sprite: {fileID: 0}
-    element: {fileID: 11400000, guid: 876444c86d82be94e88c398eb0fb7d5c, type: 2}
-  - stringValue: 
+  - element: {fileID: 11400000, guid: 9545a8e8f4862d942836c433acd8e15f, type: 2}
+    stringValue: 
     intValue: 0
     sprite: {fileID: 21300000, guid: 5932caf6616fb764d911b0e8e9752281, type: 3}
-    element: {fileID: 11400000, guid: 9545a8e8f4862d942836c433acd8e15f, type: 2}
-  canAttack: 0

@@ -59,8 +59,24 @@ namespace GH.Setup
                 b.defenders.Add(def);                
             }
             count = b.defenders.Count;
+            Debug.LogErrorFormat("Current Blocking Card Count for {0}  is {1}",b.attacker.viz.card.name, count);
         }
+        public bool SearchBlockInstanceOfDefender(CardInstance defend)
+        {
+            bool result = false;
+            foreach (BlockInstance bi in Setting.gameController.BlockManager.BlockInstDict.Values)
+            {
+                foreach (CardInstance tmp in bi.defenders)
+                {
+                    if(tmp == defend)
+                    {
+                        result = true;
+                    }
+                }
 
+            }
+            return result;
+        }
 
         public BlockInstance SearchBlockInstanceOfAttacker(CardInstance attck)
         {

@@ -20,5 +20,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0704584fbf8b6f34c8f19205ceb91ebb, type: 2}
   - {fileID: 11400000, guid: 674abe0beeba54f4d8a123faa2cd7cf7, type: 2}
   - {fileID: 11400000, guid: fe9198cb5d5f1c44b91da6e8a62a02fb, type: 2}
-  battleLine: {fileID: 11400000, guid: a522e82758872a84eb719f2b16ecf430, type: 2}
+  attackingLine: {fileID: 11400000, guid: a522e82758872a84eb719f2b16ecf430, type: 2}
+  defenceLine: {fileID: 11400000, guid: a17554160b8c028498cfcaa4c0861b17, type: 2}
   thisPlayer: {fileID: 11400000, guid: bb002c96739fab942b2d4ed610a48793, type: 2}

@@ -75,18 +75,21 @@ namespace GH
         /// <param name="attackingCard"></param>
         /// <param name="newLocalPosition"></param>
         /// <param name="newEuler"></param>
-        public static void SetParentForCard(Transform defendCard, Transform attackingCard, Vector3 newLocalPosition, Vector3 newEuler)
+        public static void SetParentForCard(Transform defendCard, Transform attackingCard, Vector3 newLocalPosition, Transform defendLine)
         {
-            //When Card move position, Blocking card's art don't shown. 
-            //But for client's view, art is shown very well
-            defendCard.SetParent(attackingCard.parent);
-            //c.rotation = Quaternion.Euler(newEuler);
+            defendCard.SetParent(defendLine);
             defendCard.rotation = attackingCard.rotation;
-            defendCard.localPosition = newLocalPosition;
+            defendCard.position = newLocalPosition;
             defendCard.localScale = attackingCard.localScale;
         }
 
-       
+       public static void SetCardsForAttack(Transform card, Transform battleLine)
+        {
+            Debug.LogFormat("SetCardsForAttack: {0} is moved to {1}", card.name, battleLine.name); 
+            card.SetParent(battleLine);
+            card.position = new Vector3(card.position.x, card.position.y, card.position.z +  ((battleLine.position.z - card.position.z)*0.7f));
+            card.localScale = battleLine.localScale;
+        }
         /// <summary>
         /// This function only changes gameobject's location.
         /// Move 'defendingCard' position to near 'attackingCard'.
@@ -94,13 +97,18 @@ namespace GH
         /// <param name="defendCard"></param>
         /// <param name="attackingCard"></param>
         /// <param name="count"></param>
-        public static void SetCardsForBlock(Transform defendCard, Transform attackingCard, int count)
+        public static void SetCardsForBlock(CardInstance defendCardInst, CardInstance attackCardInst, int count)
         {
-            Vector3 blockPosition = Vector3.zero;
-            blockPosition.x += 5 * count;
+            Transform defendCardTransform = defendCardInst.transform;
+            Transform attackCardTransform = attackCardInst.transform;
+            Vector3 blockPosition = attackCardTransform.position;
+            Transform defendLine = defendCardInst.owner._CardHolder.defenceLine.value;
+            blockPosition.x += 3 * count;
             //blockPosition.y -= 0.2f;
-            blockPosition.z-= 5;
-            SetParentForCard(defendCard, attackingCard, blockPosition, Vector3.zero);
+            blockPosition.z-= 3;
+            Debug.LogFormat("Attacking card transform: {0}, Defending card transform: {1}, Blocking position: {2}"
+                , attackCardTransform.position, defendCardTransform.position, blockPosition);
+            SetParentForCard(defendCardTransform, attackCardTransform, blockPosition, defendLine);
         }
     }
 

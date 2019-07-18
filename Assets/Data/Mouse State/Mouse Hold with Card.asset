@@ -19,4 +19,5 @@ MonoBehaviour:
   _OnPlayerControlState: {fileID: 11400000, guid: 59e30c9ecf478844bba61fb6c1ca3682,
     type: 2}
   _PlayerBlockPhase: {fileID: 11400000, guid: 9189a99a722e2774489e7c7ffd312281, type: 2}
-  _PlayerBattlePhase: {fileID: 11400000, guid: 95059cf52ec2e8d43b693b24ecdbf8fa, type: 2}
+  _PlayerControlPhase: {fileID: 11400000, guid: b3b4f0e6979f833439b872cf0e331a8a,
+    type: 2}

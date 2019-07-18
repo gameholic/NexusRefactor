@@ -105,7 +105,6 @@ namespace GH.GameCard
             {
                 Debug.LogError("CardInstance: Attacking cards error");
                 return false;
-
             }
             else
             {

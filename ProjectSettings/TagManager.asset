@@ -54,9 +54,6 @@ TagManager:
   - name: Card
     uniqueID: 2781559551
     locked: 0
-  - name: CardInGame
-    uniqueID: 4191679909
-    locked: 0
   - name: CardBack
     uniqueID: 2046279033
     locked: 0
@@ -71,4 +68,16 @@ TagManager:
     locked: 0
   - name: CardText
     uniqueID: 3517207845
+    locked: 0
+  - name: CardOnField
+    uniqueID: 2897086719
+    locked: 0
+  - name: CardOnDefend
+    uniqueID: 1684331329
+    locked: 0
+  - name: CardOnAttack
+    uniqueID: 1365795303
+    locked: 0
+  - name: CardOnHand
+    uniqueID: 4191679909
     locked: 0

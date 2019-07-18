@@ -321,7 +321,10 @@ namespace GH
         private void Update()
         {          
             if (!isInit)
+            {
+                Debug.LogError("IsInitIsFalse");
                 return;
+            }
             CurrentPlayer = GetTurns(turnIndex).ThisTurnPlayer;
             CurrentPhase = GetTurns(turnIndex).CurrentPhase.value;
             UpdateMana();
@@ -330,26 +333,13 @@ namespace GH
             {
                 GetTurns(turnIndex).TurnBegin = startTurn;
                 startTurn = false;
-            }            
+            }     
             turnCountTextVariable.value = turnCounter.ToString();
             updatePlayer.UpdatePlayerText(CurrentPlayer);
             isComplete = GetTurns(turnIndex).Execute();
             if (!IsMultiplay)
             {
-                if (isComplete)
-                {
-                    turnIndex++;
-                    if (turnIndex > _TurnLength - 1)
-                    {
-                        turnIndex = 0;
-                        GetTurns(turnIndex).TurnBegin = startTurn;
-                        turnCounter++;
-                    }
-                    startTurn = true;
-                    turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString();
-                    //switchPlayer = true;
-                    OnTurnChanged.Raise();
-                }
+                Debug.LogError("Multiplay is False");
             }
             else
             {

@@ -9,7 +9,8 @@ namespace GH.GameCard
     public class CardViz : MonoBehaviour
     {         
         public Card card;
-        public CardVizProperties[] properties;
+        [SerializeField]
+        private CardVizProperties[] properties;
         public GameObject statsHolder;      
 
         public void LoadCard(Card c)

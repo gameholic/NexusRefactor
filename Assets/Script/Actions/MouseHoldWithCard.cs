@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using GH.GameTurn;
 using GH.GameCard;
 using GH.Multiplay;
-
+using GH.GameElements;
 namespace GH.GameStates
 {
 
@@ -23,7 +23,9 @@ namespace GH.GameStates
         [SerializeField]
         private Phase _PlayerBlockPhase;
         [SerializeField]
-        private Phase _PlayerBattlePhase;
+        private Phase _PlayerControlPhase;
+        [SerializeField]
+        private Card_Myfield cardOnField;
 
 
         public override void Execute(float d)
@@ -44,6 +46,8 @@ namespace GH.GameStates
                     {
                         RaycastHit hit = results[i];
                         CardInstance c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
+                        
+
                         if (c != null)
                         {
                             int count = 0;
@@ -54,6 +58,7 @@ namespace GH.GameStates
                                 MultiplayManager.singleton.PlayerBlocksTargetCard
                                     (thisCard.viz.card.InstId, thisCard.owner.PhotonId,
                                     c.viz.card.InstId, c.owner.PhotonId);
+                               
                                     
                                 //Setting.SetCardForblock(_SelectedCard.value.transform, c.transform, count);
                             }
@@ -72,17 +77,33 @@ namespace GH.GameStates
 
                     }
                 }
-                else
+                else if (currentPhase == _PlayerControlPhase)
                 {
                     for (int i = 0; i < results.Length; i++)
                     {
                         RaycastHit hit = results[i];
+                        CardInstance c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
                         GameElements.Area a
                             = hit.transform.gameObject.GetComponentInParent<GameElements.Area>();
-
-                        if (gc.CurrentState == _PlayerControlState && a != null)
-                            break;
-
+                        if(c!=null)
+                        {
+                            Debug.Log("eheheheh");
+                            if (gc.CurrentPlayer.fieldCard.Contains(c))
+                            {
+                                Debug.LogWarning("MouseHoldWithCardWarning:You Can't Pick Cards On Field");
+                                return;
+                            }
+                            if (c.currentLogic is Card_Myfield)
+                            {
+                                Debug.LogWarning("EBHBHBHBH");
+                                return;
+                            }
+                            else
+                            {
+                                Debug.Log("MouseHoldWithCard: You can Pick Card");
+                            }
+                        }
+                        //This is to check if user selectded card that is already on field. but don't work now. Needs to be fixed                   
                         if (a != null)
                         {
                             a.OnDrop(a);
@@ -97,6 +118,10 @@ namespace GH.GameStates
                     _SelectedCard.value = null;
                     Setting.gameController.SetState(_PlayerControlState);
                     _OnPlayerControlState.Raise();
+                }
+                else
+                {
+                    Debug.LogWarning("You Can't Hold Card At Current Phase: " + currentPhase);
                 }
                     return;
             }

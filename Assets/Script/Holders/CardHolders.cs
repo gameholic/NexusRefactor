@@ -13,7 +13,8 @@ namespace GH
 
         [SerializeField]
         private GH.TransformVariable[] _FieldGrid;
-        public GH.TransformVariable battleLine;
+        public GH.TransformVariable attackingLine;
+        public GH.TransformVariable defenceLine;
         public PlayerHolder thisPlayer;
 
         public TransformVariable GetFieldGrid(int i)
@@ -34,18 +35,9 @@ namespace GH
         public void SetCardOnBattleLine(CardInstance card)
         {
             Vector3 position = card.viz.gameObject.transform.position;
-            Setting.SetParentForCard(card.transform, battleLine.value);
+            Setting.SetCardsForAttack(card.transform, attackingLine.value);
 
-            /*
-            position.z = card.viz.gameObject.transform.position.z;
-            position.y = card.viz.gameObject.transform.position.y;
-
-
-            card.viz.gameObject.transform.position = position;
-            */
-
-            card.IsOnAttack = true;
-            
+            card.IsOnAttack = true;            
         }
 
         public void SetCardBackToOrigin(CardInstance card)

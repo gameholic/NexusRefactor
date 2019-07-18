@@ -42,6 +42,7 @@ namespace GH
             Card newInst = Instantiate(originCard);
             newInst.name = originCard.name;
 
+            //This is where Card inst id is intialized.
             newInst.InstId = CardIndex;
 
             CardIndex++;
