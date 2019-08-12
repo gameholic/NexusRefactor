@@ -159,7 +159,7 @@ namespace GH
             _TurnLength = _Turns.Length;
             _BlockManager.BlockInstDict = new Dictionary<CardInstance, BlockInstance>();
             _CurrentPlayer = GetTurns(0).ThisTurnPlayer;
-
+            
         }
 ///// <summary>
 ///// Initgame ver2.
@@ -215,6 +215,12 @@ namespace GH
         public void InitGame(int startingPlayer)
         {
             Debug.Log("INITIALISING GAME...");
+
+            NetworkPrint nwp = MultiplayManager.singleton.GetPlayer(LocalPlayer.PhotonId);      
+            localPlayer.player = nwp.playerProfile.UniqueId;        //This is where local player's profile should be changed
+            Debug.Log(localPlayer.player);
+
+
             Turn[] _tmpTurn = new Turn[2];
             for (int i = 0; i < _Players.Length; i++)
             {                

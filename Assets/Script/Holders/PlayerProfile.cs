@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEditor;
+using System;
 using GH.GameCard;
 namespace GH
 {
@@ -16,7 +16,7 @@ namespace GH
 
     //}
 
-    [System.Serializable]
+    [Serializable]
     public class PlayerProfile
     {
         [SerializeField]
@@ -30,6 +30,10 @@ namespace GH
         [SerializeField]
         private string[] _CardId;
 
+        public string UniqueId
+        {
+            get { return uniqueId; }
+        }
         //[SerializeField]
         //public ProfileData_Deck[] deckList;
         public string[] GetCardIds()

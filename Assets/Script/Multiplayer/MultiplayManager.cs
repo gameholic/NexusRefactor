@@ -96,11 +96,11 @@ namespace GH.Multiplay
 
         void InstantiateNetworkPrint() 
         {
-            PlayerProfile profile = ReadPlayerProfileJSON();
+            //PlayerProfile profile = ReadPlayerProfileJSON();
             object[] data = new object[1];
-            data[0] = profile.GetCardIds();
-
-            PhotonNetwork.Instantiate("NetworkPrint", Vector3.zero, Quaternion.identity, 0, data);
+            //data[0] = profile.GetCardIds();
+            
+            PhotonNetwork.Instantiate("NetworkPrint", Vector3.zero, Quaternion.identity, 0/*, data*/);
         }
 
 
@@ -113,7 +113,6 @@ namespace GH.Multiplay
             if (File.Exists(filePath))
             {
                 string dataAsJson = File.ReadAllText(filePath);
-                Debug.Log(dataAsJson);
                 playerProfile = JsonUtility.FromJson<PlayerProfile>(dataAsJson);
             }
             else
