@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using System.IO;
 
 using GH.GameCard;
+
+
 namespace GH.Multiplay
 
 {
@@ -90,13 +93,40 @@ namespace GH.Multiplay
         /// <summary>
         /// Respoonsible for adding / assigning Photon id to our player
         /// </summary>
-        void InstantiateNetworkPrint()
+
+        void InstantiateNetworkPrint() 
         {
-            PlayerProfile profile = Resources.Load("Player Profile") as PlayerProfile;
+            PlayerProfile profile = ReadPlayerProfileJSON();
             object[] data = new object[1];
             data[0] = profile.GetCardIds();
 
             PhotonNetwork.Instantiate("NetworkPrint", Vector3.zero, Quaternion.identity, 0, data);
+        }
+
+
+        private string playerProfileFilePath = "/StreamingAssets/playerProfile.json";
+        PlayerProfile ReadPlayerProfileJSON()
+        {
+            string filePath = Application.dataPath + playerProfileFilePath;
+            PlayerProfile playerProfile;
+
+            if (File.Exists(filePath))
+            {
+                string dataAsJson = File.ReadAllText(filePath);
+                Debug.Log(dataAsJson);
+                playerProfile = JsonUtility.FromJson<PlayerProfile>(dataAsJson);
+            }
+            else
+            {
+                playerProfile = new PlayerProfile();
+            }
+
+            return playerProfile;
+
+        }
+        void LoadPlayerProfile()
+        {
+
         }
         #endregion
 

@@ -1,21 +1,21 @@
-﻿#if UNITY_EDITOR
-using UnityEditor;
-using UnityEngine;
+﻿//#if UNITY_EDITOR
+//using UnityEditor;
+//using UnityEngine;
 
-namespace GH
-{
-    [CustomEditor(typeof(GameEvent))]
-    public class EventEditor : Editor
-    { 
-        public override void OnInspectorGUI()
-        {
-            GUI.enabled = Application.isPlaying;
-            GameEvent e = target as GameEvent;
-            if (GUILayout.Button("Raise"))
-            {
-                e.Raise();
-            }
-        }
-    }
-}
-#endif
+//namespace GH
+//{
+//    [CustomEditor(typeof(GameEvent))]
+//    public class EventEditor : Editor
+//    { 
+//        public override void OnInspectorGUI()
+//        {
+//            GUI.enabled = Application.isPlaying;
+//            GameEvent e = target as GameEvent;
+//            if (GUILayout.Button("Raise"))
+//            {
+//                e.Raise();
+//            }
+//        }
+//    }
+//}
+//#endif

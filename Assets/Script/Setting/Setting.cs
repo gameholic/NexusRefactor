@@ -16,8 +16,7 @@ namespace GH
                 resmanager.Init();
             }
             return resmanager;
-        }
-        
+        }        
         public static RaycastHit[] GetUIObjs()
         {
             Camera mainCam = Camera.main;
@@ -25,9 +24,7 @@ namespace GH
             RaycastHit[] ray = Physics.RaycastAll(cameraRay, 100.0f);
             
             return ray;
-        }
-
-    
+        }    
         public static void DropCreatureCard(Transform cardTransform, Transform fieldTransform, Card card)
         {
             Debug.LogFormat("DropCreatureCard: Field Transform is {0}", fieldTransform);
@@ -40,7 +37,6 @@ namespace GH
             gameController.CurrentPlayer.DropCardOnField(card.Instance);
 
         }
-
         public static void RegisterLog(string s, Color c)
         {
             
@@ -66,8 +62,6 @@ namespace GH
             c.localScale = p.localScale;
 
         }
-
-
         /// <summary>
         /// This is for placing defending cards to attacking card
         /// </summary>

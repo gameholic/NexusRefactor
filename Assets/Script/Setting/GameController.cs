@@ -217,8 +217,7 @@ namespace GH
             Debug.Log("INITIALISING GAME...");
             Turn[] _tmpTurn = new Turn[2];
             for (int i = 0; i < _Players.Length; i++)
-            {
-                
+            {                
                 GetPlayer(i).statsUI = GetPlayerUIInfo(i);
                 GetPlayer(i).manaResourceManager.InitManaZero();
                 GetPlayerUIInfo(i).UpdateManaUI();

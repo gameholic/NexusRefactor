@@ -18,7 +18,7 @@ namespace GH.GameElements
 
         [SerializeField]
         private CardVariables _CurrentSelectedCard;
-        public override void OnClick(CardInstance inst)
+        public override void LOnClick(CardInstance inst)
         {
             if (_StartBattle.IsValid())
             {
@@ -32,7 +32,7 @@ namespace GH.GameElements
                 return;
             }
         }
-        public override void OnHighlight(CardInstance inst)
+        public override void LOnHighlight(CardInstance inst)
         {
             
         }

@@ -211,6 +211,9 @@
     <Compile Include="Assets\PhotonChatApi\IChatClientListener.cs" />
     <Compile Include="Assets\Script\_DisplayUI\LoadPlayerUI.cs" />
     <Compile Include="Assets\Script\_DisplayUI\PlayerStatsUI.cs" />
+    <Compile Include="Assets\Script\_Editor\CardEditor.cs" />
+    <Compile Include="Assets\Script\_Editor\ConvertPlayerProfileToAsset.cs" />
+    <Compile Include="Assets\Script\_Editor\PlayerProfileEditor.cs" />
     <Compile Include="Assets\Script\_Setuper\BlockInstanceManager.cs" />
     <Compile Include="Assets\Script\_Setuper\ManaManager.cs" />
     <Compile Include="Assets\Script\_Setuper\ResourceManager.cs" />

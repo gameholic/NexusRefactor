@@ -15,13 +15,13 @@ namespace GH.GameElements
         [SerializeField]
         private GH.GameStates.State holdingCard;
 
-        public override void OnClick(CardInstance inst)
+        public override void LOnClick(CardInstance inst)
         {
             currentCard.Set(inst);
             Setting.gameController.SetState(holdingCard);
             onCurrentCardSelected.Raise();
         }
-        public override void OnHighlight(CardInstance inst)
+        public override void LOnHighlight(CardInstance inst)
         {
 
         }

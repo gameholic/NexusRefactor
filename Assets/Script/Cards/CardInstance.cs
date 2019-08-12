@@ -137,13 +137,13 @@ namespace GH.GameCard
         {
             if (currentLogic == null)
                 return;
-            currentLogic.OnClick(this);
+            currentLogic.LOnClick(this);
         }
         public void OnHighlight()
         {
             if (currentLogic == null)
                 return;
-            currentLogic.OnHighlight(this);
+            currentLogic.LOnHighlight(this);
         }
     }
 }

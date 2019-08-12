@@ -14,8 +14,7 @@ namespace GH.GameStates
         {
             //int count = 0;
             RaycastHit[] results = Setting.GetUIObjs();
-
-
+            
             IClickable c = null;
 
             for (int i = 0; i < results.Length; i++)

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 614da940f6ea31149978e97ace19f4e9, type: 3}
+  m_Name: PlayerProfile
+  m_EditorClassIdentifier: 
+  playerProfile:
+    uniqueId: 
+    name: 
+    playerAvatar: {fileID: 0}
+    _Card:
+    - {fileID: 11400000, guid: bd73dd00b85eabe4fb358f1e6a458bb0, type: 2}
+    - {fileID: 11400000, guid: 7450757d6a8a65c49859421ee5f2bf63, type: 2}
+    - {fileID: 11400000, guid: bd98d77dc257e9a4fa2a911953399377, type: 2}
+    - {fileID: 11400000, guid: faf587500de2fef4b9ede6672c950056, type: 2}
+    _CardId:
+    - Ashe_Championship
+    - Ashe_Project
+    - Diana_DarkWater
+    - Jinx_Starguardian
+    - Ashe_Championship
