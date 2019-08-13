@@ -97,7 +97,7 @@ namespace GH.Multiplay
         void InstantiateNetworkPrint() 
         {
             //PlayerProfile profile = ReadPlayerProfileJSON();
-            object[] data = new object[1];
+            //object[] data = new object[1];
             //data[0] = profile.GetCardIds();
             
             PhotonNetwork.Instantiate("NetworkPrint", Vector3.zero, Quaternion.identity, 0/*, data*/);
@@ -361,7 +361,7 @@ namespace GH.Multiplay
                         currentPlayer._CardHolder.GetFieldGrid(cardArea).value,
                         card);
                     card.Instance.currentLogic = MainData.FieldCardLogic;
-                    currentPlayer.manaResourceManager.UpdateCurrentMana(-(card.cardCost));
+                    currentPlayer.manaResourceManager.UpdateCurrentMana(-(card.CardCost));
 
                     Debug.LogFormat("DropCreatureCardCheck: {0}'s {1} is dropped. it's origin field location is {2}",
                         currentPlayer.player, card.Instance.viz.card.name, currentPlayer.fieldCard.Find(x=>x.viz == card.Instance.viz).GetOriginFieldLocation());

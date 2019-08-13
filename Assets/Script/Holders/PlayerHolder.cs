@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GH.GameElements;
 using GH.GameCard;
-
+using GH.GameCard.CardState;
 namespace GH
 {
     [CreateAssetMenu(menuName ="Holders/Player Holder")]
@@ -18,8 +18,8 @@ namespace GH
         public Color playerColor;
         public Sprite playerAvatar;
         public PlayerStatsUI statsUI;
-        public Instance_logic handLogic;
-        public Instance_logic fieldLogic;
+        public CardStateLogic handLogic;
+        public CardStateLogic fieldLogic;
 
         public List<string> startingDeck = new List<string>();
 
@@ -98,7 +98,7 @@ namespace GH
             bool result = false;
 
             int currentMana = manaResourceManager.GetCurrentMana();
-            if (c.cardCost <= currentMana)
+            if (c.CardCost <= currentMana)
                 result = true;
             else
                 Setting.RegisterLog("Not Enough Mana", Color.black);

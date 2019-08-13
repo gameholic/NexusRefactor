@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using GH.GameTurn;
+﻿using UnityEngine;
+
+
 using GH.GameCard;
+using GH.GameCard.CardState;
+using GH.GameTurn;
 using GH.Multiplay;
-using GH.GameElements;
+
 namespace GH.GameStates
 {
 

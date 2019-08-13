@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using GH.GameElements;
+using GH.GameCard.CardState;
 
 namespace GH
 {
@@ -8,9 +8,9 @@ namespace GH
     public class MainDataHolder : ScriptableObject
     {
         [SerializeField]
-        private GameElements.Instance_logic _HandCardLogic;
+        private CardStateLogic _HandCardLogic;
         [SerializeField]
-        private GameElements.Instance_logic _FieldCardLogic;
+        private CardStateLogic _FieldCardLogic;
         [SerializeField]
         private GameObject _CardPrefab;
         [SerializeField]
@@ -18,11 +18,11 @@ namespace GH
         [SerializeField]
         private Element elementHealth;
 
-        public GameElements.Instance_logic HandCardLogic
+        public CardStateLogic HandCardLogic
         {
             get { return _HandCardLogic; ; }
         }
-        public GameElements.Instance_logic FieldCardLogic
+        public CardStateLogic FieldCardLogic
         {
             get { return _FieldCardLogic; ; }
         }

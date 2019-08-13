@@ -2,20 +2,66 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using GH.GameCard.CardInfo;
 
 namespace GH.GameCard
 {
     [CreateAssetMenu(menuName ="Card")]
-    public class Card : ScriptableObject
+    public abstract class Card : ScriptableObject
     {
+
+        #region Transplanting
+
+
+        [SerializeField]
+        private CardData[] _Data;
+        private CardAppearance _Appearance;
+        private PhysicalAttribute _PhysicInstance;
+        private PlayerHolder _Owner;
+
+
+        public CardData[] Data
+        {
+            get { return _Data; }
+        }
+        public CardAppearance Appearance
+        {
+            set { _Appearance = value; }
+            get { return _Appearance; }
+        }
+
+        public PhysicalAttribute PhysicInstance
+        {
+            set { _PhysicInstance = value; }
+            get { return _PhysicInstance; }
+        }
+        public PlayerHolder Owner
+        {
+            set { _Owner = value; }
+            get { return _Owner; }
+        }
+
+
+        public abstract bool CanUseCard();
+        public abstract bool CanDropCard();
+        public abstract bool UseCard();
+        #endregion
+
+        
         [Tooltip("This should be same as CardMana_Int Property")]
-        public int cardCost;
+        [SerializeField]
+        private int _CardCost;
         public CardType cardType;
         public CardProperties[] properties;
         
         private CardInstance _CardInstance;
         private int _InstId;
         private CardViz _Viz;
+
+        public int CardCost
+        {
+            get { return _CardCost; }
+        }
         public CardViz Viz
         {
             set { _Viz = value; }
@@ -44,5 +90,9 @@ namespace GH.GameCard
             }
             return null;
         }
+    }
+    public class RuntimeValues
+    {
+        private int instId;
     }
 }

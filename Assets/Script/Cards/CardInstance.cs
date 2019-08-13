@@ -1,14 +1,13 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using GH.GameCard.CardState;
 using GH.GameStates;
-using GH.GameElements;
-using GH.Setup;
+using UnityEngine;
+
 namespace GH.GameCard
 {
     public class CardInstance : MonoBehaviour, IClickable
     {
         public PlayerHolder owner;
-        public Instance_logic currentLogic;
+        public CardStateLogic currentLogic;
         public CardViz viz;
         [SerializeField] //This needs to be deleted
         private bool attackable =false ; //Indicates that card is just placed and can't attak this turn.
@@ -17,6 +16,8 @@ namespace GH.GameCard
         [SerializeField]
         private Transform parentFieldTransform;
         private int fieldIndex;
+
+
 
         public bool GetAttackable()
         {
@@ -100,6 +101,7 @@ namespace GH.GameCard
         }
         public bool CanBeBlocked(CardInstance block, ref int count)
         {
+
             bool result = false;
             if (owner.attackingCards == null)
             {
