@@ -5,6 +5,7 @@ using UnityEngine;
 using System.IO;
 
 using GH.GameCard;
+using GH.Player;
 
 
 namespace GH.Multiplay
@@ -330,6 +331,7 @@ namespace GH.Multiplay
             {
                 c = p.CardDeck[0];
                 p.CardDeck.RemoveAt(0);
+                Debug.Log("Draw card");
                 PlayerTryToUseCard(c.InstId, p.photonId, CardOperation.pickCardFromDeck);
             }
             else
@@ -360,6 +362,8 @@ namespace GH.Multiplay
                     Setting.DropCreatureCard(card.Instance.transform,
                         currentPlayer._CardHolder.GetFieldGrid(cardArea).value,
                         card);
+
+                    
                     card.Instance.currentLogic = MainData.FieldCardLogic;
                     currentPlayer.manaResourceManager.UpdateCurrentMana(-(card.CardCost));
 
@@ -372,6 +376,7 @@ namespace GH.Multiplay
                     break;
 
                 case CardOperation.pickCardFromDeck:
+                    Debug.Log("AddCard");
                     GameObject go = Instantiate(MainData.CardPrefab) as GameObject;
                     CardViz v = go.GetComponent<CardViz>();
                     v.LoadCard(card);

@@ -10,7 +10,7 @@ namespace GH.GameCard.CardInfo
 {
     public class CardAppearance : MonoBehaviour
     {
-        public Card originCard;        //Do I need this? If I make CardAppearance only can access through Card, this won't be needed
+        public NewCard originCard;        //Do I need this? If I make CardAppearance only can access through Card, this won't be needed
 
         #region SerializeField
 
@@ -26,13 +26,13 @@ namespace GH.GameCard.CardInfo
             get { return name; }
         }
         #endregion
-        public void LoadCard(Card c)
-        {
+        public void LoadCard(NewCard c)
+        { 
             if (c == null)
                 return;
             originCard = c;
             c.Appearance = this;
-            CardData data = c.Data[0];
+            CardData data = c.Data;
             for (int i = 0; i < property.Length; i++)
             {
                 CardAppearPropoerty p = property[i];
@@ -52,35 +52,35 @@ namespace GH.GameCard.CardInfo
             switch (e)
             {
                 case ElementType.Art:
-                    p.renderer.sprite = data.art;
+                    p.renderer.sprite = data.Art;
                     p.renderer.gameObject.SetActive(true);
                     break;
                 case ElementType.Name:
-                    p.text.text = data.name;
+                    p.text.text = data.Name;
                     break;
                 case ElementType.Descript:
-                    p.text.text = data.description;
+                    p.text.text = data.Description;
                     break;
                 case ElementType.Ability:
-                    p.text.text = data.abilityDescript;
+                    p.text.text = data.AbilityDescription;
                     break;
                 case ElementType.Mana:
-                    p.text.text = data.mana.ToString();
+                    p.text.text = data.ManaCost.ToString();
                     break;
                 case ElementType.Attack:
-                    p.text.text = data.attack.ToString();
+                    p.text.text = data.Attack.ToString();
                     break;
                 case ElementType.Defend:
-                    p.text.text = data.defend.ToString();
+                    p.text.text = data.Defend.ToString();
                     break;
                 case ElementType.CardType:
-                    p.text.text = data.cardType.ToString();
+                    p.text.text = data.CardType.ToString();
                     break;
                 case ElementType.Region:
-                    p.text.text = data.region;
+                    p.text.text = data.Region;
                     break;
                 case ElementType.Class:
-                    p.text.text = data._class;
+                    p.text.text = data.Class;
                     break;
 
                 default:

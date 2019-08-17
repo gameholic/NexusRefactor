@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using UnityEditor;
-using System.Collections;
+﻿using GH.GameCard;
+using GH.Player;
 using System.Collections.Generic;
-using GH.GameCard;
 using System.IO;
+using UnityEngine;
 namespace GH.Multiplay
 {
     public class NetworkPrint : Photon.MonoBehaviour

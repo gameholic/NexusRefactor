@@ -1,26 +1,28 @@
-﻿using UnityEngine;
-using UnityEditor;
-
-using GH.GameCard.CardAbility;
+﻿using GH.GameCard.CardAbility;
 using GH.GameCard.CardInfo;
+using GH.GameCard.ErrorCheck;
+using UnityEngine;
 
 namespace GH.GameCard
 {
     [CreateAssetMenu(menuName = "+Cards/CreatureCard")]
-    public class CreatureCard : Card
+    public class CreatureCard : NewCard
     {
         #region Serialized
 
         private CreatureAbility _Ability;
 
-        readonly private ConditionAttribute condition;
+        readonly private ConditionAttribute condition  = new ConditionAttribute();
         
 
         #endregion
 
         #region Properties
 
-
+        public ConditionAttribute Condition
+        {
+            get { return condition; }
+        }
 
         #endregion
 
@@ -41,15 +43,15 @@ namespace GH.GameCard
         /// </summary>
         public override bool CanDropCard()
         {
+            CardErrorHandler errorCheck = new CardErrorHandler();
+
             bool result = false;
 
-            if(!condition.IsAtHand)         //Check Card Position
+            if(errorCheck.CheckCanDrop(this))         //Check Card Position
             {
                 Debug.LogError("ConditionError: This card is not on hand.");
-                return false;
+                result  = true;
             }
-            //if(!this.Owner.fieldCard.Contains(this))
-
 
 
             return result;
@@ -58,8 +60,13 @@ namespace GH.GameCard
 
         public override bool CanUseCard()
         {
+            CardErrorHandler errorCheck = new CardErrorHandler();
             bool result = false;
 
+            if (errorCheck.CheckCanDrop(this))         //Check Card Position
+            {
+                result = true;
+            }
             return result;
         }
 

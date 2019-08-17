@@ -2,7 +2,7 @@
 
 using GH.GameCard.CardInfo;
 
-namespace GH.Manager.MouseOperation
+namespace GH.MouseLogics
 {
     public class MouseOperation : MonoBehaviour
     {

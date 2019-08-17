@@ -138,7 +138,10 @@ namespace GH.GameCard
         public void OnClick()
         {
             if (currentLogic == null)
+            {
+                Debug.LogError("CurrentLogic is null");
                 return;
+            }
             currentLogic.LOnClick(this);
         }
         public void OnHighlight()

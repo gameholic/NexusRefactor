@@ -1,16 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
-
-using GH.GameCard.CardState;
 
 namespace GH.GameCard.CardInfo
 {
     public class ConditionAttribute : MonoBehaviour
     {
         #region Variables
-        private Card _OriginCard;
-
-        private bool isAtHand;          // True when card is at hand, False when card is  on field
+        private NewCard _OriginCard;
         private bool canAttack;
         private bool isAttacking;
         private bool isDead;
@@ -20,20 +15,21 @@ namespace GH.GameCard.CardInfo
 
         #region Properties
         
-        public Card OriginalCard
+        public NewCard OriginalCard
         {
             set { _OriginCard = value; }
             get { return _OriginCard; }
         }
-        public bool IsAtHand
-        {
-            set { isAtHand = value; }
-            get { return isAtHand; }
-        }
+
         public bool CanAttack
         {
             set { canAttack = value; }
-            get { return canAttack; }
+            get
+            {
+                if (_OriginCard.Data.Attack == 0)
+                    canAttack = false;
+                return canAttack;
+            }
         }
         public bool IsAttacking
         {
@@ -48,13 +44,13 @@ namespace GH.GameCard.CardInfo
         public void SetOriginFieldLocation(Transform t)
         {
             fieldTransform = t;
-        }
+        }       
         public Transform GetOriginFieldLocation()
         {
             if (fieldTransform == null)  //This might occur if card instance is called by its id
             {
                 Debug.LogErrorFormat("GetOriginalFieldLocationError: {0}'s {1} Field Location isn't saved",
-                    this.OriginalCard.Owner, this.OriginalCard.Data[0].name);
+                    this.OriginalCard.Owner, this.OriginalCard.Data.Name);
                 return null;
             }
             return fieldTransform;

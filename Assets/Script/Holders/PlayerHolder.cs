@@ -9,6 +9,8 @@ namespace GH
     [CreateAssetMenu(menuName ="Holders/Player Holder")]
     public class PlayerHolder : ScriptableObject
     {
+
+#pragma warning disable 0649
         public string player;
         public string userID;
         public bool isHumanPlayer;
@@ -129,4 +131,6 @@ namespace GH
             }
         }
     }
-} 
+
+#pragma warning restore 0649
+}

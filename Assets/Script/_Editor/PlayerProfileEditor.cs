@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
+using GH.Player;
 
 
 namespace GH.AssetEditor

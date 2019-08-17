@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using GH.GameElements;
-namespace GH.GameCard{
+using GH.GameCard;
+
+namespace GH
+{
 
     public class CardGraveLogic : Photon.MonoBehaviour
     {

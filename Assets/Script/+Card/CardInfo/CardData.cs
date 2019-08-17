@@ -6,7 +6,7 @@ namespace GH.GameCard.CardInfo
     [System.Serializable]
     public class CardData
     {
-
+#pragma warning  disable 0649
         //Below codes should not be modifiable.        
         [SerializeField]
         private string _Name;                 // Card name
@@ -22,7 +22,7 @@ namespace GH.GameCard.CardInfo
         private Ability _Ability;             // Ability enum. Make code easy to  check  its ability.
 
         [SerializeField]
-        private int _Mana;                    // ManaCost
+        private int _ManaCost;                    // ManaCost
         [SerializeField]
         private int _Attack;                  // Attack value
         [SerializeField]
@@ -34,6 +34,7 @@ namespace GH.GameCard.CardInfo
 
         private int uniqueId;               // Used to manage card in 'PlayerHolder' lists. This is saved when player save deck lists.  If card isn't in  deck,  unique id is -1;
 
+#pragma warning restore 0649
 
         #region Properties
         public string Name  {get{ return _Name; }}
@@ -41,10 +42,11 @@ namespace GH.GameCard.CardInfo
         public string AbilityDescription    {get{ return _AbilityDescript; }}
         public string Region    {get{ return _Region; }}
         public string Class{get{ return _Class; }}
-        public int Mana { get { return _Mana; } }
+        public int ManaCost { get { return _ManaCost; } }
         public int Attack { get { return _Attack; } }
         public int Defend { get { return _Defend; } }
         public CardType CardType { get { return _CardType;} }
+        public Sprite Art { get { return _Art; } }
         public int UniqueId { get { return uniqueId; } }
        
 

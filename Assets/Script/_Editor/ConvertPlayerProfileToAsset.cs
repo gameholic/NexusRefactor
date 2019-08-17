@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEditor;
+using GH.Player;
 
 
 namespace GH.AssetEditor

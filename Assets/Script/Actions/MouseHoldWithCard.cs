@@ -24,8 +24,7 @@ namespace GH.GameStates
         private Phase _PlayerBlockPhase;
         [SerializeField]
         private Phase _PlayerControlPhase;
-        [SerializeField]
-        private Card_Myfield cardOnField;
+
 
 
         public override void Execute(float d)

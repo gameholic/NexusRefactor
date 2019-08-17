@@ -7,6 +7,7 @@ namespace GH
     [CreateAssetMenu(menuName ="Holders/Main Data Holder")]
     public class MainDataHolder : ScriptableObject
     {
+        #pragma warning disable 0649
         [SerializeField]
         private CardStateLogic _HandCardLogic;
         [SerializeField]
@@ -17,6 +18,8 @@ namespace GH
         private Element elementAttack;
         [SerializeField]
         private Element elementHealth;
+        #pragma warning restore 0649
+
 
         public CardStateLogic HandCardLogic
         {
@@ -31,7 +34,9 @@ namespace GH
             get { return _CardPrefab; }
         }
         public Element AttackElement
-        { get { return elementAttack; } }
+        {
+            get { return elementAttack; }
+        }
         public Element HealthElement
         {
             get { return elementHealth; }
