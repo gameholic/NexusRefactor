@@ -7,10 +7,8 @@ namespace GH.Player.Assists
     public class PlayerInGameInfo : PlayerAssists
     {
 
-        private NewPlayerHolder p;
+        private PlayerHolder p;
         private ManaManager manaResourceManager;
-
-        [SerializeField]
         private PlayerStatsUI statsUI;        
         [SerializeField]                                        //To check photon Id easily. This should be NonSerialized
         private int _PhotonId = -1;
@@ -30,14 +28,17 @@ namespace GH.Player.Assists
             }
             get { return health; }
         }
-        
-
-        public int CurrentMana
+        public PlayerStatsUI StatsUI
         {
-            set { manaResourceManager.UpdateCurrentMana(value); }
-            get { return manaResourceManager.GetCurrentMana(); }
+            set { statsUI = value; }
+            get { return statsUI; }
         }
-        public override void Init(NewPlayerHolder p)
+        public ManaManager ManaManager
+        {
+            set { manaResourceManager = value; }
+            get { return manaResourceManager; }
+        }
+        public override void Init(PlayerHolder p)
         {
             manaResourceManager = new ManaManager();
             LoadPlayerOnStatsUI();
@@ -60,8 +61,8 @@ namespace GH.Player.Assists
         {
             bool result = false;
 
-            int currentMana = manaResourceManager.GetCurrentMana();
-            if (c.CardCost <= currentMana)
+            int currentMana = manaResourceManager.CurrentMana;
+            if (c.Data.ManaCost <= currentMana)
                 result = true;
             else
                 Setting.RegisterLog("Not Enough Mana", Color.black);

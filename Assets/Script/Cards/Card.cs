@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GH.Player;
 using GH.GameCard.CardInfo;
-
+/*
 namespace GH.GameCard
 {
     [CreateAssetMenu(menuName ="Card")]
@@ -56,3 +56,4 @@ namespace GH.GameCard
 
 
 }
+*/

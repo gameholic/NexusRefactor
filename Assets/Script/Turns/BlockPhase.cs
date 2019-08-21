@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using GH.GameAction;
-using GH.GameCard;
+﻿using GH.GameCard;
+using GH.Player;
+using UnityEngine;
 namespace GH.GameTurn
 {
     [CreateAssetMenu(menuName ="Turns/BlockPhase")]
@@ -37,15 +36,17 @@ namespace GH.GameTurn
                 PlayerHolder enemy = gc.GetOpponentOf(gc.CurrentPlayer);
 
                 //Exit logic 1: If there is no attacking cards to block. this phase don't need to be initiated. End turn
-                if (enemy.attackingCards.Count == 0)
+                if (enemy.CardManager.attackingCards.Count == 0)
                 {
-                    Debug.LogFormat("{0}, BlockPhase_OnStart: Can't find enemy ({1}) attacking cards", gc.CurrentPlayer.player, enemy.player);
+                    Debug.LogFormat("{0}, BlockPhase_OnStart: Can't find enemy ({1}) attacking cards",
+                        gc.CurrentPlayer.PlayerProfile.UniqueId, enemy.PlayerProfile.UniqueId);
                     PhaseForceExit = true;
                     return;
                 }
-                foreach (CardInstance c in gc.CurrentPlayer.fieldCard)
+                foreach (int instId in gc.CurrentPlayer.CardManager.fieldCards)
                 {
-                    if (c.GetAttackable())
+                    Card c = gc.CurrentPlayer.CardManager.SearchCard(instId);
+                    if (c.CardCondition.CanUse)
                     {
                         usableCards++;
                     }
@@ -54,7 +55,7 @@ namespace GH.GameTurn
                 //Exit logic 2: If there is no cards to block enemy card, this phase don't need to be initiated. End turn
                 if (usableCards < 1)
                 {
-                    Debug.LogFormat("{0}, BlockPhase_OnStart: There is no blockable cards", gc.CurrentPlayer.player);
+                    Debug.LogFormat("{0}, BlockPhase_OnStart: There is no blockable cards", gc.CurrentPlayer.PlayerProfile.UniqueId);
                     PhaseForceExit = true;
                     return;
                 }

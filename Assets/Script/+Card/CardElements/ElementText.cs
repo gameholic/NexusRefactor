@@ -4,7 +4,7 @@ using System.Collections;
 namespace GH.GameCard.CardElement
 {
 
-    [CreateAssetMenu(menuName ="Elements/Text")]
+    [CreateAssetMenu(menuName = "New/Elements/Text")]
     public class ElementText : Element
     {
         

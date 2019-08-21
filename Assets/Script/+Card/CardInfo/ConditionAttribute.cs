@@ -2,33 +2,32 @@
 
 namespace GH.GameCard.CardInfo
 {
-    public class ConditionAttribute : MonoBehaviour
+    public class ConditionAttribute 
     {
         #region Variables
-        private NewCard _OriginCard;
-        private bool canAttack;
+        private Card _OriginCard;
+        private bool canUse;
         private bool isAttacking;
         private bool isDead;
-        private Transform fieldTransform;
 
         #endregion
 
         #region Properties
         
-        public NewCard OriginalCard
+        public Card OriginCard
         {
             set { _OriginCard = value; }
-            get { return _OriginCard; }
+            get { return _OriginCard; } 
         }
 
-        public bool CanAttack
+        public bool CanUse
         {
-            set { canAttack = value; }
+            set { canUse = value; }
             get
             {
-                if (_OriginCard.Data.Attack == 0)
-                    canAttack = false;
-                return canAttack;
+                //if (_OriginCard.Data.Attack == 0)
+                //    canUse = false;
+                return canUse;
             }
         }
         public bool IsAttacking
@@ -41,21 +40,6 @@ namespace GH.GameCard.CardInfo
             set { isDead = value; }
             get { return isDead; }
         }
-        public void SetOriginFieldLocation(Transform t)
-        {
-            fieldTransform = t;
-        }       
-        public Transform GetOriginFieldLocation()
-        {
-            if (fieldTransform == null)  //This might occur if card instance is called by its id
-            {
-                Debug.LogErrorFormat("GetOriginalFieldLocationError: {0}'s {1} Field Location isn't saved",
-                    this.OriginalCard.Owner, this.OriginalCard.Data.Name);
-                return null;
-            }
-            return fieldTransform;
-        }
-
         #endregion
 
 

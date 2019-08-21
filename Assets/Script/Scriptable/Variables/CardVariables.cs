@@ -8,9 +8,9 @@ namespace GH
     [CreateAssetMenu(menuName ="Variables/Card Variable")]
     public class CardVariables : ScriptableObject
     {
-        public CardInstance value;
+        public Card value;
 
-        public void Set(CardInstance v)
+        public void Set(Card v)
         {
             value = v;
         }

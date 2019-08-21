@@ -133,7 +133,7 @@ namespace GH.Multiplay
         public Card CreateCardMaster(string cardId)
         {
             Card card = rm.GetCardInstFromDeck(cardId);
-            card.InstId = CardInstId;
+            card.Data.UniqueId = CardInstId;
             CardInstId = CardInstId + 1;
             return card;
         }
@@ -245,7 +245,7 @@ namespace GH.Multiplay
         }
         public void RegisterCard(Card c)
         {
-            cards.Add(c.InstId, c);
+            cards.Add(c.Data.UniqueId, c);
         }
         public Card GetCard(int instId)
         {

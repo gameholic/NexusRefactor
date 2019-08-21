@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using GH.GameCard;
 using GH.Multiplay;
-
+using GH.GameCard.CardInfo;
+using GH.Player;
 /// <summary>
 /// It runs when card is getting placed on area.
 /// Checks what sort of the card is and can this card be placed in area. If not, return error message and stop running.
@@ -12,15 +13,11 @@ namespace GH.GameElements
     [CreateAssetMenu(menuName ="Areas/MyCardsHolding")]
     public class MyFieldAreaLogic : AreaLogic
     {
+
+#pragma warning disable 0649
         [SerializeField]
         private CardVariables _CardVar;
-        [SerializeField]
-        private CardType _CreatureType;
-        [SerializeField]
-        private CardType _SpellType;
-        //[SerializeField]
-        //private Instance_logic _CardOnFieldLogic;
-
+#pragma warning restore 0649
         public override void Execute(GameElements.Area fieldArea)
         {
             PlayerHolder p = Setting.gameController.CurrentPlayer;
@@ -38,17 +35,17 @@ namespace GH.GameElements
 
             }
 
-            Card thisCard = _CardVar.value.viz.card;
-            if (thisCard.cardType == _CreatureType)
+            Card thisCard = _CardVar.value;
+            if (thisCard.Data.CardType == CardType.Creature)
             {
-                bool canUse = p.PayMana(thisCard);
+                bool canUse = p.InGameData.ManaManager.HaveEnoughMana(thisCard.Data.ManaCost);
                 if (canUse)
                 {
                     int fieldCode = 0;
                     //thisCard.Instance.SetOriginFieldLocation(fieldArea.transform); //Maybe this should go to setting
-                    for (int i =0; i<p._CardHolder.GetFieldGrid().Length; i++)
+                    for (int i =0; i<p.CardTransform.GetFieldGrid().Length; i++)
                     {
-                        if (fieldArea.transform.name == p._CardHolder.GetFieldGrid(i).value.name)
+                        if (fieldArea.transform.name == p.CardTransform.GetFieldGrid(i).value.name)
                         {
                             fieldCode = i;
                             break;
@@ -65,7 +62,7 @@ namespace GH.GameElements
 
                     fieldArea.IsPlaced = true;
                     MultiplayManager.singleton.PlayerTryToUseCard
-                        (thisCard.InstId, GameController.singleton.LocalPlayer.PhotonId,
+                        (thisCard.Data.UniqueId, GameController.singleton.LocalPlayer.InGameData.PhotonId,
                         MultiplayManager.CardOperation.dropCreatureCard, fieldCode);
 
                 }
@@ -75,7 +72,7 @@ namespace GH.GameElements
                 }
             }
 
-            else if(thisCard.cardType == _SpellType)
+            else if(thisCard.Data.CardType == CardType.Spell)
             {
                 Debug.Log("This is spell Card");
             }

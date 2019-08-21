@@ -10,7 +10,7 @@ namespace GH.Multiplay
         public int photonId;
         private bool isLocal;
         string[] cardIds;
-        private Dictionary<int, Card> _MyCards = new Dictionary<int, Card>();
+        private Dictionary<int, Card> _MyCards = new Dictionary<int, Card>();           // Codes that use this  need to be changed  to cardmanager of  player
         private List<Card> _CardDeck = new List<Card>();
         private PlayerHolder _PlayerHolder;
         public PlayerProfile _Profile;
@@ -35,7 +35,7 @@ namespace GH.Multiplay
         }
         public void AddCard(Card c)
         {
-            _MyCards.Add(c.InstId, c);
+            _MyCards.Add(c.Data.UniqueId, c);
             AddCardToDeck(c);
         }
         public bool IsLocal

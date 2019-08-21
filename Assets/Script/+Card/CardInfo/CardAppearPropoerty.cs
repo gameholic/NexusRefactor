@@ -4,6 +4,7 @@ using UnityEditor;
 
 namespace GH.GameCard.CardInfo
 {
+    [System.Serializable]
     public class CardAppearPropoerty
     {
         public TextMesh text;

@@ -2,28 +2,43 @@
 using System.Collections;
 using GH.GameElements;
 using GH.GameCard;
+using GH.GameCard.CardLogics;
 
 namespace GH.Player.Assists
 {
-    [CreateAssetMenu(menuName ="Holders/Card Holder")]
+    [CreateAssetMenu(menuName ="Holders/CardTransform")]
     public class PlayerCardTransform : PlayerAssists
     {
+#pragma warning  disable 0649
 
 
         [SerializeField]
         private TransformVariable _Graveyard;
         [SerializeField]
-        private GH.TransformVariable[] _FieldGrid;
-        public GH.TransformVariable attackingLine;
-        public GH.TransformVariable defenceLine;
-        public GH.TransformVariable handGrid;
+        private TransformVariable[] _FieldGrid;
+        [SerializeField]
+        private TransformVariable _AttackingLine;
+        [SerializeField]
+        private TransformVariable _DefendingLine;
+        [SerializeField]
+        private TransformVariable _HandGrid;
 
-        public override void Init(NewPlayerHolder p)
+
+
+#pragma warning restore 0649
+
+        public TransformVariable AttackingLine
+        { get { return _AttackingLine; } }
+        public TransformVariable DefendingLine
+        { get { return _DefendingLine; } }
+        public TransformVariable HandGrid
+        { get { return _HandGrid; } }
+        public override void Init(PlayerHolder p)
         {
             player = p;
         }
 
-        public TransformVariable GraveyGard
+        public TransformVariable Graveyard
         {
             get { return _Graveyard; }
         }
@@ -42,22 +57,21 @@ namespace GH.Player.Assists
         /// but card should be placed at little towards enemy from original position
         /// </summary>
         /// <param name="card"></param>
-        public void SetCardOnBattleLine(CardInstance card)
+        public void SetCardOnBattleLine(CreatureCard card)
         {
-            Vector3 position = card.viz.gameObject.transform.position;
-            Setting.SetCardsForAttack(card.transform, attackingLine.value);
-
-            card.IsOnAttack = true;            
+            Vector3 position = card.PhysicalCondition.gameObject.transform.position;
+            MoveCardInstance.SetCardsForAttack(card.PhysicalCondition.transform, AttackingLine.value);
+           
         }
 
-        public void SetCardBackToOrigin(CardInstance card)
+        public void SetCardBackToOrigin(Card card)
         {
-            //Debug.LogFormat("{0} is going back to its original field location, {1}", card.viz.card.name,
+            //Debug.LogFormat("{0} is going back to its original field location, {1}", card.Data.Name,
             //    card.GetOriginFieldLocation().transform.gameObject.name);
 
 
-            Setting.SetParentForCard(card.transform, card.GetOriginFieldLocation()); 
-            //Replace card to original place from battle line or whereever
+            MoveCardInstance.SetParentForCard(card.PhysicalCondition.transform, card.PhysicalCondition.GetOriginFieldLocation()); 
+            //Replace card to original place
             //I think I need to find FieldArea gameobject and make it as parent of card. Should check this.
             
                                    

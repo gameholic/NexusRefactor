@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using GH.Player;
 namespace GH
 {
     public class PlayerStatsUI : MonoBehaviour
@@ -22,18 +23,18 @@ namespace GH
                 Debug.Log("Avatar sprite component is needed on " + player);
                 return;
             }
-            player.statsUI = this;
+            player.InGameData.StatsUI = this;
             UpdateAll();
         }
         public void UpdateUserInfo()
         {
-            userID.text = player.userID;
-            avatarObj.GetComponent<SpriteRenderer>().sprite = player.playerAvatar;
+            userID.text = player.PlayerProfile.UniqueId;
+            avatarObj.GetComponent<SpriteRenderer>().sprite = player.PlayerProfile.PlayerAvatar;
 
         }
         public void UpdateHealthUI()
         {
-            health.text = player.Health.ToString();
+            health.text = player.InGameData.Health.ToString();
         }        
         public void UpdateAll()
         {
@@ -42,8 +43,8 @@ namespace GH
         }
         public void UpdateManaUI()
         {
-            manaCurrent.text = player.manaResourceManager.GetCurrentMana().ToString();
-            manaMax.text = player.manaResourceManager.GetMaxMana().ToString();
+            manaCurrent.text = player.InGameData.ManaManager.CurrentMana.ToString();
+            manaMax.text = player.InGameData.ManaManager.MaxMana.ToString();
         }
     }
 }

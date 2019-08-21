@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using GH.GameCard;
-using GH.Multiplay;
+﻿using GH.Multiplay;
+using GH.Player;
+using UnityEngine;
 
 namespace GH.GameAction
 {
@@ -10,7 +9,7 @@ namespace GH.GameAction
     {
         public override void Execute(PlayerHolder p)
         {
-            MultiplayManager.singleton.PlayerResetFlatFootedCard(p.PhotonId);
+            MultiplayManager.singleton.PlayerResetFlatFootedCard(p.InGameData.PhotonId);
         }
     }
 }

@@ -3,8 +3,12 @@ using UnityEditor;
 using GH.GameCard.CardAbility;
 namespace GH.GameCard.CardInfo
 {
+    public enum CardType
+    {
+        Creature, Spell, Weapon
+    }
     [System.Serializable]
-    public class CardData
+    public class CardData               //Maybe this should be seperated. Some data is not necessary on magic card
     {
 #pragma warning  disable 0649
         //Below codes should not be modifiable.        
@@ -14,6 +18,7 @@ namespace GH.GameCard.CardInfo
         private string _Description;          // Short description  of card
         [SerializeField]
         private string _AbilityDescript;      // Ability description.
+
         [SerializeField]
         private string _Region;               // Region for this card. When card design is finished, this should be changed as enum as Ability.
         [SerializeField]
@@ -47,7 +52,12 @@ namespace GH.GameCard.CardInfo
         public int Defend { get { return _Defend; } }
         public CardType CardType { get { return _CardType;} }
         public Sprite Art { get { return _Art; } }
-        public int UniqueId { get { return uniqueId; } }
+        public int UniqueId
+        {
+            set { uniqueId = value; }
+            get { return uniqueId; }
+        }
+
        
 
 

@@ -6,10 +6,12 @@ namespace GH.GameTurn
     [CreateAssetMenu(menuName = "Turns/Battle Phase_Player")]
     public class BattlePhase : Phase
     {
+#pragma warning  disable 0649
         [SerializeField]
         private State _BattleStateControl;
         [SerializeField]
         private Condition _IsBattleValid;
+#pragma warning restore 0649
         public override bool IsComplete()
         {
             if (PhaseForceExit)

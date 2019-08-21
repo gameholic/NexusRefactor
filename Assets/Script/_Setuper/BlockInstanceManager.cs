@@ -11,12 +11,12 @@ namespace GH.Setup
     public class BlockInstanceManager 
     {
 
-        private Dictionary<CardInstance, BlockInstance> _BlockInstDic;
+        private Dictionary<Card, BlockInstance> _BlockInstDic;
         /// <summary>
         /// BlockInstance has list of defenders with one attackers.
         /// Use 'CardInstance' to get 'BlockInstance'
         /// </summary>
-        public Dictionary<CardInstance,BlockInstance> BlockInstDict
+        public Dictionary<Card, BlockInstance> BlockInstDict
         {
             set { _BlockInstDic = value; }
             get { return _BlockInstDic; }
@@ -30,10 +30,10 @@ namespace GH.Setup
         /// Add attacking and defending card instances in dictionary.
         /// This data is used in 'BattlePhaseResolve' phase
         /// </summary>
-        /// <param name="attk">Attacking card instance</param>
-        /// <param name="def">Defending card instance</param>
+        /// <param name="attk">Attacking card</param>
+        /// <param name="def">Defending card</param>
         /// <param name="count">Number of 'def' card instances for 'attk' </param>
-        public void AddBlockInstance(CardInstance attk, CardInstance def, ref int count)
+        public void AddBlockInstance(Card attk, Card def, ref int count)
         {
 
             BlockInstance b = null;
@@ -51,7 +51,7 @@ namespace GH.Setup
             }
             else
             {
-                Debug.LogWarningFormat("BlockInst For Attacker, {0} AlreadyExist", attk.viz.card.name);
+                Debug.LogWarningFormat("BlockInst For Attacker, {0} AlreadyExist", attk.Data.Name);
             }
             //If 'def' isn't in the 'defenders' of the BlockInstance 'b', add it in list
             if (!b.defenders.Contains(def))
@@ -59,14 +59,14 @@ namespace GH.Setup
                 b.defenders.Add(def);                
             }
             count = b.defenders.Count;
-            Debug.LogErrorFormat("Current Blocking Card Count for {0}  is {1}",b.attacker.viz.card.name, count);
+            Debug.LogErrorFormat("Current Blocking Card Count for {0}  is {1}",b.attacker.Data.Name, count);
         }
-        public bool SearchBlockInstanceOfDefender(CardInstance defend)
+        public bool SearchBlockInstanceOfDefender(Card defend)
         {
             bool result = false;
             foreach (BlockInstance bi in Setting.gameController.BlockManager.BlockInstDict.Values)
             {
-                foreach (CardInstance tmp in bi.defenders)
+                foreach (Card tmp in bi.defenders)
                 {
                     if(tmp == defend)
                     {
@@ -78,7 +78,7 @@ namespace GH.Setup
             return result;
         }
 
-        public BlockInstance SearchBlockInstanceOfAttacker(CardInstance attck)
+        public BlockInstance SearchBlockInstanceOfAttacker(Card attck)
         {
             BlockInstance r = null;
             BlockInstDict.TryGetValue(attck, out r);
@@ -91,9 +91,9 @@ namespace GH.Setup
         /// <param name="attck">Key to find BlockInstance</param>
         /// <param name="dic">Dictionary for BlockInstances</param>
         /// <returns></returns>
-        public BlockInstance GetBlockInstanceByAttacker(CardInstance attck, Dictionary<CardInstance, BlockInstance> dic)
+        public BlockInstance GetBlockInstanceByAttacker(Card attck, Dictionary<Card, BlockInstance> dic)
         {
-            //Debug.LogFormat("GetBlockInstanceByAttacker: {0} try to search {1} in Block Instance", attck.owner.player, attck.viz.card.name);
+            //Debug.LogFormat("GetBlockInstanceByAttacker: {0} try to search {1} in Block Instance", attck.owner.player, attck.Data.Name);
             BlockInstance r = null;
             dic.TryGetValue(attck, out r);
             return r;

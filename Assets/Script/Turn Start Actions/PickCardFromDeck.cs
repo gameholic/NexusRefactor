@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-
+﻿using GH.Player;
+using UnityEngine;
 
 namespace GH.GameAction
 {

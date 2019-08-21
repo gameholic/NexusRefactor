@@ -1,14 +1,15 @@
 ﻿#pragma warning disable 0649
+using GH.GameCard;
 using GH.GameStates;
+using GH.GameTurn;
+using GH.Multiplay;
+using GH.Player;
+using GH.Player.Assists;
+using GH.Setup;
+using GH.UI;
+using GH.GameCard.CardLogics;
 using System.Collections.Generic;
 using UnityEngine;
-
-using GH.GameCard;
-using GH.GameTurn;
-using GH.Setup;
-using GH.Multiplay;
-using GH.UI;
-
 namespace GH
 {
     public class GameController : Photon.MonoBehaviour
@@ -18,9 +19,9 @@ namespace GH
         [SerializeField]
         private PlayerHolder _CurrentPlayer;
         [SerializeField]
-        private CardHolders _TopCardHolder;
+        private PlayerCardTransform _TopCardHolder;
         [SerializeField]
-        private CardHolders _BottomCardHolder;
+        private PlayerCardTransform _BottomCardHolder;
         [SerializeField]
         private State _CurrentState;
         [SerializeField]
@@ -54,25 +55,24 @@ namespace GH
         private int _TurnLength = 0;
         private BlockInstanceManager _BlockManager = new BlockInstanceManager();
         private CheckPlayerCanUse _CheckOwner = new CheckPlayerCanUse();
-        private LoadPlayerUI _LoadPlayerUI = new LoadPlayerUI();
+        
         public PlayerHolder[] _Players;
         private bool startTurn = true; //Check the start of the turn
         private int turnCounter; //Count the turn. When both player plays, it increases by 1
         private bool isInit;
         private bool _IsMultiplayer;
-        private CardGraveLogic _CardGraveLogic;
         #region GetSetProperties
         public PlayerHolder CurrentPlayer
         {
             set { _CurrentPlayer = value; }
             get { return _CurrentPlayer; }
         }
-        public CardHolders TopCardHolder
+        public PlayerCardTransform TopCardHolder
         {
             set { _TopCardHolder = value; }
             get { return _TopCardHolder; }
         }
-        public CardHolders BottomCardHolder
+        public PlayerCardTransform BottomCardHolder
         {
             set { _BottomCardHolder = value; }
             get { return _BottomCardHolder; }
@@ -102,10 +102,7 @@ namespace GH
         {
             return _Players[i];
         }
-        public LoadPlayerUI LoadPlayerUI
-        {
-            get { return _LoadPlayerUI; }
-        }
+
         public PlayerHolder GetOpponentOf(PlayerHolder p)
         {
             for (int i = 0; i < _Players.Length; i++)
@@ -143,11 +140,6 @@ namespace GH
                 return _IsMultiplayer;
             }
         }
-        public CardGraveLogic CardGraveLogic
-        {
-            set { _CardGraveLogic = value; }
-            get { return _CardGraveLogic; }
-        }
         #endregion
         #region SetupForGame
         private void Awake()
@@ -157,75 +149,24 @@ namespace GH
             isComplete = false;
             //switchPlayer = false;
             _TurnLength = _Turns.Length;
-            _BlockManager.BlockInstDict = new Dictionary<CardInstance, BlockInstance>();
+            _BlockManager.BlockInstDict = new Dictionary<Card, BlockInstance>();
             _CurrentPlayer = GetTurns(0).ThisTurnPlayer;
             
         }
-///// <summary>
-///// Initgame ver2.
-///// </summary>
-///// <param name="startingPlayer"></param>
-//        public void InitGameVer2(int startingPlayer)
-//        {
-//            Turn[] _tmpTurn = new Turn[2];
-//            PlayerHolder[] _tmpPlayer = new PlayerHolder[2];
-//            for (int i = 0; i < _Players.Length; i++)
-//            {
-
-//                GetPlayer(i).statsUI = GetPlayerUIInfo(i);
-//                GetPlayer(i).manaResourceManager.InitManaZero();
-//                GetPlayerUIInfo(i).UpdateManaUI();
-//                if (GetPlayer(i).PhotonId == startingPlayer)
-//                {
-//                    _tmpTurn[0] = GetTurns(i);
-//                    _tmpPlayer[0] = GetTurns(i).ThisTurnPlayer;
-//                }
-//                else
-//                {
-//                    _tmpTurn[1] = GetTurns(i);
-//                    _tmpPlayer[1] = GetTurns(i).ThisTurnPlayer;
-//                }
-//            }
-//            _Turns = _tmpTurn;
-//            _Players = _tmpPlayer;
-//            BottomCardHolder = LocalPlayer._CardHolder;
-//            TopCardHolder = ClientPlayer._CardHolder;
-
-//            for (int i = 0; i < _Players.Length; i++)
-//            {
-//                if (GetPlayer(0) == GetPlayerUIInfo(i).player)
-//                {
-//                    GetPlayer(0).statsUI = GetPlayerUIInfo(i);
-//                    GetPlayerUIInfo(0).player.LoadPlayerOnStatsUI();
-//                }
-//                else
-//                {
-//                    GetPlayer(1).statsUI = GetPlayerUIInfo(i);
-//                    GetPlayerUIInfo(1).player.LoadPlayerOnStatsUI();
-//                }
-//            }
-//            //SetupPlayers();
-//            turnCounter = 1;
-//            turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString(); // Visualize whose turn is now            
-//            turnCountTextVariable.value = turnCounter.ToString();
-//            OnTurnChanged.Raise();
-//            isInit = true;
-
-//        }
         public void InitGame(int startingPlayer)
         {
             Debug.Log("INITIALISING GAME...");
 
-            NetworkPrint nwp = MultiplayManager.singleton.GetPlayer(LocalPlayer.PhotonId);      
-            localPlayer.player = nwp.playerProfile.UniqueId;        //This is where local player's profile should be changed
-            Debug.Log(localPlayer.player);
+            NetworkPrint nwp = MultiplayManager.singleton.GetPlayer(LocalPlayer.InGameData.PhotonId);
+            localPlayer = nwp.ThisPlayer;        //This is where local player's profile should be changed
+            //Debug.Log(localPlayer.player);                            /
 
 
             Turn[] _tmpTurn = new Turn[2];
             for (int i = 0; i < _Players.Length; i++)
             {                
-                GetPlayer(i).statsUI = GetPlayerUIInfo(i);
-                GetPlayer(i).manaResourceManager.InitManaZero();
+                GetPlayer(i).InGameData.StatsUI = GetPlayerUIInfo(i);
+                GetPlayer(i).InGameData.ManaManager.InitManaZero();
                 GetPlayerUIInfo(i).UpdateManaUI();
                 /*
                  *Initialise mana as 0
@@ -233,7 +174,7 @@ namespace GH
                  *      Ex) Initialise mana as 3 
                  */
 
-                if (GetPlayer(i).PhotonId == startingPlayer)
+                if (GetPlayer(i).InGameData.PhotonId == startingPlayer)
                 {
                     _tmpTurn[0] = GetTurns(i);              
                 }
@@ -246,25 +187,16 @@ namespace GH
             }
             _Turns = _tmpTurn;
 
-            BottomCardHolder = LocalPlayer._CardHolder;
-            TopCardHolder = ClientPlayer._CardHolder;
+            BottomCardHolder = LocalPlayer.CardTransform;
+            TopCardHolder = ClientPlayer.CardTransform;
 
             for (int i = 0; i < _Players.Length; i++)
-            {                
+            {
                 if (GetPlayer(0) == GetPlayerUIInfo(i).player)
-                {
-                    //Debug.Log("Getplayer(0) ui on");
-                    GetPlayer(0).statsUI = GetPlayerUIInfo(i);
-                    GetPlayerUIInfo(0).player.LoadPlayerOnStatsUI();
-                }
+                    GetPlayer(0).InGameData.StatsUI = GetPlayerUIInfo(i);
                 else
-                {
-                    //Debug.Log("Getplayer(1) ui on");
-                    GetPlayer(1).statsUI = GetPlayerUIInfo(i);
-                    GetPlayerUIInfo(1).player.LoadPlayerOnStatsUI();
-                }
+                    GetPlayer(1).InGameData.StatsUI = GetPlayerUIInfo(i);
             }
-            //SetupPlayers();
             turnCounter = 1;
             turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString(); // Visualize whose turn is now            
             turnCountTextVariable.value = turnCounter.ToString();
@@ -272,25 +204,6 @@ namespace GH
             OnTurnChanged.Raise();
             SetUpMultiplay();
             isInit = true;
-
-        }
-        private void SetupPlayers()
-        {
-            for (int i = 0; i < _Players.Length; i++)
-            {
-                GetPlayer(i).Init();
-                if (i == 0)
-                    GetPlayer(i)._CardHolder = BottomCardHolder; // Player 1 is bottom card holder
-                else
-                    GetPlayer(i)._CardHolder = TopCardHolder;  // Player 2 is top card holder
-
-                if (i < 2)
-                {
-                    GetPlayer(i).statsUI = GetPlayerUIInfo(i);
-                    GetPlayerUIInfo(i).player.LoadPlayerOnStatsUI();
-
-                }
-            }
         }
         private void SetUpMultiplay()
         {
@@ -302,7 +215,6 @@ namespace GH
 
         }
         #endregion
-
         /// <summary>
         /// Pick top card from deck
         /// Issue: Does this function should be at Gamecontroller?
@@ -350,7 +262,7 @@ namespace GH
             {
                 if (isComplete)
                 {
-                    MultiplayManager.singleton.PlayerEndsTurn(CurrentPlayer.PhotonId);
+                    MultiplayManager.singleton.PlayerEndsTurn(CurrentPlayer.InGameData.PhotonId);
                 }
             }
             if (_CurrentState != null)
@@ -364,13 +276,13 @@ namespace GH
             {
                 r = 0;
             }
-            return GetTurns(r).ThisTurnPlayer.PhotonId;
+            return GetTurns(r).ThisTurnPlayer.InGameData.PhotonId;
         }
         public int GetPlayerTurnIndex(int photonId)
         {
             for (int i = 0; i < _TurnLength; i++)
             {
-                if (GetTurns(i).ThisTurnPlayer.PhotonId == photonId)
+                if (GetTurns(i).ThisTurnPlayer.InGameData.PhotonId == photonId)
                 {
                     return i;
                 }
@@ -411,14 +323,6 @@ namespace GH
             {
                 Debug.LogFormat("EndPhaseException: Current Player_ {0}", CurrentPlayer);
             }
-        }
-        public void PutCardToGrave(CardInstance c)
-        {
-
-            if (CardGraveLogic != null)
-                CardGraveLogic.PutCardToGrave(c);
-            else
-                Debug.LogError("CardGraveLogicIsNull");
         }
     }
 }

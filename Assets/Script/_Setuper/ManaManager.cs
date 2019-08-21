@@ -9,13 +9,23 @@ namespace GH
         private int maxMana;
 
         
-        public void UpdateMaxMana(int chnages)
+        public void UpdateMaxMana(int changes)
         {
-            maxMana = maxMana + chnages;
+            maxMana = maxMana + changes;
         }
         public void UpdateCurrentMana(int changes)
         {
             currentMana = currentMana + changes;
+        }
+        public void UseMana(int use)
+        {
+            UpdateCurrentMana(-use);
+        }
+        public bool HaveEnoughMana(int mana)
+        {
+            if (currentMana < mana)
+                return false;
+            return true;
         }
         public void InitMana()
         {
@@ -26,8 +36,16 @@ namespace GH
             currentMana = 0;
             maxMana = 0;
         }
-        public int GetCurrentMana(){return currentMana;}
-        public int GetMaxMana() { return maxMana; }
+        public int CurrentMana
+        {
+            set { currentMana = value; }
+            get { return currentMana; }
+        }
+        public int MaxMana
+        {
+            set { maxMana = value; }
+            get { return maxMana; }
+        }
     }
 
 }

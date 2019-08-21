@@ -1,18 +1,18 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿//using UnityEngine;
+//using System.Collections;
 
 
-namespace GH.GameCard
-{
+//namespace GH.GameCard
+//{
 
-    [CreateAssetMenu(menuName = "Card Type/Spell")]
-    public class Spell : CardType
-    {
-        public override void OnSetType(CardViz viz)
-        {
-            base.OnSetType(viz);
+//    [CreateAssetMenu(menuName = "Card Type/Spell")]
+//    public class Spell : CardType
+//    {
+//        public override void OnSetType(CardViz viz)
+//        {
+//            base.OnSetType(viz);
 
-            viz.GetStatsHolder().SetActive(false);
-        }
-    }
-}
+//            viz.GetStatsHolder().SetActive(false);
+//        }
+//    }
+//}

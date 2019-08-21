@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Collections;
-using UnityEngine.EventSystems;
-using GH.GameCard;
+﻿using GH.GameCard;
+using GH.Player;
+using UnityEngine;
+using GH.GameCard.CardInfo;
 
 namespace GH.GameStates
 {
@@ -22,34 +21,34 @@ namespace GH.GameStates
             if (Input.GetMouseButtonDown(0))
             {
                 RaycastHit[] results = Setting.GetUIObjs();
-                CardInstance c = null;
+                Card c = null;
 
                 for (int i = 0; i < results.Length; i++)
                 {
                     RaycastHit hit = results[i];
-                    c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
+                    c = hit.transform.gameObject.GetComponentInParent<PhysicalAttribute>().OriginCard;
                     PlayerHolder enemy = gc.GetOpponentOf(gc.CurrentPlayer);
 
 
                     if (c != null)
                     {                        
-                        if (c.owner != enemy && 
-                            gc.CurrentPlayer.fieldCard.Contains(c) && 
-                            c.GetAttackable())
+                        if (c.User != enemy && 
+                            gc.CurrentPlayer.CardManager.CheckCard(c.Data.UniqueId) && 
+                            c.UseCard())
                         {
                             _SelectedCard.value = c;
                             gc.SetState(_HoldingCardState);
                             _OnCardSelectEvent.Raise();                            
                         }
-                        else if(!c.GetAttackable())
+                        else if(!c.UseCard())
                         {
-                            Debug.LogErrorFormat("SelectBlockCardError: This {0} can't attack now", c.viz.card.name);
+                            Debug.LogErrorFormat("SelectBlockCardError: This {0} can't attack now", c.Data.Name);
                         }
-                        else if (!gc.CurrentPlayer.fieldCard.Contains(c))
+                        else if (!gc.CurrentPlayer.CardManager.CheckCardContainer(CardContainer.Field,c))
                         {
-                            Debug.LogErrorFormat("SelectBlockCardError: {0} don't have {1}", gc.CurrentPlayer,c.viz.card.name);
+                            Debug.LogErrorFormat("SelectBlockCardError: {0} don't have {1}", gc.CurrentPlayer,c.Data.Name);
                         }
-                        else if (c.owner == enemy)
+                        else if (c.User == enemy)
                         {
                             Debug.LogErrorFormat("SelectBlockCardError: This card owner is enemy");
                         }

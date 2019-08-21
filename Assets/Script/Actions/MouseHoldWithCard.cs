@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 
-
+using GH.GameCard.CardInfo;
 using GH.GameCard;
-using GH.GameCard.CardState;
 using GH.GameTurn;
 using GH.Multiplay;
 
@@ -12,6 +11,7 @@ namespace GH.GameStates
     [CreateAssetMenu(menuName = "Actions/MouseHoldWithCard")]
     public class MouseHoldWithCard : Action
     {
+#pragma warning disable 0649
         [SerializeField]
         private CardVariables _SelectedCard;
         [SerializeField]
@@ -25,49 +25,42 @@ namespace GH.GameStates
         [SerializeField]
         private Phase _PlayerControlPhase;
 
+#pragma warning restore 0649
 
 
         public override void Execute(float d)
         {
             bool mouseIsDown = Input.GetMouseButton(0);
-
             if (!mouseIsDown)
             {
                 GameController gc = Setting.gameController;
                 RaycastHit[] results = Setting.GetUIObjs();
                 Phase currentPhase = gc.GetTurns(gc.turnIndex).CurrentPhase.value;
-
-
                 if (currentPhase == _PlayerBlockPhase)
                 {
                     //Selecting card to block enemy attacking card
                     for (int i = 0; i < results.Length; i++)
                     {
                         RaycastHit hit = results[i];
-                        CardInstance c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
-                        
-
-                        if (c != null)
+                        PhysicalAttribute cardInst = hit.transform.gameObject.GetComponentInParent<PhysicalAttribute>();
+                        CreatureCard atkCard = (CreatureCard)cardInst.OriginCard;
+                        if (atkCard != null)
                         {
-                            int count = 0;
-                            bool block = c.CanBeBlocked(_SelectedCard.value, ref count);
+                            bool block = true;          //atkCard.CanBeBlocked(_SelectedCard.value, ref count);
                             if (block)
                             {
-                                CardInstance thisCard = _SelectedCard.value;
+                                Card thisCard = _SelectedCard.value;
                                 MultiplayManager.singleton.PlayerBlocksTargetCard
-                                    (thisCard.viz.card.InstId, thisCard.owner.PhotonId,
-                                    c.viz.card.InstId, c.owner.PhotonId);
-                               
-                                    
+                                    (thisCard.Data.UniqueId, thisCard.User.InGameData.PhotonId,
+                                    atkCard.Data.UniqueId, atkCard.User.InGameData.PhotonId);
                                 //Setting.SetCardForblock(_SelectedCard.value.transform, c.transform, count);
                             }
                             else
                             {
-                                Debug.LogFormat("MouseHoldWithCard_{0}: {1} can't be blocked card.", gc.CurrentPlayer.player, c.viz.card.name);
+                                Debug.LogFormat("MouseHoldWithCard_{0}: {1} can't be blocked card.", 
+                                    gc.CurrentPlayer.PlayerProfile.UniqueId, atkCard.Data.Name);
                             }
-
-
-                            _SelectedCard.value.gameObject.SetActive(true);
+                            _SelectedCard.value.PhysicalCondition.gameObject.SetActive(true);
                             _SelectedCard.value = null;
                             _OnPlayerControlState.Raise();
                             Setting.gameController.SetState(_PlayerBlockState);
@@ -81,18 +74,19 @@ namespace GH.GameStates
                     for (int i = 0; i < results.Length; i++)
                     {
                         RaycastHit hit = results[i];
-                        CardInstance c = hit.transform.gameObject.GetComponentInParent<CardInstance>();
+                        PhysicalAttribute cardInst = hit.transform.gameObject.GetComponentInParent<PhysicalAttribute>();
+                        CreatureCard c = (CreatureCard)cardInst.OriginCard;
                         GameElements.Area a
                             = hit.transform.gameObject.GetComponentInParent<GameElements.Area>();
                         if(c!=null)
                         {
                             Debug.Log("eheheheh");
-                            if (gc.CurrentPlayer.fieldCard.Contains(c))
+                            if (gc.CurrentPlayer.CardManager.CheckCard(c.Data.UniqueId))
                             {
                                 Debug.LogWarning("MouseHoldWithCardWarning:You Can't Pick Cards On Field");
                                 return;
                             }
-                            if (c.currentLogic is Card_Myfield)
+                            if (c.PhysicalCondition.IsOnField())
                             {
                                 Debug.LogWarning("EBHBHBHBH");
                                 return;
@@ -113,7 +107,7 @@ namespace GH.GameStates
                             Debug.LogError("MouseHoldWithCard: Card Can't be placed. Area is null");
                         }
                     }
-                    _SelectedCard.value.gameObject.SetActive(true);
+                    _SelectedCard.value.PhysicalCondition.gameObject.SetActive(true);
                     _SelectedCard.value = null;
                     Setting.gameController.SetState(_PlayerControlState);
                     _OnPlayerControlState.Raise();

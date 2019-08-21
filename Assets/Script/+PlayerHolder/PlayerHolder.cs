@@ -8,17 +8,15 @@ using UnityEngine;
 namespace GH.Player
 {
     [CreateAssetMenu(menuName ="Holders/Player Holder")]
-    public class NewPlayerHolder : ScriptableObject
+    public class PlayerHolder : ScriptableObject
     {
         #region Transplanting
 
-        public PlayerProfile _ProfileInfo;
+        private PlayerProfile _ProfileInfo;
         private PlayerInGameInfo _InGameData;
         private PlayerCardTransform _CardTransform;
-        private PlayerCardManager _CardManager;
+        private CardManager _CardManager;
         #endregion
-        public string player;
-        public string userID;
         public bool isHumanPlayer;
 
 
@@ -32,7 +30,7 @@ namespace GH.Player
         {
             _InGameData = new PlayerInGameInfo();
             _CardTransform = new PlayerCardTransform();
-            _CardManager = new PlayerCardManager();
+            _CardManager = new CardManager();
 
             _InGameData.Init(this);
             _CardManager.Init(this);
@@ -46,13 +44,14 @@ namespace GH.Player
         {
             get { return _CardTransform; }
         }
-        public PlayerCardManager CardManager
+        public CardManager CardManager
         {
             get { return _CardManager; }
         }
-        public void SetPlayerProfile(PlayerProfile profile)
+        public PlayerProfile PlayerProfile
         {
-            _ProfileInfo = profile;
+            set { _ProfileInfo = value; }
+            get { return _ProfileInfo; }
         }
         public List<Card> AllCardInst
         {

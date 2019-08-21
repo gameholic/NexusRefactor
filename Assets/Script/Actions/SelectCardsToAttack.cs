@@ -1,8 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using GH.GameCard;
+using GH.GameCard.CardInfo;
 using GH.GameStates;
-using GH.GameCard;
 using GH.Multiplay;
+using GH.Player;
+using UnityEngine;
 namespace GH
 {
     [CreateAssetMenu(menuName = "Actions/SelectCardsToAttack")]
@@ -21,7 +22,7 @@ namespace GH
                 for (int i = 0; i < results.Length; i++)
                 {
                     RaycastHit hit = results[i];
-                    CardInstance inst = hit.transform.gameObject.GetComponentInChildren<CardInstance>();
+                    Card inst = hit.transform.gameObject.GetComponentInChildren<PhysicalAttribute>().OriginCard;
 
                     //Get Current player to send its photon id                   
                     PlayerHolder p = Setting.gameController.CurrentPlayer;
@@ -30,18 +31,18 @@ namespace GH
                     if(inst!=null)
                     {
                         //If selected card can't perform attack in whatever reason, finish codes with error message
-                        if (!inst.GetAttackable())
+                        if (!inst.CanUseCard())
                         {
-                            Debug.LogWarningFormat("{0} can't attack.", inst.viz.card.name);
+                            Debug.LogWarningFormat("{0} can't attack.", inst.Data.Name);
                             return;
                         }
-                        MultiplayManager.singleton.PlayerTryToUseCard(inst.viz.card.InstId, p.PhotonId, MultiplayManager.CardOperation.setCardToAttack);
+                        MultiplayManager.singleton.PlayerTryToUseCard(inst.Data.UniqueId, p.InGameData.PhotonId, MultiplayManager.CardOperation.setCardToAttack);
               
                     }
                     else
                     {
                         //Send error message if 'CardInstance' is null
-                        Debug.LogErrorFormat("Card Instance ({0}) is null", inst.viz.card.name);
+                        Debug.LogErrorFormat("Card Instance ({0}) is null", inst.Data.Name);
                         return;            
                     }
                 }   

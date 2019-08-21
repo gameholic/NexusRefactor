@@ -3,13 +3,15 @@ using UnityEngine;
 using GH.GameAction;
 using GH.Multiplay;
 using UnityEditor;
-
+using GH.Player;
 namespace GH.GameTurn
 {
 
     [CreateAssetMenu(menuName = "Turns/Turn")]
     public class Turn : ScriptableObject
     {
+
+#pragma warning disable 0649
 
         #region Private Field
 
@@ -37,7 +39,9 @@ namespace GH.GameTurn
         private PlayerAction[] _TurnStartAction;
         #endregion
 
-        #region Get/SetFunctions and Properties
+#pragma warning restore 0649
+
+        #region Properties
         public void EndCurrentPhase()
         {
             _Phases[PhaseIndex].PhaseForceExit = true;
@@ -77,10 +81,10 @@ namespace GH.GameTurn
             }
 
 
-            if (ThisTurnPlayer.manaResourceManager.GetMaxMana() < 10)
-                ThisTurnPlayer.manaResourceManager.UpdateMaxMana(1);
+            if (ThisTurnPlayer.InGameData.ManaManager.MaxMana < 10)
+                ThisTurnPlayer.InGameData.ManaManager.UpdateMaxMana(1);
 
-            ThisTurnPlayer.manaResourceManager.InitMana();
+            ThisTurnPlayer.InGameData.ManaManager.InitMana();
             MultiplayManager.singleton.SendPhase(ThisTurnPlayer.name, _Phases[PhaseIndex].PhaseName);
         }
 

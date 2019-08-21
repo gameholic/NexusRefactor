@@ -2,7 +2,8 @@
 using UnityEditor;
 using GH.GameElements;
 using GH.Multiplay;
-
+using GH.Player;
+using GH.GameCard.CardInfo;
 
 namespace GH.GameCard.CardLogics
 {
@@ -13,33 +14,31 @@ namespace GH.GameCard.CardLogics
         private static MultiplayManager multiplayManager = MultiplayManager.singleton;
         private void Awake()
         {
-            //Setting.gameController.CardGraveLogic = this;
             DontDestroyOnLoad(this.gameObject);
         }
-        public void PutCardToGrave(CardInstance c)
+        public void SetCardDeadLogic(Card c)
         {
-            photonView.RPC("RPC_PutCardToGrave", PhotonTargets.All, c.viz.card.InstId, c.owner.PhotonId);
+            photonView.RPC("RPC_SetCardDead", PhotonTargets.All, c.Data.UniqueId, c.User.InGameData.PhotonId);
         }
         [PunRPC]
-        private void RPC_PutCardToGrave(int cardInstId, int playerPhotonId)
+        private void RPC_SetCardDead(int cardInstId, int playerPhotonId)
         {
             NetworkPrint p = multiplayManager.GetPlayer(playerPhotonId);
 
             PlayerHolder cardOwner = p.ThisPlayer;
             Card card = p.GetCard(cardInstId);
-            CardInstance c = card.Instance;
-
-
-            cardOwner.deadCards.Add(c);
-            //dead card should be added here.
-            if (c == null)
+            if (card == null)
             {
                 Debug.LogError("COULDN'T FIND CARDINSTANCE");
+                return;
             }
+            cardOwner.CardManager.deadCards.Add(card.Data.UniqueId);
+            //dead card should be added here.
+           
             int j = 0;
             for (int i = 0; i < 2; i++)
             {
-                if(c.owner == Setting.gameController.GetPlayer(i))
+                if(card.User == Setting.gameController.GetPlayer(i))
                 {
                     cardOwner = Setting.gameController.GetPlayer(i);
                     j = i;
@@ -52,37 +51,49 @@ namespace GH.GameCard.CardLogics
                 return;
             }
             //Should check owner to move card to graveyard
+            photonView.RPC("RPC_YouAreAlreadyDead", PhotonTargets.All, card.Data.UniqueId, cardOwner.InGameData.PhotonId);
 
-            if (cardOwner.fieldCard.Contains(c))
-            {
-                //cardOwner.fieldCard.Remove(c);
-                Setting.gameController.GetPlayer(j).fieldCard.Remove(c);
-                Debug.LogFormat("CardGraveyard, {0}'s {1} is removed from fieldCard", cardOwner.player, c.viz.card.name);
-            }
-            if (cardOwner.handCards.Contains(c))
-            {
-                cardOwner.handCards.Remove(c);
-                Debug.LogFormat("CardGraveyard, {0}'s {1} is removed from handCards", cardOwner.player, c.viz.card.name);
-            }
-            if (cardOwner.attackingCards.Contains(c))
-            {
-                cardOwner.attackingCards.Remove(c);
-                Debug.LogFormat("CardGraveyard, {0}'s {1} is removed from attackingCards", cardOwner.player, c.viz.card.name);
-            }
-            c.GetOriginFieldLocation().GetComponentInParent<Area>().IsPlaced = false;
-            //c.SetOriginFieldLocation(null);
-            c.dead = true;            
-            c.gameObject.SetActive(false);
-            c.gameObject.GetComponentInChildren<CardInstance>().enabled = false;
-            c.currentLogic = null;
-
-            //Debug.LogWarningFormat("PutCardToGrave: {0} is deleted from all lists",c.viz.card.name);
         }
 
-        public void MoveCardToGrave(CardInstance c, Transform graveTransform)
+        [PunRPC]
+        public void RPC_YouAreAlreadyDead(int playerPhotonId,int cardInstId)
         {
-            Setting.SetParentForCard(c.transform, graveTransform);
-            //Debug.LogFormat("MoveCardToGrave: {0} is move to grave({1}) successfully", c.viz.card.name, graveTransform.name);
+
+            NetworkPrint p = multiplayManager.GetPlayer(playerPhotonId);
+
+            PlayerHolder you = p.ThisPlayer;
+            Card card = p.GetCard(cardInstId);
+            string cardOwner = you.PlayerProfile.UniqueId;
+
+
+            if (you.CardManager.CheckCardContainer(Player.CardContainer.Field, card))
+            {
+                //cardOwner.fieldCard.Remove(c);
+                you.CardManager.fieldCards.Remove(card.Data.UniqueId);
+                Debug.LogFormat("CardGraveyard, {0}'s {1} is removed from fieldCard", cardOwner, card.Data.Name);
+            }
+            if (you.CardManager.CheckCardContainer(Player.CardContainer.Hand, card))
+            {
+                you.CardManager.handCards.Remove(card.Data.UniqueId);
+                Debug.LogFormat("CardGraveyard, {0}'s {1} is removed from handCards", cardOwner, card.Data.Name);
+            }
+            if (you.CardManager.CheckCardContainer(Player.CardContainer.Attack, card))
+            {
+                you.CardManager.attackingCards.Remove(card.Data.UniqueId);
+                Debug.LogFormat("CardGraveyard, {0}'s {1} is removed from attackingCards", cardOwner, card.Data.Name);
+            }
+            card.PhysicalCondition.GetOriginFieldLocation().GetComponentInParent<Area>().IsPlaced = false;
+            card.CardCondition.IsDead = true;
+            card.PhysicalCondition.gameObject.SetActive(false);
+            card.PhysicalCondition.gameObject.GetComponentInChildren<PhysicalAttribute>().enabled = false;
+
+            //Debug.LogWarningFormat("PutCardToGrave: {0} is deleted from all lists",c.Data.Name);
+        }
+
+        public static void MoveCardToGrave(Card c, Transform graveTransform)
+        {
+            MoveCardInstance.SetParentForCard(c.PhysicalCondition.transform, graveTransform);
+            //Debug.LogFormat("MoveCardToGrave: {0} is move to grave({1}) successfully", c.Data.Name, graveTransform.name);
         }
     }
 }

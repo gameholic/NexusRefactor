@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{2ECBC4A6-070D-643C-614A-3B3B9D103156}</ProjectGuid>
+    <ProjectGuid>{B523F0E0-03E3-E35B-BB4E-EC6EE2971C6E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -244,7 +244,6 @@
     <Compile Include="Assets\Photon\PhotonChatApi\IChatClientListener.cs" />
     <Compile Include="Assets\Photon\Plugins\WebSocket\SocketWebTcp.cs" />
     <Compile Include="Assets\Photon\Plugins\WebSocket\WebSocket.cs" />
-    <Compile Include="Assets\Script\_DisplayUI\LoadPlayerUI.cs" />
     <Compile Include="Assets\Script\_DisplayUI\PlayerStatsUI.cs" />
     <Compile Include="Assets\Script\_Editor\CardEditor.cs" />
     <Compile Include="Assets\Script\_Editor\ConvertPlayerProfileToAsset.cs" />
@@ -252,21 +251,24 @@
     <Compile Include="Assets\Script\_Setuper\BlockInstanceManager.cs" />
     <Compile Include="Assets\Script\_Setuper\ManaManager.cs" />
     <Compile Include="Assets\Script\_Setuper\ResourceManager.cs" />
+    <Compile Include="Assets\Script\_Setuper\TestManager.cs" />
+    <Compile Include="Assets\Script\+Card\Card.cs" />
     <Compile Include="Assets\Script\+Card\CardAbility\CreatureAbility.cs" />
     <Compile Include="Assets\Script\+Card\CardElements\Element.cs" />
     <Compile Include="Assets\Script\+Card\CardElements\ElementImage.cs" />
     <Compile Include="Assets\Script\+Card\CardElements\ElementInt.cs" />
     <Compile Include="Assets\Script\+Card\CardElements\ElementText.cs" />
-    <Compile Include="Assets\Script\+Card\CardErrorHandler.cs" />
     <Compile Include="Assets\Script\+Card\CardInfo\CardAppearance.cs" />
     <Compile Include="Assets\Script\+Card\CardInfo\CardAppearPropoerty.cs" />
     <Compile Include="Assets\Script\+Card\CardInfo\CardData.cs" />
     <Compile Include="Assets\Script\+Card\CardInfo\ConditionAttribute.cs" />
     <Compile Include="Assets\Script\+Card\CardInfo\PhysicalAttribute.cs" />
     <Compile Include="Assets\Script\+Card\CreatureCard.cs" />
-    <Compile Include="Assets\Script\+Card\NewCard.cs" />
+    <Compile Include="Assets\Script\+Card\ErrorHandler\ErrorCheck_Creature.cs" />
+    <Compile Include="Assets\Script\+Card\Setting\CardLogic.cs" />
+    <Compile Include="Assets\Script\+Card\Setting\CardUseBridge.cs" />
     <Compile Include="Assets\Script\+Card\Setting\GraveLogic.cs" />
-    <Compile Include="Assets\Script\+Card\Setting\MovePosition.cs" />
+    <Compile Include="Assets\Script\+Card\Setting\MoveCardInstance.cs" />
     <Compile Include="Assets\Script\+MouseOperations\MouseOperation.cs" />
     <Compile Include="Assets\Script\+PlayerHolder\Assistants\PlayerAssists.cs" />
     <Compile Include="Assets\Script\+PlayerHolder\Assistants\PlayerCardManager.cs" />
@@ -307,12 +309,9 @@
     <Compile Include="Assets\Script\GameElements\AreaLogic.cs" />
     <Compile Include="Assets\Script\GameElements\BlockInstance.cs" />
     <Compile Include="Assets\Script\GameElements\MyFieldAreaLogic.cs" />
-    <Compile Include="Assets\Script\Helpers\AssignPlayer.cs" />
     <Compile Include="Assets\Script\Helpers\AssignTransform.cs" />
     <Compile Include="Assets\Script\Helpers\CheckPlayerCanUse.cs" />
-    <Compile Include="Assets\Script\Holders\CardHolders.cs" />
     <Compile Include="Assets\Script\Holders\MainDataHolder.cs" />
-    <Compile Include="Assets\Script\Holders\PlayerHolder.cs" />
     <Compile Include="Assets\Script\Holders\PositionHolder.cs" />
     <Compile Include="Assets\Script\Interfaces\IClickable.cs" />
     <Compile Include="Assets\Script\Multiplayer\CustomType\SerializeCardInstance.cs" />
@@ -356,7 +355,6 @@
     <Compile Include="Assets\Script\Setting\GameController_AI.cs" />
     <Compile Include="Assets\Script\Setting\Setting.cs" />
     <Compile Include="Assets\Script\State\State.cs" />
-    <Compile Include="Assets\Script\Turn Start Actions\LoadOnActiveHolder.cs" />
     <Compile Include="Assets\Script\Turn Start Actions\PickCardFromDeck.cs" />
     <Compile Include="Assets\Script\Turn Start Actions\PlayerAction.cs" />
     <Compile Include="Assets\Script\Turn Start Actions\ResetJustPlaced.cs" />
@@ -364,7 +362,7 @@
     <Compile Include="Assets\Script\Turns\BattleResolvePhase.cs" />
     <Compile Include="Assets\Script\Turns\BlockPhase.cs" />
     <Compile Include="Assets\Script\Turns\ClientEmptyPhase.cs" />
-    <Compile Include="Assets\Script\Turns\ControlPhase_Player.cs" />
+    <Compile Include="Assets\Script\Turns\ControlPhase.cs" />
     <Compile Include="Assets\Script\Turns\Phase.cs" />
     <Compile Include="Assets\Script\Turns\Turn.cs" />
     <Compile Include="Assets\Script\Utilities\CurrentSelected.cs" />
@@ -400,19 +398,19 @@
     <None Include="Assets\Photon\Photon Unity Networking\changelog.txt" />
     <None Include="Assets\Materials\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>D:/Study/Unity/Processing Projects/Nexus_Refactor/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>D:/Study/Unity/Processing Projects/Nexus_Refactor/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>D:/Study/Unity/Processing Projects/Nexus_Refactor/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>D:/Study/Unity/Processing Projects/Nexus_Refactor/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+      <HintPath>D:/Study/Unity/Processing Projects/Nexus_Refactor/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -616,25 +614,25 @@
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Assets/Photon/Plugins/Photon3Unity3D.dll</HintPath>
+      <HintPath>D:/Study/Unity/Processing Projects/Nexus_Refactor/Assets/Photon/Plugins/Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Assets/Photon/Plugins/WebSocket/websocket-sharp.dll</HintPath>
+      <HintPath>D:/Study/Unity/Processing Projects/Nexus_Refactor/Assets/Photon/Plugins/WebSocket/websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Advertisements">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Library/PackageCache/com.unity.ads@2.3.1/Runtime/UnityEngine.Advertisements.dll</HintPath>
+      <HintPath>D:/Study/Unity/Processing Projects/Nexus_Refactor/Library/PackageCache/com.unity.ads@2.3.1/Runtime/UnityEngine.Advertisements.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Advertisements.Editor">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Library/PackageCache/com.unity.ads@2.3.1/Runtime/UnityEngine.Advertisements.Editor.dll</HintPath>
+      <HintPath>D:/Study/Unity/Processing Projects/Nexus_Refactor/Library/PackageCache/com.unity.ads@2.3.1/Runtime/UnityEngine.Advertisements.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
+      <HintPath>D:/Study/Unity/Processing Projects/Nexus_Refactor/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>D:/Study/Unity/Processing Projects/Nexus_Refactor/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>D:/Study/Unity/Processing Projects/G-card/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
+      <HintPath>D:/Study/Unity/Processing Projects/Nexus_Refactor/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/unity/mscorlib.dll</HintPath>

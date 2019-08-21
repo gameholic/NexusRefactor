@@ -8,10 +8,10 @@ namespace GH.Player.Assists
 
     public abstract class PlayerAssists 
     {
-        protected NewPlayerHolder player;
+        protected PlayerHolder player;
 
 
-        public abstract void Init(NewPlayerHolder p);
+        public abstract void Init(PlayerHolder p);
     }
 
 }

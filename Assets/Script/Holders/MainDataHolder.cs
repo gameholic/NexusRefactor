@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using GH.GameCard.CardState;
 
 namespace GH
 {
@@ -8,10 +7,6 @@ namespace GH
     public class MainDataHolder : ScriptableObject
     {
         #pragma warning disable 0649
-        [SerializeField]
-        private CardStateLogic _HandCardLogic;
-        [SerializeField]
-        private CardStateLogic _FieldCardLogic;
         [SerializeField]
         private GameObject _CardPrefab;
         [SerializeField]
@@ -21,14 +16,6 @@ namespace GH
         #pragma warning restore 0649
 
 
-        public CardStateLogic HandCardLogic
-        {
-            get { return _HandCardLogic; ; }
-        }
-        public CardStateLogic FieldCardLogic
-        {
-            get { return _FieldCardLogic; ; }
-        }
         public GameObject CardPrefab
         {
             get { return _CardPrefab; }

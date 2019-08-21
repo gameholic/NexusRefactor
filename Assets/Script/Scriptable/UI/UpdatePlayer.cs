@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GH.Player;
 using UnityEngine;
-using GH;
-using UnityEngine.UI;
-
 namespace GH.UI
 {
     public class UpdatePlayer : MonoBehaviour
@@ -12,7 +8,7 @@ namespace GH.UI
        
         public void UpdatePlayerText(PlayerHolder p)
         {
-            targetText.text = p.player;  
+            targetText.text = p.PlayerProfile.UniqueId;  
         }
     }
 }

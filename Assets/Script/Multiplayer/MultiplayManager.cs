@@ -5,9 +5,11 @@ using UnityEngine;
 using System.IO;
 
 using GH.GameCard;
+using GH.GameCard.CardInfo;
 using GH.Player;
+using GH.GameCard.CardLogics;
 
-
+using GH.GameCard.CardLogics;
 namespace GH.Multiplay
 
 {
@@ -103,7 +105,7 @@ namespace GH.Multiplay
             
             PhotonNetwork.Instantiate("NetworkPrint", Vector3.zero, Quaternion.identity, 0/*, data*/);
         }
-
+        
 
         private string playerProfileFilePath = "/StreamingAssets/playerProfile.json";
         PlayerProfile ReadPlayerProfileJSON()
@@ -162,19 +164,19 @@ namespace GH.Multiplay
                         Card c = rm.GetCardInstFromDeck(id);
                         playerId.Add(p.photonId);
                         
-                        cardInstId.Add(c.InstId);
+                        cardInstId.Add(c.Data.UniqueId);
                         cardName.Add(id);
 
                         if (p.IsLocal)
                         {
                             p.ThisPlayer = GC.LocalPlayer;
-                            p.ThisPlayer.PhotonId = p.photonId;
+                            p.ThisPlayer.InGameData.PhotonId = p.photonId;
                             GC.LocalPlayer.player = "Room Manager";
                         }
                         else
                         {
                             p.ThisPlayer = GC.ClientPlayer;
-                            p.ThisPlayer.PhotonId = p.photonId;
+                            p.ThisPlayer.InGameData.PhotonId = p.photonId;
                             GC.ClientPlayer.player = "Room Member_Client";
                         }
                     }
@@ -194,13 +196,13 @@ namespace GH.Multiplay
                     if (p.IsLocal)
                     {
                         p.ThisPlayer = GC.LocalPlayer;
-                        p.ThisPlayer.PhotonId = p.photonId;
+                        p.ThisPlayer.InGameData.PhotonId = p.photonId;
                         GC.LocalPlayer.player = "Room Member";
                     }
                     else
                     {
                         p.ThisPlayer = GC.ClientPlayer;
-                        p.ThisPlayer.PhotonId = p.photonId;
+                        p.ThisPlayer.InGameData.PhotonId = p.photonId;
                         GC.ClientPlayer.player = "Room Manager_Client";
                     }
                 }
@@ -214,7 +216,7 @@ namespace GH.Multiplay
             {
                 Debug.LogError("CardNameNotFound: " + cardName);
             }
-            c.InstId = cardId;
+            c.Data.UniqueId = cardId;
             NetworkPrint p = GetPlayer(photonId);
             p.AddCard(c);
         }
@@ -238,9 +240,9 @@ namespace GH.Multiplay
         [PunRPC]
         public void RPC_PlayerEndsTurn(int photonId)
         {
-            Debug.LogFormat("RPC_PlayerEndsTurn: {0} ends turn.", GC.CurrentPlayer.player);
+            Debug.LogFormat("RPC_PlayerEndsTurn: {0} ends turn.", GC.CurrentPlayer.PlayerProfile.UniqueId);
 
-            if (photonId == GC.CurrentPlayer.PhotonId)
+            if (photonId == GC.CurrentPlayer.InGameData.PhotonId)
             {
                 int targetId = GC.GetAnotherPlayerID();
                 photonView.RPC("RPC_PlayerStartsTurn", PhotonTargets.All, targetId);    
@@ -324,7 +326,7 @@ namespace GH.Multiplay
         public void PlayerPicksCardFromDeck(PlayerHolder playerHolder)
         {
             Setting.RegisterLog(playerHolder + " Draws card", playerHolder.playerColor);
-            NetworkPrint p = GetPlayer(playerHolder.PhotonId);
+            NetworkPrint p = GetPlayer(playerHolder.InGameData.PhotonId);
 
             Card c =null;
             if (p.CardDeck.Count != 0)
@@ -332,7 +334,7 @@ namespace GH.Multiplay
                 c = p.CardDeck[0];
                 p.CardDeck.RemoveAt(0);
                 Debug.Log("Draw card");
-                PlayerTryToUseCard(c.InstId, p.photonId, CardOperation.pickCardFromDeck);
+                PlayerTryToUseCard(c.Data.UniqueId, p.photonId, CardOperation.pickCardFromDeck);
             }
             else
                 Debug.Log("There is no card in deck");
@@ -358,17 +360,21 @@ namespace GH.Multiplay
             switch (operation)
             {
                 case CardOperation.dropCreatureCard:
-
-                    Setting.DropCreatureCard(card.Instance.transform,
-                        currentPlayer._CardHolder.GetFieldGrid(cardArea).value,
-                        card);
+                    
+                    //Setting.DropCreatureCard(card.Instance.transform,
+                    //    currentPlayer._CardHolder.GetFieldGrid(cardArea).value,
+                    //    card);
 
                     
-                    card.Instance.currentLogic = MainData.FieldCardLogic;
-                    currentPlayer.manaResourceManager.UpdateCurrentMana(-(card.CardCost));
+                    //card.Instance.currentLogic = MainData.FieldCardLogic;
+
+
+                    currentPlayer.InGameData.ManaManager.UpdateCurrentMana(-(card.Data.ManaCost));
 
                     Debug.LogFormat("DropCreatureCardCheck: {0}'s {1} is dropped. it's origin field location is {2}",
-                        currentPlayer.player, card.Instance.viz.card.name, currentPlayer.fieldCard.Find(x=>x.viz == card.Instance.viz).GetOriginFieldLocation());
+                        currentPlayer.PlayerProfile.UniqueId, 
+                        card.Data.Name,                        
+                        currentPlayer.CardManager.fieldCards.Find(x=>x == card.Data.UniqueId));
                     break;
 
                 case CardOperation.useSpellCard:
@@ -378,16 +384,13 @@ namespace GH.Multiplay
                 case CardOperation.pickCardFromDeck:
                     Debug.Log("AddCard");
                     GameObject go = Instantiate(MainData.CardPrefab) as GameObject;
-                    CardViz v = go.GetComponent<CardViz>();
-                    v.LoadCard(card);
-                    card.Instance = go.GetComponent<CardInstance>();
-                    card.Instance.owner = currentPlayer;
-                    card.Instance.currentLogic = MainData.HandCardLogic;
-                    Setting.SetParentForCard(go.transform, currentPlayer._CardHolder.handGrid.value);
-                    //Register log occurs error here. Don't know why
-                    //Setting.RegisterLog("Opponent field card position: " + GameController.singleton.GetOpponentOf(nwPrint.ThisPlayer).fieldCard[0].gameObject, Color.green);
-                    if (currentPlayer.handCards.Count <= 7)
-                        currentPlayer.handCards.Add(card.Instance);
+                    CardAppearance visual = go.GetComponent<CardAppearance>();
+                    visual.LoadCard(card, go);
+                    card.Init(go);
+                    card.User = currentPlayer;
+                    MoveCardInstance.SetParentForCard(go.transform, currentPlayer.CardTransform.HandGrid.value);
+                    if (currentPlayer.CardManager.handCards.Count <= 7)
+                        currentPlayer.CardManager.handCards.Add(card.Data.UniqueId);
                     else
                         Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
                     break;
@@ -402,14 +405,15 @@ namespace GH.Multiplay
                     ///If selected is already on attack, remove that card from 'attackingCards' list and place back to original field location
                     // Deleting same position of line: alt + shif + arrow
 
-
+                    if ((card is CreatureCard) == false)
+                        return;
                     //If card isn't on attack, move card to 'BattleLine'obj and add at 'attackingCards' list
-                    if (!currentPlayer.attackingCards.Contains(card.Instance))
+                    if (currentPlayer.CardManager.FindCardIn(CardContainer.Attack, card) !=null)
                     {
-                        currentPlayer.attackingCards.Add(card.Instance);
-                        currentPlayer._CardHolder.SetCardOnBattleLine(card.Instance);
+                        currentPlayer.CardManager.attackingCards.Add(card.Data.UniqueId);
+                        currentPlayer.CardTransform.SetCardOnBattleLine((CreatureCard)card);
                         Debug.LogFormat("RPC_PlayerUsesCard: {0} selected {1} to attack. {0} has {2} attacking cards"
-                            , currentPlayer.player, card.Instance.viz.card.name, currentPlayer.attackingCards.Count);
+                            , currentPlayer.PlayerProfile.UniqueId, card.Data.Name, currentPlayer.CardManager.attackingCards.Count);
                     }
                     break;
 
@@ -459,16 +463,16 @@ namespace GH.Multiplay
 
             //Debug.LogFormat ("CurrentPlayer is {0}. Is he owns photonview?: {1}", currentPlayer.player ,photonView.isMine);
             //When there is no attacking card, Battle resolve don't need to be run. End the phase
-            if (enemyPlayer.attackingCards.Count == 0)
+            if (enemyPlayer.CardManager.attackingCards.Count == 0)
             {
-                photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, currentPlayer.PhotonId);
+                photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, currentPlayer.InGameData.PhotonId);
                 return;
             }
 
 
             //Get defending cards from the manager
             //Dictionary<CardInstance, BlockInstance> defDic = gc.BlockManager.BlockInstDict;
-            Dictionary<CardInstance, BlockInstance> blockInstDict = GC.BlockManager.BlockInstDict;
+            Dictionary<Card, BlockInstance> blockInstDict = GC.BlockManager.BlockInstDict;
             if (blockInstDict == null)
             {
                 Debug.LogWarning("BattleResolve_Error: Defending card instance dictionary is null");
@@ -477,10 +481,14 @@ namespace GH.Multiplay
 
 
             //Every current player's attacking card, 
-            for (int atkCardIndex = 0; atkCardIndex < enemyPlayer.attackingCards.Count; atkCardIndex++)
+            for (int atkCardIndex = 0; atkCardIndex < enemyPlayer.CardManager.attackingCards.Count; atkCardIndex++)
             {
-                CardInstance atkInst = enemyPlayer.attackingCards[atkCardIndex];
-
+                int atkId = enemyPlayer.CardManager.attackingCards[atkCardIndex];
+                CreatureCard atkInst = (CreatureCard)enemyPlayer.CardManager.SearchCard(atkId);
+                if(atkInst==null)
+                {
+                    Debug.LogError("FailCastingToCreature: Attacking card failed change to 'CreatureCard");
+                }
                 BlockInstance blockInstance = GC.BlockManager.GetBlockInstanceByAttacker(atkInst, blockInstDict);
                 
                 battleResult = battleLogic.CardBattle(atkInst, blockInstance, MainData);
@@ -494,46 +502,48 @@ namespace GH.Multiplay
                 if(battleResult>0)
                 {
                     battleLogic.AttackerWinFight(atkInst, battleResult);
-                    photonView.RPC("RPC_SyncPlayerHealth", PhotonTargets.All, currentPlayer.PhotonId, currentPlayer.Health);
+                    photonView.RPC("RPC_SyncPlayerHealth", PhotonTargets.All, currentPlayer.InGameData.PhotonId, currentPlayer.InGameData.Health);
                     Setting.RegisterLog("Attack damage is " + battleResult, Color.red);
                 }
             }
 
             //Return all alive blocking cards to its original field location
-            foreach (CardInstance c in blockInstDict.Keys)
+            foreach (Card c in blockInstDict.Keys)
             {
-                if (c.dead)
+                if (c.CardCondition.IsDead)
                 {
-                    Debug.LogWarningFormat("BattleResolve_BlockDictionary: {0} is dead", c.viz.card.name);
+                    Debug.LogWarningFormat("BattleResolve_BlockDictionary: {0} is dead", c.Data.Name);
                     continue;
                 }
                 else
                 {
-                    Debug.LogFormat("BattleResolveForPlayer_BattleFinished: Card ( {0} ) Reset. Move Card to its original field location", c.viz.card.name);
-                    c.CanUseByViz(true);
-                    Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
+                    Debug.LogFormat("BattleResolveForPlayer_BattleFinished: Card ( {0} ) Reset. Move Card to its original field location", c.Data.Name);
+                    c.CardCondition.CanUse  = true;
+                    MoveCardInstance.SetParentForCard(c.PhysicalCondition.transform, c.PhysicalCondition.GetOriginFieldLocation());
                 }
             }
-            if(enemyPlayer.fieldCard.Count!=0)
+            if(enemyPlayer.CardManager.fieldCards.Count!=0)
             {
-                foreach (CardInstance c in enemyPlayer.fieldCard)
+                foreach (int id in enemyPlayer.CardManager.fieldCards)
                 {
-                    if(c.dead)
+                    Card c = enemyPlayer.CardManager.SearchCard(id);
+                    if(c.CardCondition.IsDead)
                     {
-                        Debug.LogErrorFormat("BattleResolve_EnemyFieldCardError: {0} is dead__owner is {1}", c.viz.card.name,c.owner.player);
+                        Debug.LogErrorFormat("BattleResolve_EnemyFieldCardError: {0} is dead__owner is {1}", c.Data.Name
+                            ,c.User.PlayerProfile.UniqueId);
                         continue;
                     }
                     else
                     {
-                        Debug.LogFormat("BattleResolveForPlayer_ResetEnemyCard__{0}", c.viz.card.name);
-                        Setting.SetParentForCard(c.transform, c.GetOriginFieldLocation());
+                        Debug.LogFormat("BattleResolveForPlayer_ResetEnemyCard__{0}", c.Data.Name);
+                        MoveCardInstance.SetParentForCard(c.PhysicalCondition.transform, c.PhysicalCondition.GetOriginFieldLocation());
                     }
                 }
             }
 
             Debug.Log("BattleResolveForPlayer: EndOfCode_CallBack_Run");
             //After all battle logics are finished, run callback to clean up remaining variables
-            photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, currentPlayer.PhotonId);
+            photonView.RPC("RPC_BattleResolvesCallBack", PhotonTargets.All, currentPlayer.InGameData.PhotonId);
             return;
         }
 
@@ -546,13 +556,14 @@ namespace GH.Multiplay
         public void RPC_SendCardToGrave(int photonId)
         {
             PlayerHolder p = GetPlayer(photonId).ThisPlayer;
-            CardGraveLogic cardGrave = GC.CardGraveLogic;
 
-            foreach (CardInstance c in p.deadCards)
+            foreach (int id in p.CardManager.deadCards)
             {
-                Transform graveyardTransform = c.owner.graveyard.value;
-                Debug.LogFormat("RPC_SendCardToGrave: Player({0})'s {1} is dead. It's going to graveyard: {2}", p.player, c.viz.card.name,graveyardTransform);
-                cardGrave.MoveCardToGrave(c, graveyardTransform);
+                Card c = p.CardManager.SearchCard(id);
+                Transform graveyardTransform = c.User.CardTransform.Graveyard.value;
+                Debug.LogFormat("RPC_SendCardToGrave: Player({0})'s {1} is dead. It's going to graveyard: {2}", 
+                    p.PlayerProfile.UniqueId, c.Data.Name,graveyardTransform);
+                GraveLogic.MoveCardToGrave(c, graveyardTransform);
             }
         }
 
@@ -560,7 +571,7 @@ namespace GH.Multiplay
         public void RPC_SyncPlayerHealth(int photonId, int health)            
         {
             NetworkPrint nw_player = GetPlayer(photonId);
-            nw_player.ThisPlayer.Health = health;
+            nw_player.ThisPlayer.InGameData.Health = health;
         }
 
 
@@ -571,13 +582,13 @@ namespace GH.Multiplay
             {
                 //Enemy player, who tryed to attack on his/her last turn needs their attacking cards reset                
                 //Move all enemy attacking cards to its original position and set visual of card to 'cant use'                
-                foreach (CardInstance c in p.ThisPlayer.attackingCards)
+                foreach (int instId in p.ThisPlayer.CardManager.attackingCards)
                 {
-                    Debug.LogFormat("{0} was attacking. Call back", c.viz.card.name);
-                    p.ThisPlayer._CardHolder.SetCardBackToOrigin(c);
+                    Card c = p.ThisPlayer.CardManager.SearchCard(instId);
+                    Debug.LogFormat("{0} was attacking. Call back", c.Data.Name);
+                    p.ThisPlayer.CardTransform.SetCardBackToOrigin(c);
 
-                    c.CanUseByViz(false);
-                    c.SetAttackable(false);
+                    c.CardCondition.CanUse = false;
                 }
 
                 //Find Current Player NetworkPrint
@@ -597,22 +608,22 @@ namespace GH.Multiplay
                 }
                 //Debug.LogWarningFormat("RPC_BattleResolveCallback: {0}'s attacking cards are going to be cleared.", p.ThisPlayer);
                 //Clear all attacking cards.
-                p.ThisPlayer.attackingCards.Clear();       
+                p.ThisPlayer.CardManager.attackingCards.Clear();       
                 
             }
             //Debug.Log("RPC_BattleResolveCallBack: Block Inst Dic size: "+ GC.BlockManager.BlockInstDict.Count);
             foreach(BlockInstance bi in GC.BlockManager.BlockInstDict.Values)
             {
-                foreach(CardInstance c in bi.defenders)
+                foreach(Card c in bi.defenders)
                 {
-                    if(!c.dead)
+                    if(!c.CardCondition.IsDead)
                     {
-                        Debug.LogFormat("RPC_BattleResolveCallBack: {0} go back to origin field location",c.viz.card.name);
-                        c.owner._CardHolder.SetCardBackToOrigin(c);
+                        Debug.LogFormat("RPC_BattleResolveCallBack: {0} go back to origin field location",c.Data.Name);
+                        c.User.CardTransform.SetCardBackToOrigin(c);
                     }
                     else
                     {
-                        Debug.LogWarningFormat("{0} is dead. Cant go back to origin", c.viz.card.name);
+                        Debug.LogWarningFormat("{0} is dead. Cant go back to origin", c.Data.Name);
                     }
                 }
 
@@ -637,10 +648,10 @@ namespace GH.Multiplay
         {
 
             NetworkPrint print_Defend = GetPlayer(defenderPhotonId);
-            CardInstance card_Defend = print_Defend.GetCard(defendCardInstId).Instance;
+            Card card_Defend = print_Defend.ThisPlayer.CardManager.SearchCard(defendCardInstId);
 
             NetworkPrint print_Invade = GetPlayer(attackerPhotonId);
-            CardInstance card_Invade = print_Invade.GetCard(attackCardInstId).Instance;
+            Card card_Invade = print_Invade.ThisPlayer.CardManager.SearchCard(attackCardInstId);
             
             int count = 0;
 
@@ -665,12 +676,14 @@ namespace GH.Multiplay
         public void RPC_PlayerBlocksTargetCard_Client(int defendCardInstId, int defenderPhotonId, int attackCardInstId, int attackerPhotonId, int count)
         {
             NetworkPrint print_Defend = GetPlayer(defenderPhotonId);
-            CardInstance card_Defend = print_Defend.GetCard(defendCardInstId).Instance;
+            PlayerHolder def = print_Defend.ThisPlayer;
+            Card card_Defend = def.CardManager.SearchCard(defendCardInstId); ;
 
             NetworkPrint print_Invade = GetPlayer(attackerPhotonId);
-            CardInstance card_Invade = print_Invade.GetCard(attackCardInstId).Instance;
+            PlayerHolder atk = print_Invade.ThisPlayer;
+            Card card_Invade = atk.CardManager.SearchCard(attackCardInstId);
 
-            Setting.SetCardsForBlock(card_Defend, card_Invade, count);
+            MoveCardInstance.SetCardsForBlock(card_Defend, card_Invade, count);
             //Debug.Log("PlayerBlocksTargetCard: Move Cards to Defend Location Sucessful");
             
         }
@@ -704,13 +717,14 @@ namespace GH.Multiplay
         public void RPC_PlayerCanUseCard(int photonId)
         {
             NetworkPrint nw_Player = GetPlayer(photonId);
-            foreach (CardInstance c in nw_Player.ThisPlayer.fieldCard)
+            foreach (int cardId in nw_Player.ThisPlayer.CardManager.fieldCards)
             {
-                if (!c.GetAttackable())
+                Card c = nw_Player.ThisPlayer.CardManager.SearchCard(cardId);
+                if (c.CardCondition.CanUse==false)
                 {
-                    c.SetAttackable(true);
-                    c.CanUseByViz(true);
-                    Debug.LogFormat("PlayerCanUseCard: {0} can use {1} to Attack ",nw_Player.ThisPlayer.userID,c.viz.card.name);
+                    c.CardCondition.CanUse = true;
+                    Debug.LogFormat("PlayerCanUseCard: {0} can use {1} to Attack ",
+                        nw_Player.ThisPlayer.PlayerProfile.UniqueId,c.Data.Name);
                 }
             }
 
