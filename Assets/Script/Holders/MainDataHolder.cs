@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using GH.GameCard.CardElement;
 namespace GH
 {
     [CreateAssetMenu(menuName ="Holders/Main Data Holder")]

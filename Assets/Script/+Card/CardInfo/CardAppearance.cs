@@ -1,4 +1,4 @@
-﻿#pragma warning disable CS0108
+﻿#pragma warning disable 0108
 
 
 using UnityEngine;

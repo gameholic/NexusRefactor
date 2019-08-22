@@ -1,10 +1,9 @@
-﻿using UnityEngine;
-
+﻿using GH.GameCard;
 using GH.GameCard.CardInfo;
-using GH.GameCard;
 using GH.GameCard.CardLogics;
 using GH.GameTurn;
 using GH.Player;
+using UnityEngine;
 
 namespace GH.MouseLogics
 {
@@ -12,7 +11,7 @@ namespace GH.MouseLogics
     public class MouseOperation : MonoBehaviour
     {
         private bool dragging = false;
-        private PhysicalAttribute currentCard = null;
+        private PhysicalAttribute selectedCardInst = null;
         private void Update()
         {   
             HandleMouse();
@@ -20,34 +19,30 @@ namespace GH.MouseLogics
         private void HandleMouse()              //Detect Mouse 
         {
             bool isMouseDown = Input.GetMouseButton(0);
-            CardUseBridge l = new CardUseBridge();
+            CardUseBridge bridge = new CardUseBridge();
             if (!isMouseDown)       //Mouse is relased
             {
                 if(dragging)
                 {
                     dragging = false;
-                    l.CardReturn(currentCard.OriginCard);
+                    bridge.CardReturn(selectedCardInst.OriginCard);
                     Debug.Log("Return card");
                 }
                 else
-                {
                     Debug.Log("Dragging is false");
-                }
+
                 Debug.Log("CardDetecting");
                 HandleCardDetection();
             }
             if(isMouseDown)             //Mouse is Pressed
             {
-                if (currentCard != null)
+                if (selectedCardInst != null)
                 {
                     if (!dragging)
-                        currentCard.OldPos = currentCard.transform.position;
-
+                        selectedCardInst.OldPos = selectedCardInst.transform.position;
                     Debug.Log("CardDragging");
-                    l.BlockCard((CreatureCard)currentCard.OriginCard);
-                    //HandleMouseClick(currentCard);
-
-
+                    bridge.CheckBlockCard((CreatureCard)selectedCardInst.OriginCard);
+                    HandleMouseClick(selectedCardInst);
                     dragging = true;
                     Debug.Log(dragging);
                 }
@@ -63,23 +58,27 @@ namespace GH.MouseLogics
             int uniqueId = c.Data.UniqueId;
             bool IsAtHand = cardManager.handCards.Contains(uniqueId);
             //bool IsOnField = cardManager.handCards.Contains(uniqueId);
-            Debug.LogFormat("Current Card is {0}", currentCard);
+            Debug.LogFormat("Current Card is {0}", selectedCardInst);
             if (IsAtHand && currentPhase is ControlPhase)
             {
                 if(c is CreatureCard)
-                    CardDrag(HandleLogics.Drop);      //Drag creature to field
+                    CardDrag(HandleLogics.Drop, inst);      //Drag creature to field
                 else
-                    CardDrag(HandleLogics.UseMagic);  //Drag Magic to use
+                    CardDrag(HandleLogics.UseMagic, inst);  //Drag Magic to use
             }
             if(currentPhase is BlockPhase)
-                    CardDrag(HandleLogics.Block);     //Drag this card to attacking card to block          
+                    CardDrag(HandleLogics.Block, inst);     //Drag this card to attacking card to block          
             if (currentPhase is BattlePhase)
-                    CardClick(HandleLogics.Battle);   //Click card on field to attack
+                    CardClick(HandleLogics.Battle, inst);   //Click card on field to attack
         }
-        private void CardDrag(HandleLogics logic)
+
+
+        private void CardDrag(HandleLogics logic, PhysicalAttribute c)
         {
+            CardLogic cardLogic = new CardLogic();
             if(logic == HandleLogics.Drop)
             {
+
             }
             if (logic == HandleLogics.UseMagic)
             {
@@ -93,12 +92,12 @@ namespace GH.MouseLogics
         /// <summary>
         /// Check current phase/state and card's position and perform mouse drag.
         /// </summary>
-        private void CardClick(HandleLogics logic)
+        private void CardClick(HandleLogics logic, PhysicalAttribute c)
         {
             bool isMouseDown = Input.GetMouseButtonDown(0);
             if (!isMouseDown)
             {
-                if (currentCard != null)   
+                if (c != null)   
                 {
 
 
@@ -112,19 +111,19 @@ namespace GH.MouseLogics
 
             if (detectedCard != null)
             {
-                if (currentCard != null)
+                if (selectedCardInst != null)
                 {
-                    currentCard.DeHighlight();
+                    selectedCardInst.DeHighlight();
                 }
-                currentCard = detectedCard;
-                currentCard.Highlight();
+                selectedCardInst = detectedCard;
+                selectedCardInst.Highlight();
             }
             else
             {
-                if (currentCard != null)
+                if (selectedCardInst != null)
                 {
-                    currentCard.DeHighlight();
-                    currentCard = null;
+                    selectedCardInst.DeHighlight();
+                    selectedCardInst = null;
                 }
             }
 

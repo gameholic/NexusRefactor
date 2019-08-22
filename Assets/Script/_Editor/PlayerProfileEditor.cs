@@ -106,11 +106,11 @@ namespace GH.AssetEditor
             }
         }
 
-
         private void SaveProfile()
         {
             string dataAsJson = JsonUtility.ToJson(playerProfile);
-            Debug.Log(dataAsJson);
+         
+            Debug.Log("PLAYER PROFILE DATA IS SAVED");
             string filePath = Application.dataPath + playerProfileFilePath;
 
             File.WriteAllText(filePath, dataAsJson);

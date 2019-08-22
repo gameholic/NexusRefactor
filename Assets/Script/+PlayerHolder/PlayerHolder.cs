@@ -14,6 +14,7 @@ namespace GH.Player
 
         private PlayerProfile _ProfileInfo;
         private PlayerInGameInfo _InGameData;
+        [SerializeField]
         private PlayerCardTransform _CardTransform;
         private CardManager _CardManager;
         #endregion

@@ -1,15 +1,12 @@
 ﻿
-using System.Collections.Generic;
-using UnityEngine;
-
-using System.IO;
-
 using GH.GameCard;
 using GH.GameCard.CardInfo;
+using GH.GameCard.CardLogics;
 using GH.Player;
-using GH.GameCard.CardLogics;
-
-using GH.GameCard.CardLogics;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+using GH.GameCard.CardElement;
 namespace GH.Multiplay
 
 {
@@ -44,8 +41,6 @@ namespace GH.Multiplay
         {
             get { return GameController.singleton; }
         }
-
-
         public void AddPlayer(NetworkPrint nw_print)
         {
             if (nw_print.IsLocal)
@@ -107,29 +102,29 @@ namespace GH.Multiplay
         }
         
 
-        private string playerProfileFilePath = "/StreamingAssets/playerProfile.json";
-        PlayerProfile ReadPlayerProfileJSON()
-        {
-            string filePath = Application.dataPath + playerProfileFilePath;
-            PlayerProfile playerProfile;
+        //private string playerProfileFilePath = "/StreamingAssets/playerProfile.json";
+        //PlayerProfile ReadPlayerProfileJSON()
+        //{
+        //    string filePath = Application.dataPath + playerProfileFilePath;
+        //    PlayerProfile playerProfile;
 
-            if (File.Exists(filePath))
-            {
-                string dataAsJson = File.ReadAllText(filePath);
-                playerProfile = JsonUtility.FromJson<PlayerProfile>(dataAsJson);
-            }
-            else
-            {
-                playerProfile = new PlayerProfile();
-            }
+        //    if (File.Exists(filePath))
+        //    {
+        //        string dataAsJson = File.ReadAllText(filePath);
+        //        playerProfile = JsonUtility.FromJson<PlayerProfile>(dataAsJson);
+        //    }
+        //    else
+        //    {
+        //        playerProfile = new PlayerProfile();
+        //    }
 
-            return playerProfile;
+        //    return playerProfile;
 
-        }
-        void LoadPlayerProfile()
-        {
+        //}
+        //void LoadPlayerProfile()
+        //{
 
-        }
+        //}
         #endregion
 
         #region Tick
@@ -171,13 +166,13 @@ namespace GH.Multiplay
                         {
                             p.ThisPlayer = GC.LocalPlayer;
                             p.ThisPlayer.InGameData.PhotonId = p.photonId;
-                            GC.LocalPlayer.player = "Room Manager";
+                            GC.LocalPlayer.PlayerProfile.Name = "Room Manager";
                         }
                         else
                         {
                             p.ThisPlayer = GC.ClientPlayer;
                             p.ThisPlayer.InGameData.PhotonId = p.photonId;
-                            GC.ClientPlayer.player = "Room Member_Client";
+                            GC.ClientPlayer.PlayerProfile.Name = "Room Member_Client";
                         }
                     }
                 }
@@ -197,17 +192,24 @@ namespace GH.Multiplay
                     {
                         p.ThisPlayer = GC.LocalPlayer;
                         p.ThisPlayer.InGameData.PhotonId = p.photonId;
-                        GC.LocalPlayer.player = "Room Member";
+                        GC.LocalPlayer.PlayerProfile.Name = "Room Member";
                     }
                     else
                     {
                         p.ThisPlayer = GC.ClientPlayer;
                         p.ThisPlayer.InGameData.PhotonId = p.photonId;
-                        GC.ClientPlayer.player = "Room Manager_Client";
+                        GC.ClientPlayer.PlayerProfile.Name = "Room Manager_Client";
                     }
                 }
             }
         }
+
+        /// <summary>
+        /// Add Player cards 
+        /// </summary>
+        /// <param name="photonId"></param>
+        /// <param name="cardId"></param>
+        /// <param name="cardName"></param>
         [PunRPC]
         public void RPC_PlayerCreatesCard(int photonId, int cardId, string cardName)
         {
@@ -218,7 +220,7 @@ namespace GH.Multiplay
             }
             c.Data.UniqueId = cardId;
             NetworkPrint p = GetPlayer(photonId);
-            p.AddCard(c);
+            p.ThisPlayer.CardManager.AddCardInDeck(c);
         }
 
         [PunRPC]
@@ -310,7 +312,7 @@ namespace GH.Multiplay
         private bool PlayerHasCard(int cardInst, int photonId)
         {
             NetworkPrint p = GetPlayer(photonId);
-            Card c = p.GetCard(cardInst);
+            Card c = p.ThisPlayer.CardManager.SearchCard(cardInst);
             return (c != null);
         }
 
@@ -355,7 +357,7 @@ namespace GH.Multiplay
         {
             NetworkPrint nwPrint = GetPlayer(photonId);
             PlayerHolder currentPlayer = nwPrint.ThisPlayer;
-            Card card = nwPrint.GetCard(instId);
+            Card card = nwPrint.ThisPlayer.CardManager.SearchCard(instId);
 
             switch (operation)
             {

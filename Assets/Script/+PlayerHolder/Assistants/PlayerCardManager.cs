@@ -34,7 +34,15 @@ namespace GH.Player
         {
             player = p;
         }
-
+        /// <summary>
+        /// this 
+        /// </summary>
+        /// <param name="c"></param>
+        public void AddCardInDeck(Card c)
+        {
+            int id = c.Data.UniqueId;
+          
+        }
         public void InitAllCards(Card[] deck)
         {
             for (int i = 0; i < deck.Length; i++)

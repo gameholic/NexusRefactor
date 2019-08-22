@@ -12,9 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab0ecb598365a2e4ba1431e7e94e1244, type: 3}
   m_Name: ResourceManager
   m_EditorClassIdentifier: 
-  typeElement: {fileID: 11400000, guid: ffc4f2f25e5c00e4fb2e7ae46767dedb, type: 2}
   allCards:
-  - {fileID: 11400000, guid: 40be2c704c12122409bd5042d1dc8c84, type: 2}
-  - {fileID: 11400000, guid: bd73dd00b85eabe4fb358f1e6a458bb0, type: 2}
-  - {fileID: 11400000, guid: bd98d77dc257e9a4fa2a911953399377, type: 2}
-  - {fileID: 11400000, guid: faf587500de2fef4b9ede6672c950056, type: 2}
+  - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}

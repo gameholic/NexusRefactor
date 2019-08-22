@@ -254,6 +254,7 @@
     <Compile Include="Assets\Script\_Setuper\TestManager.cs" />
     <Compile Include="Assets\Script\+Card\Card.cs" />
     <Compile Include="Assets\Script\+Card\CardAbility\CreatureAbility.cs" />
+    <Compile Include="Assets\Script\+Card\CardDeck\HandDeck\Card_handOrder.cs" />
     <Compile Include="Assets\Script\+Card\CardElements\Element.cs" />
     <Compile Include="Assets\Script\+Card\CardElements\ElementImage.cs" />
     <Compile Include="Assets\Script\+Card\CardElements\ElementInt.cs" />
@@ -276,6 +277,7 @@
     <Compile Include="Assets\Script\+PlayerHolder\Assistants\PlayerInGameInfo.cs" />
     <Compile Include="Assets\Script\+PlayerHolder\PlayerHolder.cs" />
     <Compile Include="Assets\Script\+PlayerHolder\PlayerProfile.cs" />
+    <Compile Include="Assets\Script\+PlayerHolder\ProfileData_Deck.cs" />
     <Compile Include="Assets\Script\Actions\Action.cs" />
     <Compile Include="Assets\Script\Actions\BattlePhaseStartCheck.cs" />
     <Compile Include="Assets\Script\Actions\Condition.cs" />
@@ -285,24 +287,6 @@
     <Compile Include="Assets\Script\Actions\SelectBlockCard.cs" />
     <Compile Include="Assets\Script\Actions\SelectCardsToAttack.cs" />
     <Compile Include="Assets\Script\CardFieldLogics\BattleLogics.cs" />
-    <Compile Include="Assets\Script\Cards\Card.cs" />
-    <Compile Include="Assets\Script\Cards\Card_Myfield.cs" />
-    <Compile Include="Assets\Script\Cards\Card_Myhand.cs" />
-    <Compile Include="Assets\Script\Cards\CardDeck\HandDeck\Card_handOrder.cs" />
-    <Compile Include="Assets\Script\Cards\CardGraveLogic.cs" />
-    <Compile Include="Assets\Script\Cards\CardInstance.cs" />
-    <Compile Include="Assets\Script\Cards\CardProperties.cs" />
-    <Compile Include="Assets\Script\Cards\CardStateLogic.cs" />
-    <Compile Include="Assets\Script\Cards\CardType.cs" />
-    <Compile Include="Assets\Script\Cards\CardType\Creature.cs" />
-    <Compile Include="Assets\Script\Cards\CardType\Spell.cs" />
-    <Compile Include="Assets\Script\Cards\CardType\WeaponCard.cs" />
-    <Compile Include="Assets\Script\Cards\CardViz.cs" />
-    <Compile Include="Assets\Script\Cards\CardVizProperties.cs" />
-    <Compile Include="Assets\Script\Cards\Element.cs" />
-    <Compile Include="Assets\Script\Cards\ElementImage.cs" />
-    <Compile Include="Assets\Script\Cards\ElementInt.cs" />
-    <Compile Include="Assets\Script\Cards\ElementText.cs" />
     <Compile Include="Assets\Script\ConsoleLog\ConsoleHook.cs" />
     <Compile Include="Assets\Script\ConsoleLog\ConsoleManager.cs" />
     <Compile Include="Assets\Script\GameElements\Area.cs" />
@@ -314,6 +298,7 @@
     <Compile Include="Assets\Script\Holders\MainDataHolder.cs" />
     <Compile Include="Assets\Script\Holders\PositionHolder.cs" />
     <Compile Include="Assets\Script\Interfaces\IClickable.cs" />
+    <Compile Include="Assets\Script\MenuScripts\DropDownController.cs" />
     <Compile Include="Assets\Script\Multiplayer\CustomType\SerializeCardInstance.cs" />
     <Compile Include="Assets\Script\Multiplayer\EventManager.cs" />
     <Compile Include="Assets\Script\Multiplayer\MultiplayManager.cs" />
@@ -352,7 +337,6 @@
     <Compile Include="Assets\Script\Scriptable\Variables\TransformVariable.cs" />
     <Compile Include="Assets\Script\Scriptable\Variables\Vector3Variable.cs" />
     <Compile Include="Assets\Script\Setting\GameController.cs" />
-    <Compile Include="Assets\Script\Setting\GameController_AI.cs" />
     <Compile Include="Assets\Script\Setting\Setting.cs" />
     <Compile Include="Assets\Script\State\State.cs" />
     <Compile Include="Assets\Script\Turn Start Actions\PickCardFromDeck.cs" />
@@ -365,7 +349,6 @@
     <Compile Include="Assets\Script\Turns\ControlPhase.cs" />
     <Compile Include="Assets\Script\Turns\Phase.cs" />
     <Compile Include="Assets\Script\Turns\Turn.cs" />
-    <Compile Include="Assets\Script\Utilities\CurrentSelected.cs" />
     <None Include="Assets\Materials\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\Materials\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\Photon\Plugins\changes-library.txt" />

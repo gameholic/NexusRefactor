@@ -22,6 +22,12 @@ namespace GH.GameCard
             set { _User = value; }
             get { return _User; }
         }
+        public CardData SetCardData
+        {
+            set { _Data[0] = value; }
+        }
+
+
         public CardData Data
         {
             get { return _Data[0]; }

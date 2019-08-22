@@ -8,7 +8,7 @@ namespace GH.UI
        
         public void UpdatePlayerText(PlayerHolder p)
         {
-            targetText.text = p.PlayerProfile.UniqueId;  
+            targetText.text = p.PlayerProfile.Name;  
         }
     }
 }

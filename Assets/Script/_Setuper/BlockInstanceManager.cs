@@ -99,9 +99,5 @@ namespace GH.Setup
             return r;
         }
 
-        //public static implicit operator Dictionary<object, object>(BlockInstanceManager v)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }

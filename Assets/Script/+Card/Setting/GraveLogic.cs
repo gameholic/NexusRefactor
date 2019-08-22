@@ -26,22 +26,21 @@ namespace GH.GameCard.CardLogics
             NetworkPrint p = multiplayManager.GetPlayer(playerPhotonId);
 
             PlayerHolder cardOwner = p.ThisPlayer;
-            Card card = p.GetCard(cardInstId);
+            Card card = p.ThisPlayer.CardManager.SearchCard(cardInstId);
             if (card == null)
             {
                 Debug.LogError("COULDN'T FIND CARDINSTANCE");
                 return;
+
             }
             cardOwner.CardManager.deadCards.Add(card.Data.UniqueId);
             //dead card should be added here.
            
-            int j = 0;
             for (int i = 0; i < 2; i++)
             {
                 if(card.User == Setting.gameController.GetPlayer(i))
                 {
                     cardOwner = Setting.gameController.GetPlayer(i);
-                    j = i;
                     Debug.LogFormat("This dead card's owner is " + cardOwner);
                 }
             }
@@ -62,7 +61,7 @@ namespace GH.GameCard.CardLogics
             NetworkPrint p = multiplayManager.GetPlayer(playerPhotonId);
 
             PlayerHolder you = p.ThisPlayer;
-            Card card = p.GetCard(cardInstId);
+            Card card = p.ThisPlayer.CardManager.SearchCard(cardInstId);
             string cardOwner = you.PlayerProfile.UniqueId;
 
 

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System;
 using GH.GameCard;
+
+using GH.Player.ProfileData;
 namespace GH.Player
 {
     [Serializable]
@@ -16,10 +18,12 @@ namespace GH.Player
         private string name;
         [SerializeField]
         private Sprite playerAvatar;
+
         [SerializeField]
-        private Card[] _CarDeck;
+        public ProfileData_Deck[] deckList = new ProfileData_Deck[5];
+
         [SerializeField]
-        private string[] _CardId;
+        private ProfileData_Deck _SelectedDeck;
         private int photonId;
 
 
@@ -31,12 +35,26 @@ namespace GH.Player
         }
         //[SerializeField]
         //public ProfileData_Deck[] deckList;
+        public void SetDeckName(string name)
+        {
+            foreach (ProfileData_Deck v in deckList)
+            {
+                if(v.Name==name)
+                {
+                    _SelectedDeck = v;
+                    Debug.LogFormat("Deck using for game is sat: {0}", v.Name); 
+                }
+            }
+        }
+
+
         public string[] GetCardIds()
         {
-            return _CardId;
+            return _SelectedDeck.Cards;
         }
         public string Name
         {
+            set { name = value; }
             get { return name; }
         }
 

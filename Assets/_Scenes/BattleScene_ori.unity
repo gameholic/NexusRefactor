@@ -2119,8 +2119,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _CurrentPlayer: {fileID: 0}
-  _TopCardHolder: {fileID: 11400000, guid: 38b61d5496fcf0a4ca0d556d1c15a2ee, type: 2}
-  _BottomCardHolder: {fileID: 11400000, guid: de8c454d3de231243b2cce449a5de728, type: 2}
   _CurrentState: {fileID: 11400000, guid: 2e3958c1c48e9c84d8497aa6cde37c48, type: 2}
   _Turns:
   - {fileID: 11400000, guid: a078b746e7a55df4aa4a85297dc1608f, type: 2}

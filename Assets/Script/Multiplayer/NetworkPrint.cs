@@ -10,14 +10,12 @@ namespace GH.Multiplay
         public int photonId;
         private bool isLocal;
         string[] cardIds;
-        private Dictionary<int, Card> _MyCards = new Dictionary<int, Card>();           // Codes that use this  need to be changed  to cardmanager of  player
         private List<Card> _CardDeck = new List<Card>();
         private PlayerHolder _PlayerHolder;
         public PlayerProfile _Profile;
 
-        public PlayerProfile playerProfile
+        public PlayerProfile PlayerProfile
         {
-            set { _Profile = value; }
             get { return _Profile; }
         }
         public List<Card> CardDeck
@@ -32,11 +30,6 @@ namespace GH.Multiplay
         {
             set { _PlayerHolder = value; }
             get {return  _PlayerHolder; }
-        }
-        public void AddCard(Card c)
-        {
-            _MyCards.Add(c.Data.UniqueId, c);
-            AddCardToDeck(c);
         }
         public bool IsLocal
         {
@@ -62,16 +55,7 @@ namespace GH.Multiplay
             {
                 playerProfile = new PlayerProfile();
             }
-
             return playerProfile;
-
-        }
-
-        public Card GetCard(int instId)
-        {
-            Card c = null;
-            _MyCards.TryGetValue(instId, out c);
-            return c;
         }
         void OnPhotonInstantiate(PhotonMessageInfo info)
         {            
@@ -79,7 +63,7 @@ namespace GH.Multiplay
             isLocal = photonView.isMine;
             //object[] data = photonView.instantiationData;
             //cardIds = (string[])data[0];
-            playerProfile = ReadPlayerProfileJSON();
+            _Profile = ReadPlayerProfileJSON();
             if(_Profile!=null)
                 SetProfile();
             
@@ -89,7 +73,7 @@ namespace GH.Multiplay
         void SetProfile()
         {
             Debug.Log("SET PROFILE");
-            cardIds = playerProfile.GetCardIds();
+            cardIds = PlayerProfile.GetCardIds();
         }
     }
 

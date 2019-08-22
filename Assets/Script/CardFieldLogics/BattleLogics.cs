@@ -4,13 +4,11 @@ using GH.GameCard.CardLogics;
 using GH.Multiplay;
 using GH.Player;
 using UnityEngine;
-
+using GH.GameCard.CardElement;
 namespace GH.CardBattle
 {
-
     public class BattleLogics
     {
-
         private GameController gc
         {
             get { return GameController.singleton; }

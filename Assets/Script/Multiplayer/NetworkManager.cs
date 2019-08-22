@@ -3,6 +3,10 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
 using GH.GameCard;
+using UnityEngine.UI;
+using GH.Player;
+using GH.AssetEditor;
+using System.IO;
 
 namespace GH.Multiplay
 {
@@ -19,6 +23,7 @@ namespace GH.Multiplay
         private ResourceManager rm;
         List<MultiplayerHolder> multiplayerHolders = new List<MultiplayerHolder>();
 
+        public Dropdown dropDown;
         public GameEvent loggerUpdated;
         public GameEvent onConnected;
         public GameEvent failedToConnect;
@@ -195,6 +200,16 @@ namespace GH.Multiplay
                 if(PhotonNetwork.playerList.Length > 1)
                 {
                     SetLoggerAsString("Ready for game");
+                    string deckName = dropDown.options[dropDown.value].text;
+                    PlayerProfile p = dropDown.GetComponentInChildren<DropDownController>().CallProfileFromJSon();
+                    if(p!=null)
+                    {
+                        p.SetDeckName(deckName);
+                        string dataAsJson = JsonUtility.ToJson(p);
+                        string filePath = Application.dataPath + "/StreamingAssets/playerProfile.json";
+                        File.WriteAllText(filePath, dataAsJson);
+                        
+                    }
                     loggerUpdated.Raise();
                     PhotonNetwork.room.IsOpen = false;
                     PhotonNetwork.Instantiate("Multiplay Manager", Vector3.zero, Quaternion.identity, 0);

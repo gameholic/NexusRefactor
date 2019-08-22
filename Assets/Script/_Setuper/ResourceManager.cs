@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GH.GameCard;
+using GH.GameCard.CardElement;
 namespace GH
 {
 
@@ -9,7 +10,7 @@ namespace GH
     [CreateAssetMenu(menuName = "Manager/Resource manager")]
     public class ResourceManager : ScriptableObject
     {
-        public Element typeElement;
+
         public Card[] allCards;
         Dictionary<string, Card> cardDict = new Dictionary<string, Card>();
         private int cardInstIndex;

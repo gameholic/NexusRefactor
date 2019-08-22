@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace GH.GameCard.CardInfo
+﻿namespace GH.GameCard.CardInfo
 {
     public class ConditionAttribute 
     {

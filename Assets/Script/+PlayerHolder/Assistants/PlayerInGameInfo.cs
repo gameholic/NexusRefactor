@@ -6,8 +6,6 @@ namespace GH.Player.Assists
 
     public class PlayerInGameInfo : PlayerAssists
     {
-
-        private PlayerHolder p;
         private ManaManager manaResourceManager;
         private PlayerStatsUI statsUI;        
         [SerializeField]                                        //To check photon Id easily. This should be NonSerialized
@@ -19,6 +17,8 @@ namespace GH.Player.Assists
             set { _PhotonId = value; }
             get { return _PhotonId; }
         }
+        public PlayerHolder Player { get { return player; } }
+
         public int Health
         {
             set
@@ -42,7 +42,7 @@ namespace GH.Player.Assists
         {
             manaResourceManager = new ManaManager();
             LoadPlayerOnStatsUI();
-            this.p = p;
+            player = p;
             Health = 30;
 
         }
