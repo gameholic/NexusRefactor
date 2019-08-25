@@ -16,6 +16,8 @@ namespace GH.AssetEditor
         public PlayerProfile playerProfile;
 
         private string playerProfileFilePath = "/StreamingAssets/playerProfile.json";
+        FileBridge fileBridge = new FileBridge();
+
 
         [MenuItem("Editor/Player Profile Editor")]
         static void Init()
@@ -30,6 +32,7 @@ namespace GH.AssetEditor
 
             EditorGUILayout.BeginHorizontal();
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+            ConvertPlayerProfileToAsset profileAsset = Resources.Load("PlayerProfile/PlayerProfile") as ConvertPlayerProfileToAsset;
 
 
             if (playerProfile != null)
@@ -55,65 +58,48 @@ namespace GH.AssetEditor
             }
             if (GUILayout.Button("Convert data as Asset"))
             {
-                ConvertProfile();
+                ConvertProfile(profileAsset);
             }
             if(GUILayout.Button("Convert Asset to data"))
             {
-                LoadAsset();
+                LoadAsset(profileAsset);
             }
 
 
             EditorGUILayout.EndScrollView();
         }
 
-        private string path = "PlayerProfile/PlayerProfile";
-
-        private void LoadAsset()
+        private void LoadAsset(ConvertPlayerProfileToAsset profileAsset)
         {
-            ConvertPlayerProfileToAsset profileAsset = Resources.Load(path) as ConvertPlayerProfileToAsset;
             if(profileAsset!=null)
                 playerProfile = profileAsset.playerProfile;
             else
                 Debug.LogError("ConverProfile: Cannot Find ProfileAsset");
-
-
         }
 
-        private void ConvertProfile()
+        private void ConvertProfile(ConvertPlayerProfileToAsset profileAsset)
         {
-            ConvertPlayerProfileToAsset profileAsset = Resources.Load(path) as ConvertPlayerProfileToAsset;
             if (profileAsset != null)
                 profileAsset.playerProfile = playerProfile;
             else
-                Debug.LogError("ConverProfile: Cannot Find ProfileAsset");
+            {
+                ConvertPlayerProfileToAsset newAsset = new ConvertPlayerProfileToAsset();
+                newAsset.playerProfile = playerProfile;
+                AssetDatabase.CreateAsset(newAsset,"Assets/Data/Resources/PlayerProfile/PlayerProfile.asset");
+                AssetDatabase.SaveAssets();
+             
+            }   
 
         }
 
         private void LoadProfile()
         {
-            string filePath = Application.dataPath + playerProfileFilePath;
-
-
-            if (File.Exists(filePath))
-            {
-                string dataAsJson = File.ReadAllText(filePath);
-                Debug.Log(dataAsJson);
-                playerProfile = JsonUtility.FromJson<PlayerProfile>(dataAsJson);
-            }
-            else
-            {
-                playerProfile = new PlayerProfile();
-            }
+            playerProfile = fileBridge.LoadProfile();
         }
 
         private void SaveProfile()
         {
-            string dataAsJson = JsonUtility.ToJson(playerProfile);
-         
-            Debug.Log("PLAYER PROFILE DATA IS SAVED");
-            string filePath = Application.dataPath + playerProfileFilePath;
-
-            File.WriteAllText(filePath, dataAsJson);
+            fileBridge.SaveProfile(playerProfile);
         }
     }
 

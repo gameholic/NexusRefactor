@@ -78,7 +78,7 @@ namespace GH.GameCard.CardLogics
             //card die
             Debug.LogFormat("SetCardToGrave: {0}'s {1} died", inst.User.PlayerProfile.Name, inst.Data.Name);
             inst.CardCondition.CanUse = false;
-            grave.SetCardDeadLogic(inst);
+            grave.SetCardToGrave(inst);
         }
 
 

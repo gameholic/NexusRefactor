@@ -7,11 +7,11 @@ using UnityEngine;
 
 namespace GH.MouseLogics
 {
-    public enum HandleLogics { Drop, Block, Battle, UseMagic }
+    public enum HandleLogics { Drop, Block, Battle, Spell }
     public class MouseOperation : MonoBehaviour
     {
         private bool dragging = false;
-        private PhysicalAttribute selectedCardInst = null;
+        private PhysicalAttribute selectedCard = null;
         private void Update()
         {   
             HandleMouse();
@@ -19,13 +19,13 @@ namespace GH.MouseLogics
         private void HandleMouse()              //Detect Mouse 
         {
             bool isMouseDown = Input.GetMouseButton(0);
-            CardUseBridge bridge = new CardUseBridge();
+            CardLogic cardLogic = new CardLogic();
             if (!isMouseDown)       //Mouse is relased
             {
                 if(dragging)
                 {
                     dragging = false;
-                    bridge.CardReturn(selectedCardInst.OriginCard);
+                    cardLogic.ReturnToOldPos(selectedCard.OriginCard);
                     Debug.Log("Return card");
                 }
                 else
@@ -36,15 +36,13 @@ namespace GH.MouseLogics
             }
             if(isMouseDown)             //Mouse is Pressed
             {
-                if (selectedCardInst != null)
+                if (selectedCard != null)
                 {
                     if (!dragging)
-                        selectedCardInst.OldPos = selectedCardInst.transform.position;
+                        selectedCard.OldPos = selectedCard.transform.position;
                     Debug.Log("CardDragging");
-                    bridge.CheckBlockCard((CreatureCard)selectedCardInst.OriginCard);
-                    HandleMouseClick(selectedCardInst);
+                    HandleMouseClick(selectedCard);
                     dragging = true;
-                    Debug.Log(dragging);
                 }
             }
         }
@@ -58,33 +56,42 @@ namespace GH.MouseLogics
             int uniqueId = c.Data.UniqueId;
             bool IsAtHand = cardManager.handCards.Contains(uniqueId);
             //bool IsOnField = cardManager.handCards.Contains(uniqueId);
-            Debug.LogFormat("Current Card is {0}", selectedCardInst);
+            Debug.LogFormat("Current Card is {0}", selectedCard);
             if (IsAtHand && currentPhase is ControlPhase)
             {
                 if(c is CreatureCard)
-                    CardDrag(HandleLogics.Drop, inst);      //Drag creature to field
+                    CardDrag(HandleLogics.Drop, c);      //Drag creature to field
                 else
-                    CardDrag(HandleLogics.UseMagic, inst);  //Drag Magic to use
+                    CardDrag(HandleLogics.Spell, c);  //Drag Magic to use
             }
-            if(currentPhase is BlockPhase)
-                    CardDrag(HandleLogics.Block, inst);     //Drag this card to attacking card to block          
             if (currentPhase is BattlePhase)
-                    CardClick(HandleLogics.Battle, inst);   //Click card on field to attack
+                CardClick(HandleLogics.Battle, (CreatureCard)c);   //Click card on field to attack
+
+            if (currentPhase is BlockPhase)
+               CardDrag(HandleLogics.Block, c);     //Drag this card to attacking card to block          
+
+            return;
         }
 
 
-        private void CardDrag(HandleLogics logic, PhysicalAttribute c)
+        private void CardDrag(HandleLogics logic, Card c)
         {
             CardLogic cardLogic = new CardLogic();
-            if(logic == HandleLogics.Drop)
+            CreatureCard creature = null;
+            //SpellCard spell = null;
+            if(c is CreatureCard)
             {
-
+                creature = (CreatureCard)c;
+                if (logic == HandleLogics.Drop)
+                {
+                    cardLogic.DropCard(creature);
+                }
+                if (logic == HandleLogics.Block)
+                {
+                    cardLogic.BlockCard(creature);
+                }
             }
-            if (logic == HandleLogics.UseMagic)
-            {
-
-            }
-            if (logic == HandleLogics.Block)
+            if (logic == HandleLogics.Spell)
             {
 
             }
@@ -92,7 +99,7 @@ namespace GH.MouseLogics
         /// <summary>
         /// Check current phase/state and card's position and perform mouse drag.
         /// </summary>
-        private void CardClick(HandleLogics logic, PhysicalAttribute c)
+        private void CardClick(HandleLogics logic, CreatureCard c)
         {
             bool isMouseDown = Input.GetMouseButtonDown(0);
             if (!isMouseDown)
@@ -111,19 +118,19 @@ namespace GH.MouseLogics
 
             if (detectedCard != null)
             {
-                if (selectedCardInst != null)
+                if (selectedCard != null)
                 {
-                    selectedCardInst.DeHighlight();
+                    selectedCard.DeHighlight();
                 }
-                selectedCardInst = detectedCard;
-                selectedCardInst.Highlight();
+                selectedCard = detectedCard;
+                selectedCard.Highlight();
             }
             else
             {
-                if (selectedCardInst != null)
+                if (selectedCard != null)
                 {
-                    selectedCardInst.DeHighlight();
-                    selectedCardInst = null;
+                    selectedCard.DeHighlight();
+                    selectedCard = null;
                 }
             }
 

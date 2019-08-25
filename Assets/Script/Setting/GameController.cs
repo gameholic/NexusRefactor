@@ -23,8 +23,6 @@ namespace GH
         [SerializeField]
         private PlayerCardTransform _BottomCardHolder;
         [SerializeField]
-        private State _CurrentState;
-        [SerializeField]
         private Turn[] _Turns;
         [SerializeField]
         private PlayerStatsUI[] _PlayerStatsUI;
@@ -125,10 +123,7 @@ namespace GH
         {
             get { return _ResourceManager; }
         }
-        public State CurrentState
-        {
-            get { return _CurrentState; }
-        }
+       
         public bool IsMultiplay
         {
             set
@@ -264,9 +259,7 @@ namespace GH
                 {
                     MultiplayManager.singleton.PlayerEndsTurn(CurrentPlayer.InGameData.PhotonId);
                 }
-            }
-            if (_CurrentState != null)
-                _CurrentState.Tick(Time.deltaTime);
+            }            
         }
         public int GetAnotherPlayerID()
         {
@@ -296,11 +289,6 @@ namespace GH
             turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString();
             OnTurnChanged.Raise();
         }
-        public void SetState(State state)
-        {
-            _CurrentState = state;
-        }
-
         public void ForceEndPhase()
         {
             GetTurns(turnIndex).EndCurrentPhase();

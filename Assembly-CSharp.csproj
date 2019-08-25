@@ -267,9 +267,9 @@
     <Compile Include="Assets\Script\+Card\CreatureCard.cs" />
     <Compile Include="Assets\Script\+Card\ErrorHandler\ErrorCheck_Creature.cs" />
     <Compile Include="Assets\Script\+Card\Setting\CardLogic.cs" />
-    <Compile Include="Assets\Script\+Card\Setting\CardUseBridge.cs" />
     <Compile Include="Assets\Script\+Card\Setting\GraveLogic.cs" />
     <Compile Include="Assets\Script\+Card\Setting\MoveCardInstance.cs" />
+    <Compile Include="Assets\Script\+Card\SpellCard.cs" />
     <Compile Include="Assets\Script\+MouseOperations\MouseOperation.cs" />
     <Compile Include="Assets\Script\+PlayerHolder\Assistants\PlayerAssists.cs" />
     <Compile Include="Assets\Script\+PlayerHolder\Assistants\PlayerCardManager.cs" />
@@ -336,6 +336,7 @@
     <Compile Include="Assets\Script\Scriptable\Variables\TransformArrayVariable.cs" />
     <Compile Include="Assets\Script\Scriptable\Variables\TransformVariable.cs" />
     <Compile Include="Assets\Script\Scriptable\Variables\Vector3Variable.cs" />
+    <Compile Include="Assets\Script\Setting\FileBridge.cs" />
     <Compile Include="Assets\Script\Setting\GameController.cs" />
     <Compile Include="Assets\Script\Setting\Setting.cs" />
     <Compile Include="Assets\Script\State\State.cs" />

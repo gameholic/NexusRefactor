@@ -6,7 +6,6 @@ namespace GH.GameTurn
     [CreateAssetMenu(menuName ="Turns/BlockPhase")]
     public class BlockPhase : Phase
     {
-        public GameStates.State playerBlockState;
         public override bool IsComplete()
         {
             if (PhaseForceExit)
@@ -21,7 +20,6 @@ namespace GH.GameTurn
         {
             if (IsInit)
             {
-                Setting.gameController.SetState(null);
                 IsInit = false;
             }
 
@@ -59,7 +57,6 @@ namespace GH.GameTurn
                     PhaseForceExit = true;
                     return;
                 }
-                gc.SetState(playerBlockState);
                 gc.OnPhaseChanged.Raise();
 
             }

@@ -12,9 +12,6 @@ namespace GH.Player.ProfileData
     {
         public string Name;
         public string[] Cards = new string[30];
-
-
-
     }
 
 }

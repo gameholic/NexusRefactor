@@ -9,7 +9,6 @@ namespace GH.GameTurn
     public class ControlPhase : Phase
     {
         public PlayerAction OnStartAction;
-        public GameStates.State playerControlState;
 
         public override bool IsComplete()
         {
@@ -25,7 +24,6 @@ namespace GH.GameTurn
         {
             if (IsInit)
             {
-                Setting.gameController.SetState(null);
                 IsInit = false;
             }
 
@@ -35,7 +33,6 @@ namespace GH.GameTurn
         {
             if (!IsInit)
             {
-                Setting.gameController.SetState(playerControlState);
                 Setting.gameController.OnPhaseChanged.Raise();
                 IsInit = true;
             }

@@ -195,20 +195,18 @@ namespace GH.Multiplay
         }
         public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
         {
-            if(IsMaster)
+            FileBridge fileBridge = new FileBridge();
+            if (IsMaster)
             {
                 if(PhotonNetwork.playerList.Length > 1)
                 {
                     SetLoggerAsString("Ready for game");
                     string deckName = dropDown.options[dropDown.value].text;
-                    PlayerProfile p = dropDown.GetComponentInChildren<DropDownController>().CallProfileFromJSon();
-                    if(p!=null)
+                    PlayerProfile p = fileBridge.LoadProfile();
+                    if (p!=null)
                     {
                         p.SetDeckName(deckName);
-                        string dataAsJson = JsonUtility.ToJson(p);
-                        string filePath = Application.dataPath + "/StreamingAssets/playerProfile.json";
-                        File.WriteAllText(filePath, dataAsJson);
-                        
+                        fileBridge.SaveProfile(p);                        
                     }
                     loggerUpdated.Raise();
                     PhotonNetwork.room.IsOpen = false;

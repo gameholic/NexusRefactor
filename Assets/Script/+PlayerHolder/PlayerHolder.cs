@@ -10,14 +10,12 @@ namespace GH.Player
     [CreateAssetMenu(menuName ="Holders/Player Holder")]
     public class PlayerHolder : ScriptableObject
     {
-        #region Transplanting
 
         private PlayerProfile _ProfileInfo;
         private PlayerInGameInfo _InGameData;
         [SerializeField]
         private PlayerCardTransform _CardTransform;
         private CardManager _CardManager;
-        #endregion
         public bool isHumanPlayer;
 
 

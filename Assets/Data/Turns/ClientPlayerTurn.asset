@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ClientPlayerTurn
   m_EditorClassIdentifier: 
   _CurrentPhase: {fileID: 11400000, guid: 842080bb5b7598146b4120b99cb21ecf, type: 2}
-  _ThisTurnPlayer: {fileID: 11400000, guid: bb002c96739fab942b2d4ed610a48793, type: 2}
+  _ThisTurnPlayer: {fileID: 11400000, guid: e889c6fc43cd6df49bed434027c5f8c9, type: 2}
   _Phases:
   - {fileID: 11400000, guid: d39e7d6e3e63cf646a6532866ef7ba7a, type: 2}
   _TurnStartAction: []

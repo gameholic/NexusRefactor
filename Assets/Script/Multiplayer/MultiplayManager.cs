@@ -93,38 +93,10 @@ namespace GH.Multiplay
         /// </summary>
 
         void InstantiateNetworkPrint() 
-        {
-            //PlayerProfile profile = ReadPlayerProfileJSON();
-            //object[] data = new object[1];
-            //data[0] = profile.GetCardIds();
-            
+        {            
             PhotonNetwork.Instantiate("NetworkPrint", Vector3.zero, Quaternion.identity, 0/*, data*/);
-        }
-        
+        }        
 
-        //private string playerProfileFilePath = "/StreamingAssets/playerProfile.json";
-        //PlayerProfile ReadPlayerProfileJSON()
-        //{
-        //    string filePath = Application.dataPath + playerProfileFilePath;
-        //    PlayerProfile playerProfile;
-
-        //    if (File.Exists(filePath))
-        //    {
-        //        string dataAsJson = File.ReadAllText(filePath);
-        //        playerProfile = JsonUtility.FromJson<PlayerProfile>(dataAsJson);
-        //    }
-        //    else
-        //    {
-        //        playerProfile = new PlayerProfile();
-        //    }
-
-        //    return playerProfile;
-
-        //}
-        //void LoadPlayerProfile()
-        //{
-
-        //}
         #endregion
 
         #region Tick
@@ -322,7 +294,7 @@ namespace GH.Multiplay
 
         public enum CardOperation
         {
-            dropCreatureCard, useSpellCard, pickCardFromDeck, setCardToAttack,cardToGraveyard
+            dropCreatureCard, useSpellCard, pickCardFromDeck, setCardToAttack, cardToGraveyard
         }
 
         public void PlayerPicksCardFromDeck(PlayerHolder playerHolder)
