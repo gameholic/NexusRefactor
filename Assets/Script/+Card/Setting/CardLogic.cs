@@ -2,14 +2,14 @@
 using GH.GameElements;
 using GH.Player;
 using UnityEngine;
-
+using GH.Multiplay;
 namespace GH.GameCard.CardLogics
 {
     public class CardLogic                //Check errors and send connects to multiplay manager
     {
         private GameController gc = Setting.gameController;
         private ErrorCheck.ErrorCheck_Creature error = new ErrorCheck.ErrorCheck_Creature();
-
+        private CardPlayManager cardPlayManager = new CardPlayManager();
 
         /// <summary>
         /// Block attacking card using selected card(def)
@@ -32,7 +32,9 @@ namespace GH.GameCard.CardLogics
                 else if (!error.IsAttacking(atkCard))
                     return;
                 //MultiplayManager.singleton.PlayerBlocksTargetCard();
-                Debug.LogFormat("AttackingCard: {0}, DefendingCard: {1}", atkCard.Data.Name, def.Data.Name);                    
+                Debug.LogFormat("AttackingCard: {0}, DefendingCard: {1}", atkCard.Data.Name, def.Data.Name);
+
+                cardPlayManager.CardPlayBlock(def, atkCard);
             }    
         }        
         public void DropCard(CreatureCard targetCard)
@@ -46,7 +48,8 @@ namespace GH.GameCard.CardLogics
                 return;
             if (!error.CheckCanDrop(targetCard,a))
                 return;
-            //MultiplayManager.singleton.PlayerTryToUseCard();
+
+            cardPlayManager.CardPlayDrop(targetCard,a);
 
         }
         public void UseSpell()
@@ -59,7 +62,7 @@ namespace GH.GameCard.CardLogics
 
             if (!error.CheckCanAttack(attackCard))
                 return;
-            //MultiplayManager.singleton.PlayerTryToUseCard();
+            cardPlayManager.CardPlayAttack(attackCard);
         }
         private void CardTracking(Card currentCard)
         {

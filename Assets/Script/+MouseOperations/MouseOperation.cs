@@ -28,9 +28,6 @@ namespace GH.MouseLogics
                     cardLogic.ReturnToOldPos(selectedCard.OriginCard);
                     Debug.Log("Return card");
                 }
-                else
-                    Debug.Log("Dragging is false");
-
                 Debug.Log("CardDetecting");
                 HandleCardDetection();
             }
@@ -40,7 +37,6 @@ namespace GH.MouseLogics
                 {
                     if (!dragging)
                         selectedCard.OldPos = selectedCard.transform.position;
-                    Debug.Log("CardDragging");
                     HandleMouseClick(selectedCard);
                     dragging = true;
                 }
@@ -57,6 +53,13 @@ namespace GH.MouseLogics
             bool IsAtHand = cardManager.handCards.Contains(uniqueId);
             //bool IsOnField = cardManager.handCards.Contains(uniqueId);
             Debug.LogFormat("Current Card is {0}", selectedCard);
+
+            if (Setting.gameController.CurrentPlayer !=c.User)
+            {
+                Debug.LogError("Current Player Isn't The Card");
+                return;
+            }
+
             if (IsAtHand && currentPhase is ControlPhase)
             {
                 if(c is CreatureCard)
@@ -73,7 +76,12 @@ namespace GH.MouseLogics
             return;
         }
 
-
+        /// <summary>
+        /// Navigate Card Instance to appropriate logics.
+        /// Check If This is Creature
+        /// </summary>
+        /// <param name="logic"></param>
+        /// <param name="c"></param>
         private void CardDrag(HandleLogics logic, Card c)
         {
             CardLogic cardLogic = new CardLogic();

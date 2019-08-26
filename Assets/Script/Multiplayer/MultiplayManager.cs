@@ -260,10 +260,6 @@ namespace GH.Multiplay
         [PunRPC]
         public void RPC_PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation, int cardArea = 0)
         {
-            //if (!NetworkManager.IsMaster)
-            //    return;
-
-            // 
             bool hasCard = PlayerHasCard(cardInst, photonId);
             if (hasCard)
             {
@@ -333,18 +329,10 @@ namespace GH.Multiplay
 
             switch (operation)
             {
-                case CardOperation.dropCreatureCard:
-                    
-                    //Setting.DropCreatureCard(card.Instance.transform,
-                    //    currentPlayer._CardHolder.GetFieldGrid(cardArea).value,
-                    //    card);
-
-                    
-                    //card.Instance.currentLogic = MainData.FieldCardLogic;
-
-
+                case CardOperation.dropCreatureCard:        //Problem: Current Logic try to get original transform before it saves it.
+                    //Solution: Save(Or Send) RayCasted Ray.
+                    MoveCardInstance.DropCreatureCard((CreatureCard)card);
                     currentPlayer.InGameData.ManaManager.UpdateCurrentMana(-(card.Data.ManaCost));
-
                     Debug.LogFormat("DropCreatureCardCheck: {0}'s {1} is dropped. it's origin field location is {2}",
                         currentPlayer.PlayerProfile.UniqueId, 
                         card.Data.Name,                        
@@ -537,7 +525,7 @@ namespace GH.Multiplay
                 Transform graveyardTransform = c.User.CardTransform.Graveyard.value;
                 Debug.LogFormat("RPC_SendCardToGrave: Player({0})'s {1} is dead. It's going to graveyard: {2}", 
                     p.PlayerProfile.UniqueId, c.Data.Name,graveyardTransform);
-                GraveLogic.MoveCardToGrave(c, graveyardTransform);
+                CardPlayManager.MoveCardToGrave(c, graveyardTransform);
             }
         }
 
@@ -609,6 +597,7 @@ namespace GH.Multiplay
         }
 
         #endregion
+
         #region Blocking
 
         public void PlayerBlocksTargetCard(int blockingInstId, int photonId_blocker, int attackInstId, int photonId_attacker)
@@ -620,7 +609,6 @@ namespace GH.Multiplay
         [PunRPC]
         public void RPC_PlayerBlocksTargetCard_Master(int defendCardInstId, int defenderPhotonId, int attackCardInstId, int attackerPhotonId)
         {
-
             NetworkPrint print_Defend = GetPlayer(defenderPhotonId);
             Card card_Defend = print_Defend.ThisPlayer.CardManager.SearchCard(defendCardInstId);
 
@@ -631,7 +619,7 @@ namespace GH.Multiplay
 
             //Make new BlockInstance wth 'card_Invade' and 'card_Defend'
             //If there is BlockInstance with 'card_Invade', it will automatically add 'card_Defend' in existing BlockInstance with increasing 'count'
-            Setting.gameController.BlockManager.AddBlockInstance(card_Invade,card_Defend ,ref count);
+            //Setting.gameController.BlockManager.AddBlockInstance(card_Invade,card_Defend ,ref count);
 
             Debug.Log("PlayerBlocksTargetCard_Master: Blocking cards successfully added");
 
@@ -639,10 +627,6 @@ namespace GH.Multiplay
                 defendCardInstId, defenderPhotonId, attackCardInstId, attackerPhotonId, count);
 
             //Sending CardInstance and NetworkPrint through RPC can't be done
-            //Those types must be serialized
-            //photonView.RPC("RPC_PlayerBlocksTargetCard_Client", PhotonTargets.All,
-            //    card_Defend, print_Defend, card_Invade, print_Invade, count);
-
         }
 
 
@@ -657,9 +641,7 @@ namespace GH.Multiplay
             PlayerHolder atk = print_Invade.ThisPlayer;
             Card card_Invade = atk.CardManager.SearchCard(attackCardInstId);
 
-            MoveCardInstance.SetCardsForBlock(card_Defend, card_Invade, count);
-            //Debug.Log("PlayerBlocksTargetCard: Move Cards to Defend Location Sucessful");
-            
+            //MoveCardInstance.SetCardsForBlock(card_Defend, card_Invade, count);
         }
         #endregion
                

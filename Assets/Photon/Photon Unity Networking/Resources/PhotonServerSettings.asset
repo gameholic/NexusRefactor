@@ -65,4 +65,5 @@ MonoBehaviour:
   - RPC_PutCardToGrave
   - RPC_SetCardDead
   - RPC_YouAreAlreadyDead
+  - RPC_CleanCardData
   DisableAutoOpenWizard: 1

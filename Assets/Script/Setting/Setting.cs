@@ -3,6 +3,7 @@ using GH.GameElements;
 using UnityEngine;
 
 
+using GH.Multiplay;
 using GH.GameCard.CardInfo;
 using GH.GameCard.CardLogics;
 
@@ -13,7 +14,7 @@ namespace GH
         private static ResourceManager resmanager;
         private static ConsoleHook _consoleHook;
         public static GameController gameController;
-        public readonly static GraveLogic graveLogic;
+        public readonly static CardPlayManager graveLogic;
 
 
         /// <summary>
@@ -51,7 +52,8 @@ namespace GH
             {
                 a = hits[i].transform.gameObject.GetComponentInParent<GameElements.Area>();
                 if (a != null)
-                    return a;
+                    if(a.IsPlaced)
+                        return a;
             }
             return a;
 

@@ -12,7 +12,6 @@ namespace GH
 {
     public class DropDownController : MonoBehaviour
     {
-
         public Dropdown myDropdown;
 
         FileBridge fileBridge = new FileBridge();

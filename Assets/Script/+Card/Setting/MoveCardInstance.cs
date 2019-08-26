@@ -1,25 +1,28 @@
 ﻿using UnityEngine;
 
-
+using GH.Multiplay;
 
 namespace GH.GameCard.CardLogics
 {
     public class MoveCardInstance
     {
         private static GameController gameController = Setting.gameController;
-        public static void DropCreatureCard(Transform cardTransform, Transform fieldTransform, CreatureCard card)
+        public static void DropCreatureCard(CreatureCard card)
         {
+
+            Transform cardTransform = card.PhysicalCondition.transform;
+            Transform fieldTransform = card.PhysicalCondition.GetOriginFieldLocation();
             Debug.LogFormat("DropCreatureCard: Field Transform is {0}", fieldTransform);
+
             SetParentForCard(cardTransform, fieldTransform);
             card.CardCondition.CanUse = false;
             card.PhysicalCondition.gameObject.SetActive(true);
             card.PhysicalCondition.SetOriginFieldLocation(fieldTransform.transform);
             gameController.CurrentPlayer.InGameData.ManaManager.UseMana(card.Data.ManaCost);
             gameController.CurrentPlayer.CardManager.DropCardOnField(card);
-
         }
          
-        public static void SetParentForCard(Transform target, Transform dest)
+        public static void SetParentForCard(Transform target, Transform dest)   ///What if make this private and make new functions that leads to here Ex) public void MoveCardToOrigin();
         {
             target.SetParent(dest);
             if (dest.name != "BattleLine")
@@ -57,7 +60,7 @@ namespace GH.GameCard.CardLogics
         /// <param name="defendCard"></param>
         /// <param name="attackingCard"></param>
         /// <param name="count"></param>
-        public static void SetCardsForBlock(Card defendCardInst, Card attackCardInst, int count)
+        public static void SetCardsForBlock(CreatureCard defendCardInst, CreatureCard attackCardInst, int count)
         {
             Transform defendCardTransform = defendCardInst.PhysicalCondition.transform;
             Transform attackCardTransform = attackCardInst.PhysicalCondition.transform;
@@ -74,7 +77,7 @@ namespace GH.GameCard.CardLogics
         
         public static void SetCardToGrave(Card inst)
         {
-            GraveLogic grave = new GraveLogic();
+            CardPlayManager grave = new CardPlayManager();
             //card die
             Debug.LogFormat("SetCardToGrave: {0}'s {1} died", inst.User.PlayerProfile.Name, inst.Data.Name);
             inst.CardCondition.CanUse = false;

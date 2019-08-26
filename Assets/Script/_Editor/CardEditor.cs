@@ -14,7 +14,6 @@ namespace GH.Editor
         static CardEditor mainWindow;
         static SubCardWindow subWindow;
 
-
         bool addingMode = false;
         bool subWinMode = false;
 

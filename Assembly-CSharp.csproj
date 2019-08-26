@@ -267,7 +267,6 @@
     <Compile Include="Assets\Script\+Card\CreatureCard.cs" />
     <Compile Include="Assets\Script\+Card\ErrorHandler\ErrorCheck_Creature.cs" />
     <Compile Include="Assets\Script\+Card\Setting\CardLogic.cs" />
-    <Compile Include="Assets\Script\+Card\Setting\GraveLogic.cs" />
     <Compile Include="Assets\Script\+Card\Setting\MoveCardInstance.cs" />
     <Compile Include="Assets\Script\+Card\SpellCard.cs" />
     <Compile Include="Assets\Script\+MouseOperations\MouseOperation.cs" />
@@ -299,6 +298,7 @@
     <Compile Include="Assets\Script\Holders\PositionHolder.cs" />
     <Compile Include="Assets\Script\Interfaces\IClickable.cs" />
     <Compile Include="Assets\Script\MenuScripts\DropDownController.cs" />
+    <Compile Include="Assets\Script\Multiplayer\CardPlayManager.cs" />
     <Compile Include="Assets\Script\Multiplayer\CustomType\SerializeCardInstance.cs" />
     <Compile Include="Assets\Script\Multiplayer\EventManager.cs" />
     <Compile Include="Assets\Script\Multiplayer\MultiplayManager.cs" />

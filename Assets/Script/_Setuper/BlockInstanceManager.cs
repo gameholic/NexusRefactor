@@ -33,7 +33,7 @@ namespace GH.Setup
         /// <param name="attk">Attacking card</param>
         /// <param name="def">Defending card</param>
         /// <param name="count">Number of 'def' card instances for 'attk' </param>
-        public void AddBlockInstance(Card attk, Card def, ref int count)
+        public void AddBlockInstance(CreatureCard attk, CreatureCard def, ref int count)
         {
 
             BlockInstance b = null;

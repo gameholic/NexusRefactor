@@ -64,6 +64,13 @@ namespace GH.Player
                 Debug.LogErrorFormat("CantDropCard: Player Dont have {0} on hand",c.Data.Name);
 
         }
+
+        /// <summary>
+        /// Check Card Existance In List Of CardContainer.
+        /// </summary>
+        /// <param name="position">Enum value for the List</param>
+        /// <param name="c">Target</param>
+        /// <returns></returns>
         public bool CheckCardContainer(CardContainer position, Card c)
         {
             bool v = false;
@@ -131,6 +138,12 @@ namespace GH.Player
             allCards.TryGetValue(id, out v);
             return v;
         }
+
+        /// <summary>
+        /// Check Card From All Card
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool CheckCard(int id)
         {
             bool ret = false;

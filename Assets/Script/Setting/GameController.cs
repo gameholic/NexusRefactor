@@ -54,12 +54,13 @@ namespace GH
         private BlockInstanceManager _BlockManager = new BlockInstanceManager();
         private CheckPlayerCanUse _CheckOwner = new CheckPlayerCanUse();
         
-        public PlayerHolder[] _Players;
+        private PlayerHolder[] _Players;
         private bool startTurn = true; //Check the start of the turn
         private int turnCounter; //Count the turn. When both player plays, it increases by 1
         private bool isInit;
         private bool _IsMultiplayer;
         #region GetSetProperties
+        public PlayerHolder[] Players { get { return _Players; } }
         public PlayerHolder CurrentPlayer
         {
             set { _CurrentPlayer = value; }

@@ -10,8 +10,12 @@ namespace GH.GameElements
         private bool _IsPlaced = false;
         public bool IsPlaced
         {
-            set { _IsPlaced = value; }
             get { return _IsPlaced; }
+        }
+
+        public void SetIsPlaced(bool a)
+        {
+            _IsPlaced = a;
         }
 #pragma warning restore 0649
     }
