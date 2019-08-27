@@ -6,7 +6,7 @@ using GH.GameCard.CardLogics;
 
 namespace GH.Player.Assists
 {
-    
+    [CreateAssetMenu(menuName ="PlayerData/CardTransform")]
     public class PlayerCardTransform : PlayerAssists
     {
 #pragma warning  disable 0649

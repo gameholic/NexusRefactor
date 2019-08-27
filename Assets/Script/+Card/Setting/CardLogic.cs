@@ -5,11 +5,11 @@ using UnityEngine;
 using GH.Multiplay;
 namespace GH.GameCard.CardLogics
 {
-    public class CardLogic                //Check errors and send connects to multiplay manager
+    public class CardLogic               //Check errors and send connects to multiplay manager
     {
         private GameController gc = Setting.gameController;
-        private ErrorCheck.ErrorCheck_Creature error = new ErrorCheck.ErrorCheck_Creature();
-        private CardPlayManager cardPlayManager = new CardPlayManager();
+        private ErrorCheck.ErrorCheck_Creature error;
+        private CardPlayManager cardPlayManager;
 
         /// <summary>
         /// Block attacking card using selected card(def)
@@ -58,8 +58,6 @@ namespace GH.GameCard.CardLogics
         }
         public void SetToAttack(CreatureCard attackCard)
         {
-            Transform battleLine = attackCard.User.CardTransform.AttackingLine.value;
-
             if (!error.CheckCanAttack(attackCard))
                 return;
             cardPlayManager.CardPlayAttack(attackCard);

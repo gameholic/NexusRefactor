@@ -1,21 +1,25 @@
 ﻿using GH.GameCard;
+using System;
 using UnityEngine;
 
 namespace GH.Player.Assists
 {
-
+    [CreateAssetMenu(menuName ="PlayerData/IngameInfo")]
     public class PlayerInGameInfo : PlayerAssists
     {
         private ManaManager manaResourceManager;
-        private PlayerStatsUI statsUI;        
-        [SerializeField]                                        //To check photon Id easily. This should be NonSerialized
+        private PlayerStatsUI statsUI;
+        [SerializeField]                        //Should Be Deleted
         private int _PhotonId = -1;
 
         private int health;
         public int PhotonId
         {
-            set { _PhotonId = value; }
             get { return _PhotonId; }
+        }
+        public int SetPhotonId
+        {
+            set { _PhotonId = value; }
         }
         public PlayerHolder Player { get { return player; } }
 
@@ -40,11 +44,20 @@ namespace GH.Player.Assists
         }
         public override void Init(PlayerHolder p)
         {
+            Debug.LogFormat("InGameInfo  Init");
             manaResourceManager = new ManaManager();
+            for(int i=0;i<2;i++)
+            {
+                if (Setting.gameController.GetPlayer(i) == null)
+                    break;
+                if (p==Setting.gameController.GetPlayer(i))
+                {
+                    statsUI = Setting.gameController.GetPlayerUIInfo(i);
+                }
+            }
             LoadPlayerOnStatsUI();
             player = p;
             Health = 30;
-
         }
 
 

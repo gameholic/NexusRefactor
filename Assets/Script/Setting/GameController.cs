@@ -19,9 +19,9 @@ namespace GH
         [SerializeField]
         private PlayerHolder _CurrentPlayer;
         [SerializeField]
-        private PlayerCardTransform _TopCardHolder;
+        private PlayerCardTransform _TopCardTransform;
         [SerializeField]
-        private PlayerCardTransform _BottomCardHolder;
+        private PlayerCardTransform _BottomCardTransform;
         [SerializeField]
         private Turn[] _Turns;
         [SerializeField]
@@ -66,15 +66,15 @@ namespace GH
             set { _CurrentPlayer = value; }
             get { return _CurrentPlayer; }
         }
-        public PlayerCardTransform TopCardHolder
+        public PlayerCardTransform TopCardTransform
         {
-            set { _TopCardHolder = value; }
-            get { return _TopCardHolder; }
+            set { _TopCardTransform = value; }
+            get { return _TopCardTransform; }
         }
-        public PlayerCardTransform BottomCardHolder
+        public PlayerCardTransform BottomCardTransform
         {
-            set { _BottomCardHolder = value; }
-            get { return _BottomCardHolder; }
+            set { _BottomCardTransform = value; }
+            get { return _BottomCardTransform; }
         }
         public Turn GetTurns(int i)
         {
@@ -147,6 +147,10 @@ namespace GH
             _TurnLength = _Turns.Length;
             _BlockManager.BlockInstDict = new Dictionary<Card, BlockInstance>();
             _CurrentPlayer = GetTurns(0).ThisTurnPlayer;
+            _Players = new PlayerHolder [2];
+            SetPlayer(0, localPlayer);
+            SetPlayer(1, ClientPlayer);
+            
             
         }
         public void InitGame(int startingPlayer)
@@ -157,34 +161,17 @@ namespace GH
             localPlayer = nwp.ThisPlayer;        //This is where local player's profile should be changed
             //Debug.Log(localPlayer.player);                            /
 
-
-            Turn[] _tmpTurn = new Turn[2];
+            //Turn[] _tmpTurn = new Turn[2];
             for (int i = 0; i < _Players.Length; i++)
-            {                
+            {
+                GetPlayer(i).Init();
+                GetPlayer(i).InGameData.StatsUI.Init();
                 GetPlayer(i).InGameData.StatsUI = GetPlayerUIInfo(i);
                 GetPlayer(i).InGameData.ManaManager.InitManaZero();
                 GetPlayerUIInfo(i).UpdateManaUI();
-                /*
-                 *Initialise mana as 0
-                 *This is for the speical mode that might exist in future
-                 *      Ex) Initialise mana as 3 
-                 */
-
-                if (GetPlayer(i).InGameData.PhotonId == startingPlayer)
-                {
-                    _tmpTurn[0] = GetTurns(i);              
-                }
-                else
-                {
-                    _tmpTurn[1] = GetTurns(i);
-                }
-
-                GetPlayer(i).Init();
             }
-            _Turns = _tmpTurn;
-
-            BottomCardHolder = LocalPlayer.CardTransform;
-            TopCardHolder = ClientPlayer.CardTransform;
+            BottomCardTransform = LocalPlayer.CardTransform;
+            TopCardTransform = ClientPlayer.CardTransform;
 
             for (int i = 0; i < _Players.Length; i++)
             {
@@ -194,7 +181,7 @@ namespace GH
                     GetPlayer(1).InGameData.StatsUI = GetPlayerUIInfo(i);
             }
             turnCounter = 1;
-            turnText.value = GetTurns(turnIndex).ThisTurnPlayer.ToString(); // Visualize whose turn is now            
+            turnText.value = GetTurns(turnIndex).ThisTurnPlayer.PlayerProfile.Name; // Visualize whose turn is now            
             turnCountTextVariable.value = turnCounter.ToString();
 
             OnTurnChanged.Raise();
@@ -207,7 +194,7 @@ namespace GH
         }
         private void SetUpGraveLogic()
         {
-            PhotonNetwork.Instantiate("GraveLogic", Vector3.zero, Quaternion.identity,0);
+            PhotonNetwork.Instantiate("CardPlayManager", Vector3.zero, Quaternion.identity,0);
 
         }
         #endregion

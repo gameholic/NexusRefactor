@@ -10,31 +10,30 @@ namespace GH.Player
     [CreateAssetMenu(menuName ="Holders/Player Holder")]
     public class PlayerHolder : ScriptableObject
     {
-
+        [SerializeField]            //To Check The Data. Needs To Be Deleted
         private PlayerProfile _ProfileInfo;
+
+        [SerializeField]
         private PlayerInGameInfo _InGameData;
         [SerializeField]
         private PlayerCardTransform _CardTransform;
-        private CardManager _CardManager;
+        [SerializeField]                //Needs To Be Deleted
+        private PlayerCardManager _CardManager;
         public bool isHumanPlayer;
 
 
-  
+        public void Init()
+        {
+            Debug.Log("TEST");
+            _InGameData.Init(this);
+            _CardManager.Init(this);
+            //SetPlayerProfile(Multiplay.MultiplayManager.singleton.GetPlayer(_InGameData.PhotonId).PlayerProfile);
+        }
         public Color playerColor;
 
 
         private List<Card> _AllCardInstances = new List<Card>();
 
-        public void Init()
-        {
-            _InGameData = new PlayerInGameInfo();
-            _CardTransform = new PlayerCardTransform();
-            _CardManager = new CardManager();
-
-            _InGameData.Init(this);
-            _CardManager.Init(this);
-            _CardManager.Init(this);
-        }
         public PlayerInGameInfo InGameData
         {
             get { return _InGameData; }
@@ -43,13 +42,12 @@ namespace GH.Player
         {
             get { return _CardTransform; }
         }
-        public CardManager CardManager
+        public PlayerCardManager CardManager
         {
             get { return _CardManager; }
         }
         public PlayerProfile PlayerProfile
         {
-            set { _ProfileInfo = value; }
             get { return _ProfileInfo; }
         }
         public List<Card> AllCardInst
@@ -61,7 +59,10 @@ namespace GH.Player
             _AllCardInstances.Add(c);
         }
      
-
+        public void SetPlayerProfile(PlayerProfile p)
+        {
+            _ProfileInfo = p;
+        }
 
 
     }

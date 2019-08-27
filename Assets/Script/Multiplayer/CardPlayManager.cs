@@ -106,7 +106,7 @@ namespace GH.Multiplay
         /// </summary>
         #region CreatureMoveLogics
 
-        private Dictionary<int, Area> tmp = new Dictionary<int, Area>();
+        private Dictionary<int, Area> tmp;
         public void CardPlayDrop(CreatureCard c,Area a)
         {
             tmp.Add(1,a);
@@ -124,6 +124,8 @@ namespace GH.Multiplay
             c.User.InGameData.ManaManager.UpdateCurrentMana(-(c.Data.ManaCost));
 
         }
+
+
         public void CardPlayAttack(CreatureCard c)
         {
             photonView.RPC("RPC_Attack", PhotonTargets.All,

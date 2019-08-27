@@ -124,9 +124,10 @@ namespace GH.Multiplay
         {
             MultiplayerHolder m = new MultiplayerHolder();
             m.OwnerId = photonId;
-
+            Debug.Log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
             for(int i =0;i<cards.Length;i++)
             {
+                Debug.Log("PlayerJoined");
                 Card c = CreateCardMaster(cards[i]);
                 if (c == null)
                     continue;
@@ -138,7 +139,7 @@ namespace GH.Multiplay
         public Card CreateCardMaster(string cardId)
         {
             Card card = rm.GetCardInstFromDeck(cardId);
-            card.Data.UniqueId = CardInstId;
+            card.Data.SetUniqueId = CardInstId;
             CardInstId = CardInstId + 1;
             return card;
         }
@@ -206,7 +207,8 @@ namespace GH.Multiplay
                     if (p!=null)
                     {
                         p.SetDeckName(deckName);
-                        fileBridge.SaveProfile(p);                        
+                        fileBridge.SaveProfile(p);
+                        fileBridge.UpdateAsset(p);
                     }
                     loggerUpdated.Raise();
                     PhotonNetwork.room.IsOpen = false;

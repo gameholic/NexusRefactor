@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace GH.GameCard
 {
-    [CreateAssetMenu(menuName ="+Card")]
     public abstract class Card : ScriptableObject
     {
 #pragma warning disable 0649

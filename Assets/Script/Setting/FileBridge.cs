@@ -1,5 +1,7 @@
-﻿using GH.Player;
+﻿using GH.AssetEditor;
+using GH.Player;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 namespace GH
@@ -7,6 +9,7 @@ namespace GH
     public class FileBridge
     {
         string profileFilePath = "/StreamingAssets/playerProfile.json";
+        private PlayerProfile playerProfile;
 
         public PlayerProfile LoadProfile()
         {
@@ -27,7 +30,21 @@ namespace GH
             string dataToJson = JsonUtility.ToJson(target);
             string path = Application.dataPath + profileFilePath;
             File.WriteAllText(path, dataToJson);
+
             Debug.Log("Profile Save Sucess");
+
+
+        }
+        public void UpdateAsset(PlayerProfile p)
+        {
+            ConvertPlayerProfileToAsset a = Resources.Load("PlayerProfile/PlayerProfile") as ConvertPlayerProfileToAsset;
+            if (a != null)
+            {
+                Debug.Log("ProfileAssetSaved");
+                a.playerProfile._DeckToPlay = p._DeckToPlay;
+            }
+            else
+                Debug.LogError("ProfileAssetFailedSaving");
         }
     }
 

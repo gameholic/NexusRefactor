@@ -17,8 +17,8 @@ namespace GH.Player
         [SerializeField]
         private Sprite playerAvatar;
         [SerializeField]
-        public ProfileData_Deck[] deckList = new ProfileData_Deck[5];
-        private ProfileData_Deck _DeckToPlay;
+        public ProfileData_Deck[] deckList;
+        public ProfileData_Deck _DeckToPlay;
         private int photonId;
 #pragma warning restore 0649
 
@@ -37,10 +37,13 @@ namespace GH.Player
                 }
             }
         }
-        public string[] GetCardIds()
+        public string GetCardIds(int i)
         {
-            return _DeckToPlay.Cards;
+            if (_DeckToPlay == null)
+                Debug.LogError("DeckToPlayIsNull");
+            return _DeckToPlay.Cards[i].Data.Name;
         }
+        
         public string Name
         {
             set { name = value; }

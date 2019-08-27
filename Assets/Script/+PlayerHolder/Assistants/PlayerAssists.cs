@@ -6,7 +6,7 @@ using UnityEditor;
 namespace GH.Player.Assists
 {
 
-    public abstract class PlayerAssists 
+    public abstract class PlayerAssists :ScriptableObject
     {
         protected PlayerHolder player;
 

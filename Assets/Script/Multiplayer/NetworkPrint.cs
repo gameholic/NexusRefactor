@@ -9,8 +9,8 @@ namespace GH.Multiplay
     {
         public int photonId;
         private bool isLocal;
-        string[] cardIds;
-        private List<Card> _CardDeck = new List<Card>();
+        public List<string> cardIds = new List<string>();
+        public List<Card> _CardDeck = new List<Card>();         //Should be Changed To Private
         private PlayerHolder _PlayerHolder;
         public PlayerProfile _Profile;
 
@@ -22,7 +22,7 @@ namespace GH.Multiplay
         {
             get { return _CardDeck; }
         } 
-        private void AddCardToDeck(Card c)
+        public void AddCardToDeck(Card c)
         {
             _CardDeck.Add(c);
         }
@@ -35,9 +35,9 @@ namespace GH.Multiplay
         {
             get { return isLocal; }
         }
-        public string[] GetStartingCardids()
+        public List<string> GetStartingCardids
         {
-            return cardIds;
+            get { return cardIds; }
         }
 
         private string playerProfileFilePath = "/StreamingAssets/playerProfile.json";
@@ -61,6 +61,7 @@ namespace GH.Multiplay
         {            
             photonId = photonView.ownerId;
             isLocal = photonView.isMine;
+            Debug.LogWarning(isLocal);
             //object[] data = photonView.instantiationData;
             //cardIds = (string[])data[0];
             _Profile = ReadPlayerProfileJSON();
@@ -72,8 +73,15 @@ namespace GH.Multiplay
 
         void SetProfile()
         {
-            Debug.Log("SET PROFILE");
-            cardIds = PlayerProfile.GetCardIds();
+            Debug.Log("==SET PROFILE==");
+            for (int i = 0; i < PlayerProfile._DeckToPlay.Cards.Length; i++)
+            {
+                if (PlayerProfile.GetCardIds(i) != null)
+                    cardIds.Add(PlayerProfile.GetCardIds(i));
+                else
+                    break;
+                
+            }
         }
     }
 

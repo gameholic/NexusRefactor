@@ -16,13 +16,8 @@ namespace GH
         public TextMesh userID;
         public TextMesh manaCurrent;
         public TextMesh manaMax;
-        private void Start()
+        public void Init()
         {
-            if (!avatarObj.GetComponent<SpriteRenderer>())
-            {
-                Debug.Log("Avatar sprite component is needed on " + player);
-                return;
-            }
             player.InGameData.StatsUI = this;
             UpdateAll();
         }

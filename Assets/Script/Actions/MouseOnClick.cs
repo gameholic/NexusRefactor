@@ -1,48 +1,48 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Collections;
-using UnityEngine.EventSystems;
+﻿//using UnityEngine;
+//using System.Collections.Generic;
+//using System.Collections;
+//using UnityEngine.EventSystems;
 
 
-namespace GH.GameStates
-{
+//namespace GH.GameStates
+//{
 
-    //[CreateAssetMenu(menuName = "Actions/MouseOnClick")]
-    //public class MouseOnClick : Action
-    //{
-        
-    //    private bool check = false;
-    //    public override void Execute(float d)
-    //    {
+//    [CreateAssetMenu(menuName = "Actions/MouseOnClick")]
+//    public class MouseOnClick : Action
+//    {
 
-    //        if (Input.GetMouseButtonDown(0))
-    //        {
-    //            RaycastHit[] results = Setting.GetUIObjs();
-    //            IClickable c = null;
+//        private bool check = false;
+//        public override void Execute(float d)
+//        {
 
-    //            for (int i = 0; i < results.Length; i++)
-    //            {
-    //                RaycastHit hit = results[i];
-    //                c = hit.transform.gameObject.GetComponentInParent<IClickable>();
+//            if (Input.GetMouseButtonDown(0))
+//            {
+//                RaycastHit[] results = Setting.GetUIObjs();
+//                IClickable c = null;
 
-    //                check = Setting.gameController.CheckOwner.CheckPlayer(hit.transform.gameObject);
-    //                //Debug.Log("Check Obj Owner: " + check);
-    //                if (!check)//break when the gameObject is unclickable (other player's gameObject);
-    //                {
-    //                    Debug.LogWarning("MouseOnClick:You can't select enemy card.");
-    //                    break;
-    //                }
+//                for (int i = 0; i < results.Length; i++)
+//                {
+//                    RaycastHit hit = results[i];
+//                    c = hit.transform.gameObject.GetComponentInParent<IClickable>();
 
-    //                if (c != null)
-    //                {
-    //                    c.OnClick();
-    //                    break;
-    //                }
-    //            }
+//                    check = Setting.gameController.CheckOwner.CheckPlayer(hit.transform.gameObject);
+//                    //Debug.Log("Check Obj Owner: " + check);
+//                    if (!check)//break when the gameObject is unclickable (other player's gameObject);
+//                    {
+//                        Debug.LogWarning("MouseOnClick:You can't select enemy card.");
+//                        break;
+//                    }
 
-    //        }
-    //    }
+//                    if (c != null)
+//                    {
+//                        c.OnClick();
+//                        break;
+//                    }
+//                }
 
-    //}
-}
+//            }
+//        }
+
+//    }
+//}
 

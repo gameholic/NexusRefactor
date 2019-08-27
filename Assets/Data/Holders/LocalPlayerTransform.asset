@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c99359c1a4ca04d4a924b07786f77a45, type: 3}
+  m_Name: LocalPlayerTransform
+  m_EditorClassIdentifier: 
+  _Graveyard: {fileID: 11400000, guid: 553de3490dc4f134482f3f24d6a62f35, type: 2}
+  _FieldGrid:
+  - {fileID: 11400000, guid: 329ccb0820b73cc44a46f142a9b00087, type: 2}
+  - {fileID: 11400000, guid: e4aa8a690e9ed0f4f9765176baa40bc4, type: 2}
+  - {fileID: 11400000, guid: 3b1cde673ebea2443bf4b3e1493fbf10, type: 2}
+  - {fileID: 11400000, guid: 4704cddba42b337498f0b7715eab66a8, type: 2}
+  - {fileID: 11400000, guid: cd8b27c6a3b15174babfd44afbd7b424, type: 2}
+  _AttackingLine: {fileID: 11400000, guid: a522e82758872a84eb719f2b16ecf430, type: 2}
+  _DefendingLine: {fileID: 11400000, guid: a17554160b8c028498cfcaa4c0861b17, type: 2}
+  _HandGrid: {fileID: 11400000, guid: b543ee801eb02f749a86cfc121c96e4d, type: 2}

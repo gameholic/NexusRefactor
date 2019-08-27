@@ -54,8 +54,11 @@ namespace GH.GameCard.CardInfo
         public Sprite Art { get { return _Art; } }
         public int UniqueId
         {
-            set { uniqueId = value; }
             get { return uniqueId; }
+        }
+        public int SetUniqueId
+        {
+            set { uniqueId = value; }
         }
 
        

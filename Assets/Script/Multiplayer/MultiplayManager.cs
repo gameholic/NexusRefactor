@@ -126,33 +126,34 @@ namespace GH.Multiplay
                 List<string> cardName = new List<string>();
                 foreach (NetworkPrint p in Players)
                 {
-                    foreach (string id in p.GetStartingCardids())
+                    foreach (string id in p.GetStartingCardids)
                     {
                         Card c = rm.GetCardInstFromDeck(id);
-                        playerId.Add(p.photonId);
-                        
+                        playerId.Add(p.photonId);                        
                         cardInstId.Add(c.Data.UniqueId);
                         cardName.Add(id);
 
                         if (p.IsLocal)
                         {
                             p.ThisPlayer = GC.LocalPlayer;
-                            p.ThisPlayer.InGameData.PhotonId = p.photonId;
+                            p.ThisPlayer.InGameData.SetPhotonId = p.photonId;
+                            GC.LocalPlayer.SetPlayerProfile(p.PlayerProfile);
                             GC.LocalPlayer.PlayerProfile.Name = "Room Manager";
                         }
                         else
                         {
                             p.ThisPlayer = GC.ClientPlayer;
-                            p.ThisPlayer.InGameData.PhotonId = p.photonId;
+                            p.ThisPlayer.InGameData.SetPhotonId = p.photonId;
+                            GC.ClientPlayer.SetPlayerProfile(p.PlayerProfile);
                             GC.ClientPlayer.PlayerProfile.Name = "Room Member_Client";
                         }
                     }
                 }
+                photonView.RPC("RPC_InitGame", PhotonTargets.All, 1);
                 for (int i = 0; i < playerId.Count; i++)
                 {
                     photonView.RPC("RPC_PlayerCreatesCard", PhotonTargets.All, playerId[i], cardInstId[i], cardName[i]);
                 }
-                photonView.RPC("RPC_InitGame", PhotonTargets.All, 1);
             }
 
             else
@@ -163,13 +164,15 @@ namespace GH.Multiplay
                     if (p.IsLocal)
                     {
                         p.ThisPlayer = GC.LocalPlayer;
-                        p.ThisPlayer.InGameData.PhotonId = p.photonId;
+                        p.ThisPlayer.InGameData.SetPhotonId = p.photonId;
+                        GC.LocalPlayer.SetPlayerProfile(p.PlayerProfile);
                         GC.LocalPlayer.PlayerProfile.Name = "Room Member";
                     }
                     else
                     {
                         p.ThisPlayer = GC.ClientPlayer;
-                        p.ThisPlayer.InGameData.PhotonId = p.photonId;
+                        p.ThisPlayer.InGameData.SetPhotonId = p.photonId;
+                        GC.ClientPlayer.SetPlayerProfile(p.PlayerProfile);
                         GC.ClientPlayer.PlayerProfile.Name = "Room Manager_Client";
                     }
                 }
@@ -190,7 +193,7 @@ namespace GH.Multiplay
             {
                 Debug.LogError("CardNameNotFound: " + cardName);
             }
-            c.Data.UniqueId = cardId;
+            c.Data.SetUniqueId = cardId;
             NetworkPrint p = GetPlayer(photonId);
             p.ThisPlayer.CardManager.AddCardInDeck(c);
         }
@@ -241,153 +244,177 @@ namespace GH.Multiplay
         }
         #endregion
 
-        #region Card Checks
+        //#region Card Checks
 
-        /// <summary>
-        /// Use RPC to call proper functions player wants
-        /// Parameters are all clear and should be checked before this statement
-        /// 
-        /// </summary>
-        /// <param name="cardInst"> Card instance id</param>
-        /// <param name="photonId"> Player Photon id</param>
-        /// <param name="operation"> Action that player wants to perform </param>
-        /// <param name="cardArea"> Card area which is 0 when it's not passed to use number of 'field' obj</param>
-        public void PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation, int cardArea = 0)
-        {
-            photonView.RPC("RPC_PlayerTryToUseCard", PhotonTargets.MasterClient, cardInst, photonId, operation, cardArea);
-        }
+        ///// <summary>
+        ///// Use RPC to call proper functions player wants
+        ///// Parameters are all clear and should be checked before this statement
+        ///// 
+        ///// </summary>
+        ///// <param name="cardInst"> Card instance id</param>
+        ///// <param name="photonId"> Player Photon id</param>
+        ///// <param name="operation"> Action that player wants to perform </param>
+        ///// <param name="cardArea"> Card area which is 0 when it's not passed to use number of 'field' obj</param>
+        //public void PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation, int cardArea = 0)
+        //{
+        //    photonView.RPC("RPC_PlayerTryToUseCard", PhotonTargets.MasterClient, cardInst, photonId, operation, cardArea);
+        //}
 
-        [PunRPC]
-        public void RPC_PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation, int cardArea = 0)
-        {
-            bool hasCard = PlayerHasCard(cardInst, photonId);
-            if (hasCard)
-            {
-                photonView.RPC("RPC_PlayerUsesCard", PhotonTargets.All, cardInst, photonId, operation, cardArea);
-            }
-            else
-            {
-                Debug.LogErrorFormat("PlayerDontOwnCard: {0} don't have selected card", GetPlayer(photonId));
-            }
-        }
+        //[PunRPC]
+        //public void RPC_PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation, int cardArea = 0)
+        //{
+        //    bool hasCard = PlayerHasCard(cardInst, photonId);
+        //    if (hasCard)
+        //    {
+        //        photonView.RPC("RPC_PlayerUsesCard", PhotonTargets.All, cardInst, photonId, operation, cardArea);
+        //    }
+        //    else
+        //    {
+        //        Debug.LogErrorFormat("PlayerDontOwnCard: {0} don't have selected card", GetPlayer(photonId));
+        //    }
+        //}
 
-        /// <summary>
-        /// Check if player has the card
-        /// </summary>
-        /// <param name="cardInst"> Card instance id to be checked</param>
-        /// <param name="photonId"> Player's photon id</param>
-        /// <returns></returns>
-        private bool PlayerHasCard(int cardInst, int photonId)
-        {
-            NetworkPrint p = GetPlayer(photonId);
-            Card c = p.ThisPlayer.CardManager.SearchCard(cardInst);
-            return (c != null);
-        }
+        ///// <summary>
+        ///// Check if player has the card
+        ///// </summary>
+        ///// <param name="cardInst"> Card instance id to be checked</param>
+        ///// <param name="photonId"> Player's photon id</param>
+        ///// <returns></returns>
+        //private bool PlayerHasCard(int cardInst, int photonId)
+        //{
+        //    NetworkPrint p = GetPlayer(photonId);
+        //    Card c = p.ThisPlayer.CardManager.SearchCard(cardInst);
+        //    return (c != null);
+        //}
 
-        #endregion
+        //#endregion
 
         #region Card Operations
 
-        public enum CardOperation
-        {
-            dropCreatureCard, useSpellCard, pickCardFromDeck, setCardToAttack, cardToGraveyard
-        }
+        //public enum CardOperation
+        //{
+        //    dropCreatureCard, useSpellCard, pickCardFromDeck, setCardToAttack, cardToGraveyard
+        //}
 
         public void PlayerPicksCardFromDeck(PlayerHolder playerHolder)
         {
             Setting.RegisterLog(playerHolder + " Draws card", playerHolder.playerColor);
             NetworkPrint p = GetPlayer(playerHolder.InGameData.PhotonId);
-
-            Card c =null;
+            for (int i = 0; i < p.PlayerProfile._DeckToPlay.Cards.Length; i++)
+            {
+                p.AddCardToDeck(p.PlayerProfile._DeckToPlay.Cards[i]);
+            }
+            Card c = null;
             if (p.CardDeck.Count != 0)
             {
                 c = p.CardDeck[0];
                 p.CardDeck.RemoveAt(0);
                 Debug.Log("Draw card");
-                PlayerTryToUseCard(c.Data.UniqueId, p.photonId, CardOperation.pickCardFromDeck);
+                photonView.RPC("RPC_PlayerPickCard", PhotonTargets.All, c.Data.UniqueId, p.photonId);
             }
             else
                 Debug.Log("There is no card in deck");
         }
-
-
-        /// <summary>
-        /// Play cards base on parameter 'CardOperation'
-        /// All actions with card is performed in this function.
-        /// </summary>
-        /// <param name="instId"> Card instance id </param>
-        /// <param name="photonId"> Player photon id </param>
-        /// <param name="operation"> Action to perform </param>
-        /// <param name="cardArea"> Area number that is used only at dropCreatureCard. If it's null, it is passed as 0 </param>
-        /// <param name="info"></param>
         [PunRPC]
-        public void RPC_PlayerUsesCard(int instId, int photonId, CardOperation operation, int cardArea, PhotonMessageInfo info)
+        private void RPC_PlayerPickCard(int cardUniqueId, int photonId)
         {
-            NetworkPrint nwPrint = GetPlayer(photonId);
-            PlayerHolder currentPlayer = nwPrint.ThisPlayer;
-            Card card = nwPrint.ThisPlayer.CardManager.SearchCard(instId);
-
-            switch (operation)
+            PlayerHolder currentPlayer = GetPlayer(photonId).ThisPlayer;
+            Card card = currentPlayer.CardManager.SearchCard(cardUniqueId);
+            if (card == null)
             {
-                case CardOperation.dropCreatureCard:        //Problem: Current Logic try to get original transform before it saves it.
-                    //Solution: Save(Or Send) RayCasted Ray.
-                    MoveCardInstance.DropCreatureCard((CreatureCard)card);
-                    currentPlayer.InGameData.ManaManager.UpdateCurrentMana(-(card.Data.ManaCost));
-                    Debug.LogFormat("DropCreatureCardCheck: {0}'s {1} is dropped. it's origin field location is {2}",
-                        currentPlayer.PlayerProfile.UniqueId, 
-                        card.Data.Name,                        
-                        currentPlayer.CardManager.fieldCards.Find(x=>x == card.Data.UniqueId));
-                    break;
-
-                case CardOperation.useSpellCard:
-                    //Logic for spell card
-                    break;
-
-                case CardOperation.pickCardFromDeck:
-                    Debug.Log("AddCard");
-                    GameObject go = Instantiate(MainData.CardPrefab) as GameObject;
-                    CardAppearance visual = go.GetComponent<CardAppearance>();
-                    visual.LoadCard(card, go);
-                    card.Init(go);
-                    card.User = currentPlayer;
-                    MoveCardInstance.SetParentForCard(go.transform, currentPlayer.CardTransform.HandGrid.value);
-                    if (currentPlayer.CardManager.handCards.Count <= 7)
-                        currentPlayer.CardManager.handCards.Add(card.Data.UniqueId);
-                    else
-                        Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
-                    break;
-
-                case CardOperation.setCardToAttack:
-                    ///Below Codes must be changed.
-                    ///Reason 1: SetCardDown don't work as expected because 'OriginFieldLocation' isn't saved in card instance id
-                    ///when we call card instance through instance id.
-                    ///Reason 2: Somehow, eventhough this card isn't on attackingCard list it is recognized as so.
-                    ///This error occurs only to client.
-                    ///Expecting Error : What if there is same card attacking together?
-                    ///If selected is already on attack, remove that card from 'attackingCards' list and place back to original field location
-                    // Deleting same position of line: alt + shif + arrow
-
-                    if ((card is CreatureCard) == false)
-                        return;
-                    //If card isn't on attack, move card to 'BattleLine'obj and add at 'attackingCards' list
-                    if (currentPlayer.CardManager.FindCardIn(CardContainer.Attack, card) !=null)
-                    {
-                        currentPlayer.CardManager.attackingCards.Add(card.Data.UniqueId);
-                        currentPlayer.CardTransform.SetCardOnBattleLine((CreatureCard)card);
-                        Debug.LogFormat("RPC_PlayerUsesCard: {0} selected {1} to attack. {0} has {2} attacking cards"
-                            , currentPlayer.PlayerProfile.UniqueId, card.Data.Name, currentPlayer.CardManager.attackingCards.Count);
-                    }
-                    break;
-
-                //case CardOperation.cardToGraveyard:
-                //    card.Instance.CardInstanceToGrave();
-
-                //    break;
-
-                default:
-                    break;
+                Debug.LogError("CardISNULL");
+                return;
             }
+            Debug.Log("AddCard");
+            GameObject go = Instantiate(MainData.CardPrefab) as GameObject;
+            CardAppearance visual = go.GetComponent<CardAppearance>();
+            visual.LoadCard(card, go);
+            card.Init(go);
+            card.User = currentPlayer;
+            MoveCardInstance.SetParentForCard(go.transform, currentPlayer.CardTransform.HandGrid.value);
+            if (currentPlayer.CardManager.handCards.Count <= 7)
+                currentPlayer.CardManager.handCards.Add(card.Data.UniqueId);
+            else
+                Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
         }
+
+        ///// <summary>
+        ///// Play cards base on parameter 'CardOperation'
+        ///// All actions with card is performed in this function.
+        ///// </summary>
+        ///// <param name="instId"> Card instance id </param>
+        ///// <param name="photonId"> Player photon id </param>
+        ///// <param name="operation"> Action to perform </param>
+        ///// <param name="cardArea"> Area number that is used only at dropCreatureCard. If it's null, it is passed as 0 </param>
+        ///// <param name="info"></param>
+        //[PunRPC]
+        //public void RPC_PlayerUsesCard(int instId, int photonId, CardOperation operation, int cardArea, PhotonMessageInfo info)
+        //{
+        //    NetworkPrint nwPrint = GetPlayer(photonId);
+        //    PlayerHolder currentPlayer = nwPrint.ThisPlayer;
+        //    Card card = nwPrint.ThisPlayer.CardManager.SearchCard(instId);
+
+        //    switch (operation)
+        //    {
+        //        case CardOperation.dropCreatureCard:        //Problem: Current Logic try to get original transform before it saves it.
+        //            //Solution: Save(Or Send) RayCasted Ray.
+        //            MoveCardInstance.DropCreatureCard((CreatureCard)card);
+        //            currentPlayer.InGameData.ManaManager.UpdateCurrentMana(-(card.Data.ManaCost));
+        //            Debug.LogFormat("DropCreatureCardCheck: {0}'s {1} is dropped. it's origin field location is {2}",
+        //                currentPlayer.PlayerProfile.UniqueId, 
+        //                card.Data.Name,                        
+        //                currentPlayer.CardManager.fieldCards.Find(x=>x == card.Data.UniqueId));
+        //            break;
+
+        //        case CardOperation.useSpellCard:
+        //            //Logic for spell card
+        //            break;
+
+        //        case CardOperation.pickCardFromDeck:
+        //            Debug.Log("AddCard");
+        //            GameObject go = Instantiate(MainData.CardPrefab) as GameObject;
+        //            CardAppearance visual = go.GetComponent<CardAppearance>();
+        //            visual.LoadCard(card, go);
+        //            card.Init(go);
+        //            card.User = currentPlayer;
+        //            MoveCardInstance.SetParentForCard(go.transform, currentPlayer.CardTransform.HandGrid.value);
+        //            if (currentPlayer.CardManager.handCards.Count <= 7)
+        //                currentPlayer.CardManager.handCards.Add(card.Data.UniqueId);
+        //            else
+        //                Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
+        //            break;
+
+        //        case CardOperation.setCardToAttack:
+        //            ///Below Codes must be changed.
+        //            ///Reason 1: SetCardDown don't work as expected because 'OriginFieldLocation' isn't saved in card instance id
+        //            ///when we call card instance through instance id.
+        //            ///Reason 2: Somehow, eventhough this card isn't on attackingCard list it is recognized as so.
+        //            ///This error occurs only to client.
+        //            ///Expecting Error : What if there is same card attacking together?
+        //            ///If selected is already on attack, remove that card from 'attackingCards' list and place back to original field location
+        //            // Deleting same position of line: alt + shif + arrow
+
+        //            if ((card is CreatureCard) == false)
+        //                return;
+        //            //If card isn't on attack, move card to 'BattleLine'obj and add at 'attackingCards' list
+        //            if (currentPlayer.CardManager.FindCardIn(CardContainer.Attack, card) !=null)
+        //            {
+        //                currentPlayer.CardManager.attackingCards.Add(card.Data.UniqueId);
+        //                currentPlayer.CardTransform.SetCardOnBattleLine((CreatureCard)card);
+        //                Debug.LogFormat("RPC_PlayerUsesCard: {0} selected {1} to attack. {0} has {2} attacking cards"
+        //                    , currentPlayer.PlayerProfile.UniqueId, card.Data.Name, currentPlayer.CardManager.attackingCards.Count);
+        //            }
+        //            break;
+
+        //        //case CardOperation.cardToGraveyard:
+        //        //    card.Instance.CardInstanceToGrave();
+
+        //        //    break;
+
+        //        default:
+        //            break;
+        //    }
+        //}
 
         #endregion
 
@@ -598,52 +625,52 @@ namespace GH.Multiplay
 
         #endregion
 
-        #region Blocking
+       // #region Blocking
 
-        public void PlayerBlocksTargetCard(int blockingInstId, int photonId_blocker, int attackInstId, int photonId_attacker)
-        {
-            photonView.RPC("RPC_PlayerBlocksTargetCard_Master", PhotonTargets.All, 
-                blockingInstId, photonId_blocker, attackInstId, photonId_attacker);
-        }
+        //public void PlayerBlocksTargetCard(int blockingInstId, int photonId_blocker, int attackInstId, int photonId_attacker)
+        //{
+        //    photonView.RPC("RPC_PlayerBlocksTargetCard_Master", PhotonTargets.All, 
+        //        blockingInstId, photonId_blocker, attackInstId, photonId_attacker);
+        //}
 
-        [PunRPC]
-        public void RPC_PlayerBlocksTargetCard_Master(int defendCardInstId, int defenderPhotonId, int attackCardInstId, int attackerPhotonId)
-        {
-            NetworkPrint print_Defend = GetPlayer(defenderPhotonId);
-            Card card_Defend = print_Defend.ThisPlayer.CardManager.SearchCard(defendCardInstId);
+        //[PunRPC]
+        //public void RPC_PlayerBlocksTargetCard_Master(int defendCardInstId, int defenderPhotonId, int attackCardInstId, int attackerPhotonId)
+        //{
+        //    NetworkPrint print_Defend = GetPlayer(defenderPhotonId);
+        //    Card card_Defend = print_Defend.ThisPlayer.CardManager.SearchCard(defendCardInstId);
 
-            NetworkPrint print_Invade = GetPlayer(attackerPhotonId);
-            Card card_Invade = print_Invade.ThisPlayer.CardManager.SearchCard(attackCardInstId);
+        //    NetworkPrint print_Invade = GetPlayer(attackerPhotonId);
+        //    Card card_Invade = print_Invade.ThisPlayer.CardManager.SearchCard(attackCardInstId);
             
-            int count = 0;
+        //    int count = 0;
 
-            //Make new BlockInstance wth 'card_Invade' and 'card_Defend'
-            //If there is BlockInstance with 'card_Invade', it will automatically add 'card_Defend' in existing BlockInstance with increasing 'count'
-            //Setting.gameController.BlockManager.AddBlockInstance(card_Invade,card_Defend ,ref count);
+        //    //Make new BlockInstance wth 'card_Invade' and 'card_Defend'
+        //    //If there is BlockInstance with 'card_Invade', it will automatically add 'card_Defend' in existing BlockInstance with increasing 'count'
+        //    //Setting.gameController.BlockManager.AddBlockInstance(card_Invade,card_Defend ,ref count);
 
-            Debug.Log("PlayerBlocksTargetCard_Master: Blocking cards successfully added");
+        //    Debug.Log("PlayerBlocksTargetCard_Master: Blocking cards successfully added");
 
-            photonView.RPC("RPC_PlayerBlocksTargetCard_Client", PhotonTargets.All,
-                defendCardInstId, defenderPhotonId, attackCardInstId, attackerPhotonId, count);
+        //    photonView.RPC("RPC_PlayerBlocksTargetCard_Client", PhotonTargets.All,
+        //        defendCardInstId, defenderPhotonId, attackCardInstId, attackerPhotonId, count);
 
-            //Sending CardInstance and NetworkPrint through RPC can't be done
-        }
+        //    //Sending CardInstance and NetworkPrint through RPC can't be done
+        //}
 
 
-        [PunRPC]
-        public void RPC_PlayerBlocksTargetCard_Client(int defendCardInstId, int defenderPhotonId, int attackCardInstId, int attackerPhotonId, int count)
-        {
-            NetworkPrint print_Defend = GetPlayer(defenderPhotonId);
-            PlayerHolder def = print_Defend.ThisPlayer;
-            Card card_Defend = def.CardManager.SearchCard(defendCardInstId); ;
+        //[PunRPC]
+        //public void RPC_PlayerBlocksTargetCard_Client(int defendCardInstId, int defenderPhotonId, int attackCardInstId, int attackerPhotonId, int count)
+        //{
+        //    NetworkPrint print_Defend = GetPlayer(defenderPhotonId);
+        //    PlayerHolder def = print_Defend.ThisPlayer;
+        //    Card card_Defend = def.CardManager.SearchCard(defendCardInstId); ;
 
-            NetworkPrint print_Invade = GetPlayer(attackerPhotonId);
-            PlayerHolder atk = print_Invade.ThisPlayer;
-            Card card_Invade = atk.CardManager.SearchCard(attackCardInstId);
+        //    NetworkPrint print_Invade = GetPlayer(attackerPhotonId);
+        //    PlayerHolder atk = print_Invade.ThisPlayer;
+        //    Card card_Invade = atk.CardManager.SearchCard(attackCardInstId);
 
-            //MoveCardInstance.SetCardsForBlock(card_Defend, card_Invade, count);
-        }
-        #endregion
+        //    //MoveCardInstance.SetCardsForBlock(card_Defend, card_Invade, count);
+        //}
+       // #endregion
                
         #region Multiple Cards Operations        
         #region FlatFooted Cards

@@ -87,7 +87,8 @@ namespace GH.AssetEditor
                 newAsset.playerProfile = playerProfile;
                 AssetDatabase.CreateAsset(newAsset,"Assets/Data/Resources/PlayerProfile/PlayerProfile.asset");
                 AssetDatabase.SaveAssets();
-             
+                AssetDatabase.Refresh();
+
             }   
 
         }

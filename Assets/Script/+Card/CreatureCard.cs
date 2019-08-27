@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GH.GameCard
 {
-    [CreateAssetMenu(menuName = "+Cards/CreatureCard")]
+    [CreateAssetMenu(menuName = "Card/CreatureCard")]
     public class CreatureCard : Card
     {
         #region Serialized

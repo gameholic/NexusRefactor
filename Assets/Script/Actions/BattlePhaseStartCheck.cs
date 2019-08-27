@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using UnityEngine;
-using GH.GameStates;
+﻿//using System.Collections;
+//using UnityEngine;
+//using GH.GameStates;
 
-namespace GH
-{
+//namespace GH
+//{
 //    [CreateAssetMenu(menuName = "Actions/Condition/BattleAvailable")]
 //    public class BattlePhaseStartCheck : Condition
 //    {
@@ -27,4 +27,4 @@ namespace GH
 //        }
 //    }
 
-}
+//}

@@ -7,10 +7,39 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f98fce029de48e44be62fa01b852147, type: 3}
   m_Name: LocalPlayer
   m_EditorClassIdentifier: 
+  _ProfileInfo:
+    uniqueId: GameHolic
+    name: Room Manager
+    playerAvatar: {fileID: 21300000, guid: e8535282c36abfa44ba2d47dc4073771, type: 3}
+    deckList:
+    - Name: Deck1
+      Cards:
+      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+    - Name: Deck2
+      Cards: []
+    - Name: Deck3
+      Cards: []
+    - Name: Deck4
+      Cards: []
+    - Name: Deck5
+      Cards: []
+    _DeckToPlay:
+      Name: Deck1
+      Cards:
+      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+  _InGameData: {fileID: 11400000, guid: cafcfb52f55eff04989214612413b70f, type: 2}
+  _CardTransform: {fileID: 11400000, guid: d8dc97fde5dcf9545936d55bd93935fd, type: 2}
+  _CardManager: {fileID: 11400000, guid: fcd466f4cf7be29449ff8d58deb3727f, type: 2}
   isHumanPlayer: 0
   playerColor: {r: 0, g: 0, b: 0, a: 0}

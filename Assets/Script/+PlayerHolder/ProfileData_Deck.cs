@@ -3,6 +3,7 @@ using UnityEditor;
 
 using System;
 using System.Collections.Generic;
+using GH.GameCard;
 
 
 namespace GH.Player.ProfileData
@@ -11,7 +12,7 @@ namespace GH.Player.ProfileData
     public class ProfileData_Deck
     {
         public string Name;
-        public string[] Cards = new string[30];
+        public Card[] Cards = new Card[30];
     }
 
 }

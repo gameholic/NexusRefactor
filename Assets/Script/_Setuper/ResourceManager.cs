@@ -39,21 +39,22 @@ namespace GH
                 Debug.LogError("Card not found: "+id);
                 return null;
             }
-
             Card newInst = Instantiate(originCard);
-            newInst.name = originCard.name;
-
-            //This is where Card inst id is intialized.
-            newInst.Data.UniqueId = CardIndex;
-
             CardIndex++;
 
             return newInst;
         }
         Card GetCard(string id)
         {
-            Card result = null;
-            cardDict.TryGetValue(id, out result);
+            Card result;
+
+            if (id != null)
+                cardDict.TryGetValue(id, out result);
+            else
+            {
+                Debug.Log(id);
+                result = null;
+            }
             return result;
         }
     }

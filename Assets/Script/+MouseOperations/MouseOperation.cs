@@ -12,6 +12,10 @@ namespace GH.MouseLogics
     {
         private bool dragging = false;
         private PhysicalAttribute selectedCard = null;
+        private void Awake()
+        {
+            DontDestroyOnLoad(this);
+        }
         private void Update()
         {   
             HandleMouse();
@@ -28,7 +32,6 @@ namespace GH.MouseLogics
                     cardLogic.ReturnToOldPos(selectedCard.OriginCard);
                     Debug.Log("Return card");
                 }
-                Debug.Log("CardDetecting");
                 HandleCardDetection();
             }
             if(isMouseDown)             //Mouse is Pressed
@@ -46,7 +49,7 @@ namespace GH.MouseLogics
         private void HandleMouseClick(PhysicalAttribute inst)
         {
             Card c = inst.OriginCard;
-            CardManager cardManager = c.User.CardManager;
+            PlayerCardManager cardManager = c.User.CardManager;
             Phase currentPhase = Setting.gameController.CurrentPhase;
 
             int uniqueId = c.Data.UniqueId;
@@ -109,13 +112,13 @@ namespace GH.MouseLogics
         /// </summary>
         private void CardClick(HandleLogics logic, CreatureCard c)
         {
+            CardLogic cardLogic = new CardLogic();
             bool isMouseDown = Input.GetMouseButtonDown(0);
             if (!isMouseDown)
             {
                 if (c != null)   
                 {
-
-
+                    cardLogic.SetToAttack(c);
                     //TODO: Check current state / phase and perform action
                 }
             }
@@ -126,6 +129,7 @@ namespace GH.MouseLogics
 
             if (detectedCard != null)
             {
+                Debug.Log("CardDetecting");
                 if (selectedCard != null)
                 {
                     selectedCard.DeHighlight();

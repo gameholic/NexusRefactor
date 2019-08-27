@@ -11,18 +11,19 @@ namespace GH.Player
         Hand,Field,Attack,Grave,All
     }
 
-    public class CardManager : PlayerAssists
+    [CreateAssetMenu(menuName = "PlayerData/PlayerCardManager")]
+    public class PlayerCardManager : PlayerAssists
     {
-
-        [System.NonSerialized]
-        public List<int> handCards = new List<int>();
-        [System.NonSerialized]
-        public List<int> fieldCards = new List<int>();
-        [System.NonSerialized]
-        public List<int> attackingCards = new List<int>();
-        [System.NonSerialized]
-        public List<int> deadCards = new List<int>();
-        private Dictionary<int, Card> allCards = new Dictionary<int, Card>();
+        //[System.NonSerialized]
+        public List<int> handCards;
+        //[System.NonSerialized]
+        public List<int> fieldCards;
+        //[System.NonSerialized]
+        public List<int> attackingCards;
+        //[System.NonSerialized]
+        public List<int> deadCards;
+        //[System.NonSerialized]
+        public Dictionary<int, Card> allCards;
 
 
 
@@ -33,6 +34,7 @@ namespace GH.Player
         public override void Init(PlayerHolder p)
         {
             player = p;
+            InitAllCards(p.PlayerProfile._DeckToPlay.Cards);
         }
         /// <summary>
         /// this 
@@ -45,10 +47,11 @@ namespace GH.Player
         }
         public void InitAllCards(Card[] deck)
         {
+            allCards = new Dictionary<int, Card>();
             for (int i = 0; i < deck.Length; i++)
             {
                 allCards.Add(i, deck[i]);
-                deck[i].Data.UniqueId = i;
+                deck[i].Data.SetUniqueId = i;
             }
         }
         public void DropCardOnField(CreatureCard c)
@@ -132,26 +135,21 @@ namespace GH.Player
 
             return v;
         }
+
+        /// <summary>
+        /// Search Card From AllCards List of Player
+        /// If Return value is null, It means there is no card in deck
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Card SearchCard(int id)
         {
             Card v = null;
             allCards.TryGetValue(id, out v);
+            if (v == null)
+                Debug.LogError("Can'tFindTheCard");
+      
             return v;
-        }
-
-        /// <summary>
-        /// Check Card From All Card
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public bool CheckCard(int id)
-        {
-            bool ret = false;
-            Card v = null;
-            allCards.TryGetValue(id, out v);
-            if (v != null)
-                ret = true;
-            return ret;
         }
 
     }

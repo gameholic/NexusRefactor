@@ -73,17 +73,13 @@ namespace GH.GameTurn
         {
             if (_TurnStartAction == null)
                 return;
-
             for (int i = 0; i < _TurnStartAction.Length; i++)
             {
-                //Debug.LogFormat("Turn_TurnStartAction_{0} Run", _TurnStartAction[i].name);
+                Debug.LogFormat("Turn_TurnStartAction_{0} Run", _TurnStartAction[i].name);
                 _TurnStartAction[i].Execute(ThisTurnPlayer);
             }
-
-
             if (ThisTurnPlayer.InGameData.ManaManager.MaxMana < 10)
                 ThisTurnPlayer.InGameData.ManaManager.UpdateMaxMana(1);
-
             ThisTurnPlayer.InGameData.ManaManager.InitMana();
             MultiplayManager.singleton.SendPhase(ThisTurnPlayer.name, _Phases[PhaseIndex].PhaseName);
         }
