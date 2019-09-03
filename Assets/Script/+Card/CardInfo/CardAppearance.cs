@@ -36,7 +36,6 @@ namespace GH.GameCard.CardInfo
             for (int i = 0; i < property.Length; i++)
             {
                 CardAppearPropoerty p = property[i];
-
                 if (p == null)
                     continue;
                 ApplyText(p, data);

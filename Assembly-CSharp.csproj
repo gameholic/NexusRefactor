@@ -252,6 +252,7 @@
     <Compile Include="Assets\Script\_Setuper\ManaManager.cs" />
     <Compile Include="Assets\Script\_Setuper\ResourceManager.cs" />
     <Compile Include="Assets\Script\_Setuper\TestManager.cs" />
+    <Compile Include="Assets\Script\_Setuper\TestMouseOperation.cs" />
     <Compile Include="Assets\Script\+Card\Card.cs" />
     <Compile Include="Assets\Script\+Card\CardAbility\CreatureAbility.cs" />
     <Compile Include="Assets\Script\+Card\CardDeck\HandDeck\Card_handOrder.cs" />
@@ -266,6 +267,7 @@
     <Compile Include="Assets\Script\+Card\CardInfo\PhysicalAttribute.cs" />
     <Compile Include="Assets\Script\+Card\CreatureCard.cs" />
     <Compile Include="Assets\Script\+Card\ErrorHandler\ErrorCheck_Creature.cs" />
+    <Compile Include="Assets\Script\+Card\ErrorHandler\ErrorCheck_Spell.cs" />
     <Compile Include="Assets\Script\+Card\Setting\CardLogic.cs" />
     <Compile Include="Assets\Script\+Card\Setting\MoveCardInstance.cs" />
     <Compile Include="Assets\Script\+Card\SpellCard.cs" />

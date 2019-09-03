@@ -40,7 +40,9 @@ namespace GH.Player
         public string GetCardIds(int i)
         {
             if (_DeckToPlay == null)
-                Debug.LogError("DeckToPlayIsNull");
+                Debug.LogErrorFormat("{0}: DeckToPlayIsNull", name);
+            if (_DeckToPlay.Cards[i] == null)
+                Debug.LogErrorFormat("{0}: CardInDeckIsNull",name);
             return _DeckToPlay.Cards[i].Data.Name;
         }
         

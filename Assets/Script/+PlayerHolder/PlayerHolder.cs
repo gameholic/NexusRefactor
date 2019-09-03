@@ -19,12 +19,11 @@ namespace GH.Player
         private PlayerCardTransform _CardTransform;
         [SerializeField]                //Needs To Be Deleted
         private PlayerCardManager _CardManager;
-        public bool isHumanPlayer;
 
 
         public void Init()
         {
-            Debug.Log("TEST");
+            Debug.Log("InitializePlayerHolder");
             _InGameData.Init(this);
             _CardManager.Init(this);
             //SetPlayerProfile(Multiplay.MultiplayManager.singleton.GetPlayer(_InGameData.PhotonId).PlayerProfile);

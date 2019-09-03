@@ -2,6 +2,8 @@
 
 using GH.GameCard;
 using GH.GameCard.CardInfo;
+using GH.GameTurn;
+using GH.Player;
 
 namespace GH.Nexus.Manager
 {
@@ -11,18 +13,28 @@ namespace GH.Nexus.Manager
 
         [SerializeField]
         private GameObject _CardPrefab;
-
+        [SerializeField]
+        private GameObject _Hand;
+        public Phase controlPhase;
         int count = 0;
         private void Start()
         {
-
             for( count = 0; count < targetCard.Length; count++)
             {
                 targetCard[count] = Instantiate(targetCard[count]);
+                targetCard[count].Data.TestSetUniqueId = count;
                 LoadCard(targetCard[count]);
             }
+            InitForTest();
         }
-        
+        private void InitForTest()
+        {
+            PlayerHolder currentPlayer = Setting.gameController.LocalPlayer;
+            Setting.gameController.CurrentPhase = controlPhase;
+            currentPlayer.InGameData.Init(Setting.gameController.LocalPlayer);
+            currentPlayer.InGameData.ManaManager.MaxMana = 10;
+            currentPlayer.InGameData.ManaManager.CurrentMana = 10;
+        }
         public void LoadCard(Card c)         //Needed when loading card
         {
             GameObject go = Instantiate(_CardPrefab) as GameObject;
@@ -30,8 +42,11 @@ namespace GH.Nexus.Manager
             if(v!=null)
             {
                 v.LoadCard(c, go);
-                go.transform.SetParent(this.gameObject.transform);
-                go.transform.localPosition = new Vector3(-20f + count * 10, 0, 0);
+                c.Init(go);
+                c.User = Setting.gameController.LocalPlayer;
+                c.User.CardManager.handCards.Add(c.Data.UniqueId);
+                go.transform.SetParent(_Hand.transform);
+                go.transform.localPosition = Vector3.zero;
                 go.transform.localScale = Vector3.one;
 
 

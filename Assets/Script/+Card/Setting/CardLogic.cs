@@ -3,55 +3,61 @@ using GH.GameElements;
 using GH.Player;
 using UnityEngine;
 using GH.Multiplay;
+using GH.GameCard.ErrorCheck;
+
 namespace GH.GameCard.CardLogics
 {
     public class CardLogic               //Check errors and send connects to multiplay manager
     {
         private GameController gc = Setting.gameController;
-        private ErrorCheck.ErrorCheck_Creature error;
-        private CardPlayManager cardPlayManager;
+        private ErrorCheck_Creature error = new ErrorCheck_Creature();
+        private CardPlayManager cardPlayManager = CardPlayManager.singleton;
 
         /// <summary>
         /// Block attacking card using selected card(def)
         /// </summary>
         /// <param name="def"></param>
-        public void BlockCard(CreatureCard def)
+        public bool BlockCard(CreatureCard def)
         {
-            CardTracking(def);
+            Debug.LogFormat("Block Card With {0}",def);
+            bool ret = true;
             CreatureCard atkCard = null;
-            PhysicalAttribute inst = null;
-            if (!def.UseCard() || def  == null)
-                return;
-            inst = Setting.RayCastCard(def.PhysicalCondition);    
-            
-            if(inst!=null)
-            {
-                atkCard = (CreatureCard)inst.OriginCard;
-                if (atkCard.Data.Name == def.Data.Name)
-                    Debug.LogError("defending == attacking");
-                else if (!error.IsAttacking(atkCard))
-                    return;
-                //MultiplayManager.singleton.PlayerBlocksTargetCard();
-                Debug.LogFormat("AttackingCard: {0}, DefendingCard: {1}", atkCard.Data.Name, def.Data.Name);
+            PhysicalAttribute attackInst = null;
 
-                cardPlayManager.CardPlayBlock(def, atkCard);
-            }    
-        }        
-        public void DropCard(CreatureCard targetCard)
+
+
+            if (!def.UseCard())
+                ret = false;
+            attackInst = Setting.RayCastCard(def.PhysicalCondition);
+            if (attackInst!=null)
+            {
+                atkCard = (CreatureCard)attackInst.OriginCard;
+                if (!error.CheckAttackingCard(def, atkCard))
+                    ret = false;
+                Debug.LogFormat("AttackingCard: {0}, DefendingCard: {1}", atkCard.Data.Name, def.Data.Name);
+            }
+            return ret;
+        }
+        private CreatureCard tmp = new CreatureCard();
+        private CreatureCard SaveAttackingCard
         {
-            Area a = Setting.RayCastArea();
+            set { tmp = value; }
+        }
+        public CreatureCard GetAttackingCard { get { return tmp; } }
+        public bool DropCard(CreatureCard targetCard)
+        {
             PlayerHolder p = gc.CurrentPlayer;
 
-            CardTracking(targetCard);
+            if (!targetCard.CanDropCard())
+            {
+                Debug.LogError("TargetCan'tDropCard");
+                return false;
 
-            if (a == null)
-                return;
-            if (!error.CheckCanDrop(targetCard,a))
-                return;
-
-            cardPlayManager.CardPlayDrop(targetCard,a);
-
+            }
+            Debug.LogWarning("Released");
+            return true;
         }
+
         public void UseSpell()
         {
 
@@ -62,10 +68,12 @@ namespace GH.GameCard.CardLogics
                 return;
             cardPlayManager.CardPlayAttack(attackCard);
         }
-        private void CardTracking(Card currentCard)
+        public void CardTracking(Card currentCard)
         {
-            currentCard.PhysicalCondition.transform.position 
-                = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
+            //Debug.LogFormat("currentCard : {0} / GameObjecT:{1} ", currentCard,  currentCard.PhysicalCondition.gameObject);
+
+            currentCard.PhysicalCondition.transform.position
+                = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 50));
             currentCard.PhysicalCondition.transform.SetAsLastSibling();
         }
         public void ReturnToOldPos(Card c)

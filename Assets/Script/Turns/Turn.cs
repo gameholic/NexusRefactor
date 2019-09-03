@@ -71,8 +71,13 @@ namespace GH.GameTurn
 
         public void TurnStartActions()
         {
+
+            Debug.Log("TurnStartActionOn");
             if (_TurnStartAction == null)
+            {
+                Debug.LogError("TurnStartAction Is Null");
                 return;
+            }
             for (int i = 0; i < _TurnStartAction.Length; i++)
             {
                 Debug.LogFormat("Turn_TurnStartAction_{0} Run", _TurnStartAction[i].name);
@@ -89,12 +94,17 @@ namespace GH.GameTurn
             //Return value. Only gets true when turn runs all phases.
             bool result = false;
             _CurrentPhase.value = _Phases[PhaseIndex];
+            Debug.LogFormat("CurrentPhase IS {0}", CurrentPhase.value.ToString());
             //At the first phase, which is beginning of the turn runs TurnStartActions
             if (PhaseIndex == 0 && TurnBegin == true)
             {
-                //Debug.Log("Turn: Execute Turn Start Action");
+                Debug.Log("Turn: Execute Turn Start Action");
                 TurnStartActions();
                 TurnBegin = false;
+            }
+            else if (TurnBegin  ==true)
+            {
+                Debug.Log("Phase Index Error. Current Index is " + PhaseIndex);
             }
 
             if(phaseStart)
@@ -105,6 +115,7 @@ namespace GH.GameTurn
             }
             //Run Current Phase until 'IsComplete' is true
             bool IsComplete = _Phases[PhaseIndex].IsComplete();
+            
             if (IsComplete)
             {
                 _Phases[PhaseIndex].OnEndPhase();

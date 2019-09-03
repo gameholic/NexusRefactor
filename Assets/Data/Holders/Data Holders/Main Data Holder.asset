@@ -16,3 +16,4 @@ MonoBehaviour:
     type: 3}
   elementAttack: {fileID: 11400000, guid: 3698cf40006337b4fb178495d0394b7b, type: 2}
   elementHealth: {fileID: 11400000, guid: 400b378f669fea94899602d6f6d4a395, type: 2}
+  clientProfile: {fileID: 11400000, guid: 7622a5dd95eef2144adca0986e0d3da4, type: 2}

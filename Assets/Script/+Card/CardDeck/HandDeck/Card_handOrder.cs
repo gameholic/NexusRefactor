@@ -27,6 +27,9 @@ namespace GH.GameElements
         private void Awake()
         {
             isBottom = this.gameObject.GetComponentInParent<PositionHolder>().IsAtBottom;
+
+
+
         }
         private void EvenLogic()
         {

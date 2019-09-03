@@ -12,9 +12,11 @@ namespace GH.Multiplay
     public class CardPlayManager : Photon.MonoBehaviour
     {
 
+        public static CardPlayManager singleton;
         private static MultiplayManager multiplayManager = MultiplayManager.singleton;
         private void Awake()
         {
+            singleton = this;
             DontDestroyOnLoad(this.gameObject);
         }
 
@@ -106,15 +108,16 @@ namespace GH.Multiplay
         /// </summary>
         #region CreatureMoveLogics
 
-        private Dictionary<int, Area> tmp;
+        private Dictionary<int, Area> tmp = new Dictionary<int, Area>();
         public void CardPlayDrop(CreatureCard c,Area a)
         {
+            Debug.Log("CardPlayDrop");
             tmp.Add(1,a);
             photonView.RPC("RPC_DropCard", PhotonTargets.All,
-                   c.Data.UniqueId, 1);
+                    c.Data.UniqueId, 1);
         }
         [PunRPC]
-        private void RPC_DropCard(int cardId, int areaID)
+        public void RPC_DropCard(int cardId, int areaID)
         {
             CreatureCard c = GetCard(cardId);
             Area a = null;
@@ -122,6 +125,7 @@ namespace GH.Multiplay
             c.PhysicalCondition.SetOriginFieldLocation(a.transform);
             MoveCardInstance.DropCreatureCard(c);
             c.User.InGameData.ManaManager.UpdateCurrentMana(-(c.Data.ManaCost));
+            Debug.Log("CardDroped");
 
         }
 
@@ -156,7 +160,11 @@ namespace GH.Multiplay
 
             int defendUser = blockingCard.User.PlayerProfile.PhotonId;
             int attackUser = attackingCard.User.PlayerProfile.PhotonId;
-    
+
+            photonView.RPC("RPC_BlockMaster", PhotonTargets.All,
+                defendInstId, defendUser, attackInstId, attackUser);
+
+
         }
 
         [PunRPC]

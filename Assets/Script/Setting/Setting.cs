@@ -29,18 +29,23 @@ namespace GH
             for (int i = 0; i < hits.Length; i++)
             {
                 detectedCard = hits[i].transform.gameObject.GetComponentInParent<PhysicalAttribute>();
-                if(currentSelecting!=null)
+                if (currentSelecting != null)
                 {
-                    if(detectedCard == currentSelecting)
+                    if (detectedCard == currentSelecting)
                     {
                         detectedCard = null;
                     }
                 }
                 //If dectected card isn't current card
-                if (detectedCard != null)
+                else
                 {
-                   return detectedCard;                    //If there is card instance in 'currentCard', break
-                }
+                    if (detectedCard != null)
+                    {
+                        //Debug.LogFormat("BlockCard: AttackingCard Found, {0}", detectedCard.OriginCard.Data.Name);
+                        return detectedCard;                    //If there is card instance in 'currentCard', break
+                    }
+
+                } 
             }
             return detectedCard;
         }
@@ -52,8 +57,9 @@ namespace GH
             {
                 a = hits[i].transform.gameObject.GetComponentInParent<GameElements.Area>();
                 if (a != null)
-                    if(a.IsPlaced)
-                        return a;
+                {
+                    return a;
+                }
             }
             return a;
 

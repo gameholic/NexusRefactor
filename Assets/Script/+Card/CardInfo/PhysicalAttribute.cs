@@ -28,11 +28,13 @@ namespace GH.GameCard.CardInfo
 
         public void Highlight()
         {
-            transform.localScale = new Vector3(1.5f, 1.7f, 0.01f);
+            Debug.Log("Highlighting");
+            transform.localScale = new Vector3(1.5f, 1.5f, 0.01f);
+
         }
         public void DeHighlight()
         {
-            transform.localScale = Vector3.one;
+            transform.localScale = new Vector3(1.2f,1.2f,0.1f);
         }
         public void SetOriginFieldLocation(Transform t)
         {

@@ -187,6 +187,7 @@ namespace GH
             OnTurnChanged.Raise();
             SetUpMultiplay();
             isInit = true;
+            Debug.Log("---Initialising Done---");
         }
         private void SetUpMultiplay()
         {
@@ -219,7 +220,7 @@ namespace GH
             }
         }
         private void Update()
-        {          
+        { 
             if (!isInit)
             {
                 Debug.LogError("IsInitIsFalse");
@@ -231,6 +232,7 @@ namespace GH
 
             if (startTurn)
             {
+                Debug.Log("StartTurn");
                 GetTurns(turnIndex).TurnBegin = startTurn;
                 startTurn = false;
             }     
@@ -245,6 +247,7 @@ namespace GH
             {
                 if (isComplete)
                 {
+                    Debug.LogFormat("{0} Ends Turn", CurrentPlayer);
                     MultiplayManager.singleton.PlayerEndsTurn(CurrentPlayer.InGameData.PhotonId);
                 }
             }            
@@ -291,13 +294,13 @@ namespace GH
         }
         private void EndPhase()
         {
-            if (CurrentPlayer.isHumanPlayer && CurrentPlayer == localPlayer)
+            if (CurrentPlayer == localPlayer)
             {
                 GetTurns(turnIndex).EndCurrentPhase();
             }
             else
             {
-                Debug.LogFormat("EndPhaseException: Current Player_ {0}", CurrentPlayer);
+                Debug.LogErrorFormat("EndPhaseException: Current Player_ {0}", CurrentPlayer);
             }
         }
     }

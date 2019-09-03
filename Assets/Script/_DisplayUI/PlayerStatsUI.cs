@@ -23,14 +23,14 @@ namespace GH
         }
         public void UpdateUserInfo()
         {
-            userID.text = player.PlayerProfile.UniqueId;
-            avatarObj.GetComponent<SpriteRenderer>().sprite = player.PlayerProfile.PlayerAvatar;
+            userID.text = player.PlayerProfile.UniqueId;            
+            avatarObj.GetComponent<SpriteRenderer>().sprite = player.PlayerProfile.PlayerAvatar;   //  This needs to be deleted.
 
         }
         public void UpdateHealthUI()
         {
             health.text = player.InGameData.Health.ToString();
-        }        
+        }                   
         public void UpdateAll()
         {
             UpdateUserInfo();

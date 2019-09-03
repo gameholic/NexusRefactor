@@ -40,8 +40,8 @@ namespace GH
             ConvertPlayerProfileToAsset a = Resources.Load("PlayerProfile/PlayerProfile") as ConvertPlayerProfileToAsset;
             if (a != null)
             {
-                Debug.Log("ProfileAssetSaved");
-                a.playerProfile._DeckToPlay = p._DeckToPlay;
+                a.playerProfile= p;
+                Debug.Log("ProfileAssetUpdated");
             }
             else
                 Debug.LogError("ProfileAssetFailedSaving");

@@ -1,6 +1,7 @@
 ﻿using GH.GameCard.CardAbility;
 using GH.GameCard.CardInfo;
 using GH.GameCard.ErrorCheck;
+using GH.GameElements;
 using GH.GameTurn;
 using UnityEngine;
 
@@ -32,13 +33,19 @@ namespace GH.GameCard
             PhysicalCondition.OriginCard = this;
 
         }
+        /// <summary>
+        /// Check Conditions through Error Handler.
+        /// </summary>
+        /// <returns></returns>
         public override bool CanDropCard()
         {
             bool result = false;
-            if(errorCheck.CheckCanDrop(this))         //Check Card Position
+            Area a = Setting.RayCastArea(); 
+            if (errorCheck.CheckAreaCondition(a) && errorCheck.CheckCanDrop(this))
             {
-                Debug.LogError("ConditionError: This card is not on hand.");
-                result  = true;
+                result = true;
+                Debug.Log("All Condtions are good");
+                this.PhysicalCondition.SetOriginFieldLocation(a.transform);
             }
             return result;
         }
@@ -65,6 +72,7 @@ namespace GH.GameCard
             {
                 if(errorCheck.CheckCanBlock(this))
                 {
+                    
                     result = true;
                 }                
             }

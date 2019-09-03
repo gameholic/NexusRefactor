@@ -144,7 +144,7 @@ namespace GH.Multiplay
                         {
                             p.ThisPlayer = GC.ClientPlayer;
                             p.ThisPlayer.InGameData.SetPhotonId = p.photonId;
-                            GC.ClientPlayer.SetPlayerProfile(p.PlayerProfile);
+                            GC.ClientPlayer.SetPlayerProfile(MainData.GetClientProfile);
                             GC.ClientPlayer.PlayerProfile.Name = "Room Member_Client";
                         }
                     }
@@ -172,7 +172,7 @@ namespace GH.Multiplay
                     {
                         p.ThisPlayer = GC.ClientPlayer;
                         p.ThisPlayer.InGameData.SetPhotonId = p.photonId;
-                        GC.ClientPlayer.SetPlayerProfile(p.PlayerProfile);
+                        GC.ClientPlayer.SetPlayerProfile(MainData.GetClientProfile);
                         GC.ClientPlayer.PlayerProfile.Name = "Room Manager_Client";
                     }
                 }
@@ -244,61 +244,12 @@ namespace GH.Multiplay
         }
         #endregion
 
-        //#region Card Checks
-
-        ///// <summary>
-        ///// Use RPC to call proper functions player wants
-        ///// Parameters are all clear and should be checked before this statement
-        ///// 
-        ///// </summary>
-        ///// <param name="cardInst"> Card instance id</param>
-        ///// <param name="photonId"> Player Photon id</param>
-        ///// <param name="operation"> Action that player wants to perform </param>
-        ///// <param name="cardArea"> Card area which is 0 when it's not passed to use number of 'field' obj</param>
-        //public void PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation, int cardArea = 0)
-        //{
-        //    photonView.RPC("RPC_PlayerTryToUseCard", PhotonTargets.MasterClient, cardInst, photonId, operation, cardArea);
-        //}
-
-        //[PunRPC]
-        //public void RPC_PlayerTryToUseCard(int cardInst, int photonId, CardOperation operation, int cardArea = 0)
-        //{
-        //    bool hasCard = PlayerHasCard(cardInst, photonId);
-        //    if (hasCard)
-        //    {
-        //        photonView.RPC("RPC_PlayerUsesCard", PhotonTargets.All, cardInst, photonId, operation, cardArea);
-        //    }
-        //    else
-        //    {
-        //        Debug.LogErrorFormat("PlayerDontOwnCard: {0} don't have selected card", GetPlayer(photonId));
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Check if player has the card
-        ///// </summary>
-        ///// <param name="cardInst"> Card instance id to be checked</param>
-        ///// <param name="photonId"> Player's photon id</param>
-        ///// <returns></returns>
-        //private bool PlayerHasCard(int cardInst, int photonId)
-        //{
-        //    NetworkPrint p = GetPlayer(photonId);
-        //    Card c = p.ThisPlayer.CardManager.SearchCard(cardInst);
-        //    return (c != null);
-        //}
-
-        //#endregion
 
         #region Card Operations
 
-        //public enum CardOperation
-        //{
-        //    dropCreatureCard, useSpellCard, pickCardFromDeck, setCardToAttack, cardToGraveyard
-        //}
-
         public void PlayerPicksCardFromDeck(PlayerHolder playerHolder)
         {
-            Setting.RegisterLog(playerHolder + " Draws card", playerHolder.playerColor);
+            Debug.Log("PlayerPicksCard");
             NetworkPrint p = GetPlayer(playerHolder.InGameData.PhotonId);
             for (int i = 0; i < p.PlayerProfile._DeckToPlay.Cards.Length; i++)
             {
@@ -337,84 +288,6 @@ namespace GH.Multiplay
             else
                 Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
         }
-
-        ///// <summary>
-        ///// Play cards base on parameter 'CardOperation'
-        ///// All actions with card is performed in this function.
-        ///// </summary>
-        ///// <param name="instId"> Card instance id </param>
-        ///// <param name="photonId"> Player photon id </param>
-        ///// <param name="operation"> Action to perform </param>
-        ///// <param name="cardArea"> Area number that is used only at dropCreatureCard. If it's null, it is passed as 0 </param>
-        ///// <param name="info"></param>
-        //[PunRPC]
-        //public void RPC_PlayerUsesCard(int instId, int photonId, CardOperation operation, int cardArea, PhotonMessageInfo info)
-        //{
-        //    NetworkPrint nwPrint = GetPlayer(photonId);
-        //    PlayerHolder currentPlayer = nwPrint.ThisPlayer;
-        //    Card card = nwPrint.ThisPlayer.CardManager.SearchCard(instId);
-
-        //    switch (operation)
-        //    {
-        //        case CardOperation.dropCreatureCard:        //Problem: Current Logic try to get original transform before it saves it.
-        //            //Solution: Save(Or Send) RayCasted Ray.
-        //            MoveCardInstance.DropCreatureCard((CreatureCard)card);
-        //            currentPlayer.InGameData.ManaManager.UpdateCurrentMana(-(card.Data.ManaCost));
-        //            Debug.LogFormat("DropCreatureCardCheck: {0}'s {1} is dropped. it's origin field location is {2}",
-        //                currentPlayer.PlayerProfile.UniqueId, 
-        //                card.Data.Name,                        
-        //                currentPlayer.CardManager.fieldCards.Find(x=>x == card.Data.UniqueId));
-        //            break;
-
-        //        case CardOperation.useSpellCard:
-        //            //Logic for spell card
-        //            break;
-
-        //        case CardOperation.pickCardFromDeck:
-        //            Debug.Log("AddCard");
-        //            GameObject go = Instantiate(MainData.CardPrefab) as GameObject;
-        //            CardAppearance visual = go.GetComponent<CardAppearance>();
-        //            visual.LoadCard(card, go);
-        //            card.Init(go);
-        //            card.User = currentPlayer;
-        //            MoveCardInstance.SetParentForCard(go.transform, currentPlayer.CardTransform.HandGrid.value);
-        //            if (currentPlayer.CardManager.handCards.Count <= 7)
-        //                currentPlayer.CardManager.handCards.Add(card.Data.UniqueId);
-        //            else
-        //                Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
-        //            break;
-
-        //        case CardOperation.setCardToAttack:
-        //            ///Below Codes must be changed.
-        //            ///Reason 1: SetCardDown don't work as expected because 'OriginFieldLocation' isn't saved in card instance id
-        //            ///when we call card instance through instance id.
-        //            ///Reason 2: Somehow, eventhough this card isn't on attackingCard list it is recognized as so.
-        //            ///This error occurs only to client.
-        //            ///Expecting Error : What if there is same card attacking together?
-        //            ///If selected is already on attack, remove that card from 'attackingCards' list and place back to original field location
-        //            // Deleting same position of line: alt + shif + arrow
-
-        //            if ((card is CreatureCard) == false)
-        //                return;
-        //            //If card isn't on attack, move card to 'BattleLine'obj and add at 'attackingCards' list
-        //            if (currentPlayer.CardManager.FindCardIn(CardContainer.Attack, card) !=null)
-        //            {
-        //                currentPlayer.CardManager.attackingCards.Add(card.Data.UniqueId);
-        //                currentPlayer.CardTransform.SetCardOnBattleLine((CreatureCard)card);
-        //                Debug.LogFormat("RPC_PlayerUsesCard: {0} selected {1} to attack. {0} has {2} attacking cards"
-        //                    , currentPlayer.PlayerProfile.UniqueId, card.Data.Name, currentPlayer.CardManager.attackingCards.Count);
-        //            }
-        //            break;
-
-        //        //case CardOperation.cardToGraveyard:
-        //        //    card.Instance.CardInstanceToGrave();
-
-        //        //    break;
-
-        //        default:
-        //            break;
-        //    }
-        //}
 
         #endregion
 

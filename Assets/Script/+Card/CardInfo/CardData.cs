@@ -60,14 +60,13 @@ namespace GH.GameCard.CardInfo
         {
             set { uniqueId = value; }
         }
+        #endregion
+        #region TestCodes
 
-       
-
-
-
-
-
-
+        public int TestSetUniqueId
+        {
+            set { uniqueId = value; }
+        }
         #endregion
     }
 }

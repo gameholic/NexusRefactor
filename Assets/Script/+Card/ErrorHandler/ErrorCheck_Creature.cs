@@ -23,20 +23,19 @@ namespace GH.GameCard.ErrorCheck
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        public bool CheckCanDrop(CreatureCard c, Area a=null)
+        public bool CheckCanDrop(CreatureCard c)
         {
+            Debug.Log("Check Card Can Be dropped");
             bool result = false;
             Player.PlayerHolder p = c.User;
             int card = c.Data.UniqueId;
-            if (!p.CardManager.handCards.Contains(card)
-                || p.InGameData.ManaManager.CurrentMana < c.Data.ManaCost)
-                return result;
-            if(a!=null)
-                if (a.IsPlaced)
-                return result;
+            if (!p.CardManager.handCards.Contains(card))
+                Debug.LogError("This Card Isn't In Hand");
+            if (c.User.InGameData.ManaManager.CurrentMana < c.Data.ManaCost)      //if card's mana cost is higher than current mana
+                Debug.LogError("CurrentMana Can't afford the card cost");
             else
                 result = true;
-            return result;
+            return result;            
         }
         /// <summary>
         /// Check If 'c' can attack now
@@ -61,15 +60,52 @@ namespace GH.GameCard.ErrorCheck
             return result;
         }
                     
-        public bool CheckCanBlock(CreatureCard c)
+        /// <summary>
+        /// Check Conditions for Blocking
+        /// 1. This card can be used.
+        /// 2. This card is on field.
+        /// </summary>
+        /// <param name="def"></param>
+        /// <returns></returns>
+        public bool CheckCanBlock(CreatureCard def)
         {
             bool result = false;
-            if (c.CardCondition.CanUse  
-                || c.PhysicalCondition.IsOnField())
+            if (def.CardCondition.CanUse  
+                || def.PhysicalCondition.IsOnField())
                 result = true;
             if (!result)
-                Debug.LogError("CanBlockError: {0} can't block", c);
+                Debug.LogError("CanBlockError: {0} can't block", def);
             return result;
         }   
+
+        public bool CheckAreaCondition(Area a)
+        {
+            bool result = false;
+            if (a == null)
+                Debug.LogError("AreaIsNUll");
+            if (a.gameObject.transform.childCount > 0)           //Check if there is other object in Area
+                Debug.LogError("There is something in Area");
+            else
+            {
+                Debug.Log("Area Error Checked. You can Drop Card here");
+                result = true;
+            }
+            return result;
+        }
+
+        public bool CheckAttackingCard(CreatureCard def, CreatureCard atk)
+        {
+            bool ret = false;
+            if (atk.User == def.User)
+                Debug.Log("You can't block your own card");
+            else if (atk.Data.UniqueId == def.Data.UniqueId)
+                Debug.Log("Attacking Card's unique Id is same as defending Card's unique Id");
+            else if (!IsAttacking(atk))
+                Debug.Log("This card isn't attacking now");
+            else
+                ret = true;
+
+            return ret;
+        }
     }
 }
