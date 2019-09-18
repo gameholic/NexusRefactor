@@ -17,7 +17,7 @@ namespace GH.Multiplay
 
         [SerializeField]
         private StringVariable logger;
-        private static bool _IsMaster; //Ismaster= true is local else it's client
+        private static bool _IsMaster; //true = is room manager else it's client
         private int _CardInstIds;
         [SerializeField]
         private ResourceManager rm;
@@ -124,7 +124,6 @@ namespace GH.Multiplay
         {
             MultiplayerHolder m = new MultiplayerHolder();
             m.OwnerId = photonId;
-            Debug.Log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
             for(int i =0;i<cards.Length;i++)
             {
                 Debug.Log("PlayerJoined");
@@ -196,19 +195,19 @@ namespace GH.Multiplay
         }
         public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
         {
-            FileBridge fileBridge = new FileBridge();
             if (IsMaster)
             {
                 if(PhotonNetwork.playerList.Length > 1)
                 {
                     SetLoggerAsString("Ready for game");
                     string deckName = dropDown.options[dropDown.value].text;
-                    PlayerProfile p = fileBridge.LoadProfile();
+                    PlayerProfile p = FileBridge.LoadProfile();
                     if (p!=null)
                     {
+                        Debug.Log("Set Deck To Play");
                         p.SetDeckName(deckName);
-                        fileBridge.SaveProfile(p);
-                        fileBridge.UpdateAsset(p);
+                        FileBridge.SaveProfile(p);
+                        FileBridge.UpdateAsset(p);
                     }
                     loggerUpdated.Raise();
                     PhotonNetwork.room.IsOpen = false;

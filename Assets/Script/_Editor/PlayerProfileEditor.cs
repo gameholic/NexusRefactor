@@ -16,8 +16,6 @@ namespace GH.AssetEditor
         public PlayerProfile playerProfile;
 
         private string playerProfileFilePath = "/StreamingAssets/playerProfile.json";
-        FileBridge fileBridge = new FileBridge();
-
 
         [MenuItem("Editor/Player Profile Editor")]
         static void Init()
@@ -95,12 +93,12 @@ namespace GH.AssetEditor
 
         private void LoadProfile()
         {
-            playerProfile = fileBridge.LoadProfile();
+            playerProfile = FileBridge.LoadProfile();
         }
 
         private void SaveProfile()
         {
-            fileBridge.SaveProfile(playerProfile);
+            FileBridge.SaveProfile(playerProfile);
         }
     }
 

@@ -4,6 +4,7 @@ using GH.GameCard;
 using GH.GameCard.CardInfo;
 using GH.GameTurn;
 using GH.Player;
+using System;
 
 namespace GH.Nexus.Manager
 {
@@ -51,6 +52,24 @@ namespace GH.Nexus.Manager
 
 
             }
+        }
+
+        static string log = null;
+        public void WriteLog()
+        {
+            log = log + "WritingLog\n";
+            Debug.Log(log);
+        }
+        public void UpdateLog()
+        {
+            log = FileBridge.LoadLog() + "*********\nUpdateLog\n"+log;
+            Debug.Log(log);
+            FileBridge.SaveLogFile(log);
+        }
+        public void LoadLog()
+        {
+            string load = FileBridge.LoadLog();
+            Debug.Log(load);
         }
     }
 }

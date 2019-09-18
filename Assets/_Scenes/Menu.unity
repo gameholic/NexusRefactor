@@ -491,7 +491,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 858282133}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999976
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1362,7 +1362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logger: {fileID: 11400000, guid: 309a3d02c178abe46951d7a49b14c29e, type: 2}
-  rm: {fileID: 0}
+  rm: {fileID: 11400000, guid: 55d29187ac16eeb45b096b64b7fad185, type: 2}
   dropDown: {fileID: 653990295}
   loggerUpdated: {fileID: 11400000, guid: 6ee647b44569dc7448acd05d3eb073a6, type: 2}
   onConnected: {fileID: 11400000, guid: 509687b10fa684e449cf75f700e1b699, type: 2}
@@ -1473,7 +1473,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -17.015106, y: 18.455322}
+  m_AnchoredPosition: {x: -17.015137, y: 18.455322}
   m_SizeDelta: {x: -1467.575, y: -870.91473}
   m_Pivot: {x: 0.5056063, y: 0.5195221}
 --- !u!114 &1279662863
@@ -1972,7 +1972,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0000038146973}
+  m_AnchoredPosition: {x: 0, y: -0.000011444092}
   m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &2020992804

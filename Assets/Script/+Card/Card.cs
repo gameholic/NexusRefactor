@@ -1,4 +1,5 @@
 ﻿using GH.GameCard.CardInfo;
+using GH.GameCard.CardAbility;
 using GH.Player;
 using UnityEngine;
 
@@ -9,10 +10,11 @@ namespace GH.GameCard
 #pragma warning disable 0649
         [SerializeField]
         private CardData[] _Data;
+        [SerializeField]
+        protected AbilityManager _Ability;
         protected PhysicalAttribute _PhysicInstance;
         protected ConditionAttribute _ConditionAttribute;
         protected Player.PlayerHolder _User;
-
 #pragma warning restore 0649
 
 

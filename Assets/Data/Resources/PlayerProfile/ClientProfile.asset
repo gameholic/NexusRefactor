@@ -19,30 +19,30 @@ MonoBehaviour:
     deckList:
     - Name: Deck1
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
     - Name: Deck2
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
     - Name: Deck3
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
     - Name: Deck4
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
     - Name: Deck5
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
     _DeckToPlay:
       Name: Deck1
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}

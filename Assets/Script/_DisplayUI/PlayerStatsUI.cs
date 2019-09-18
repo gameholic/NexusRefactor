@@ -11,11 +11,11 @@ namespace GH
         /// <summary>
         /// Should below variables be public? why not private? try to modify later
         /// </summary>
-        public GameObject avatarObj;
-        public TextMesh health;
-        public TextMesh userID;
-        public TextMesh manaCurrent;
-        public TextMesh manaMax;
+        public Image avatarImage;
+        public Text health;
+        public Text userID;
+        public Text manaCurrent;
+        public Text manaMax;
         public void Init()
         {
             player.InGameData.StatsUI = this;
@@ -24,7 +24,8 @@ namespace GH
         public void UpdateUserInfo()
         {
             userID.text = player.PlayerProfile.UniqueId;            
-            avatarObj.GetComponent<SpriteRenderer>().sprite = player.PlayerProfile.PlayerAvatar;   //  This needs to be deleted.
+            avatarImage.sprite = player.PlayerProfile.PlayerAvatar;   //  This needs to be deleted.
+            Debug.Log("Update User Info");
 
         }
         public void UpdateHealthUI()

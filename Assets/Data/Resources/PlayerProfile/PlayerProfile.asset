@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: PlayerProfile
   m_EditorClassIdentifier: 
   playerProfile:
-    uniqueId: MightOfDemacia
-    name: Garen
-    playerAvatar: {fileID: 21300000, guid: e8535282c36abfa44ba2d47dc4073771, type: 3}
+    uniqueId: FrejordHunter
+    name: Ashe
+    playerAvatar: {fileID: 21300002, guid: b0d5f51a5e642374b8202326f1558048, type: 3}
     deckList:
     - Name: Deck1
       Cards:
@@ -45,4 +45,4 @@ MonoBehaviour:
     _DeckToPlay:
       Name: Deck1
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 0}

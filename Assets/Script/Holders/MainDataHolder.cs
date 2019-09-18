@@ -24,7 +24,6 @@ namespace GH
         {
             get
             {
-                Debug.Log("GetClientProfile");
                 return clientProfile.playerProfile;
             }
         }

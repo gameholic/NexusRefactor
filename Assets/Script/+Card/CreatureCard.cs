@@ -11,7 +11,7 @@ namespace GH.GameCard
     public class CreatureCard : Card
     {
         #region Serialized
-        private CreatureAbility _Ability;
+        //private CreatureAbility _Ability;
         private ErrorCheck_Creature errorCheck = new ErrorCheck_Creature();
 
         #endregion

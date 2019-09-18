@@ -9,7 +9,6 @@ namespace GH.GameCard.CardLogics
         private static GameController gameController = Setting.gameController;
         public static void DropCreatureCard(CreatureCard card)
         {
-
             Transform cardTransform = card.PhysicalCondition.transform;
             Transform fieldTransform = card.PhysicalCondition.GetOriginFieldLocation();
             Debug.LogFormat("DropCreatureCard: Field Transform is {0}", fieldTransform);

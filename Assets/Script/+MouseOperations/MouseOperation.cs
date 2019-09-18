@@ -26,6 +26,7 @@ namespace GH.MouseLogics
         {
             bool isMouseDown = Input.GetMouseButton(0);
             CardLogic cardLogic = new CardLogic();
+            HandleCardDetection();
 
             Phase currentPhase = Setting.gameController.CurrentPhase;
             if (isMouseDown)       //Mouse is Pressed
@@ -57,7 +58,6 @@ namespace GH.MouseLogics
                     Debug.Log("Return card");
                     
                 }
-                HandleCardDetection();
             }
 
         }
@@ -78,29 +78,6 @@ namespace GH.MouseLogics
                 SpellCard converted = (SpellCard)c;
                 HandleSpellClick(converted, currentPhase);
             }
-            //if (Setting.gameController.CurrentPlayer !=c.User)
-            //{
-            //    Debug.LogError("Current Player Isn't The Card Owner");
-            //    return;
-            //}
-            //if (IsAtHand && currentPhase is ControlPhase)       //Drop CreatureCard 
-            //{
-            //        CardDrag(HandleLogics.Drop, c);      //Drag creature to field
-            //}
-            //else if (currentPhase is BattlePhase)
-            //{
-            //    if (c is CreatureCard)
-            //        CardClick(HandleLogics.Battle, (CreatureCard)c);   //Click card on field to attack
-            //    else
-            //        CardDrag(HandleLogics.Spell, c);  //Drag Magic to use
-            //}      
-            //else if (currentPhase is BlockPhase)
-            //   CardDrag(HandleLogics.Block, c);     //Drag this card to attacking card to block          
-            //else
-            //{
-            //    Debug.LogError("NonOfThoseWorked");
-            //}  
-            return;
         }
         public void HandleSpellClick(SpellCard c, Phase currentPhase)
         {

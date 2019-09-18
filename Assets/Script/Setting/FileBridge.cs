@@ -8,10 +8,11 @@ namespace GH
 {
     public class FileBridge
     {
-        string profileFilePath = "/StreamingAssets/playerProfile.json";
+        static string profileFilePath = "/StreamingAssets/playerProfile.json";
+        static string logFilePath= "/StreamingAssets/ErrorLog.txt";
         private PlayerProfile playerProfile;
 
-        public PlayerProfile LoadProfile()
+        public static PlayerProfile LoadProfile()
         {
             PlayerProfile v = null;
             string path = Application.dataPath + profileFilePath;
@@ -19,23 +20,49 @@ namespace GH
             {
                 string dataFromJson = File.ReadAllText(path);
                 v = JsonUtility.FromJson<PlayerProfile>(dataFromJson);
-                Debug.Log("Profile Loaded Success");
+                Debug.Log("Profile Loaded Success");  
             }
             else
                 v = new PlayerProfile();
             return v;
         }
-        public void SaveProfile(PlayerProfile target)
+        public static string LoadLog()
+        {
+            string log = null;
+            string path = Application.dataPath + logFilePath;
+            if(File.Exists(path))
+            {
+                string logData = File.ReadAllText(path);
+                log = logData;
+                Debug.Log("LoadLogSucess///"+ logData);
+            }
+            return log;
+        }
+        public static void SaveProfile(PlayerProfile target)
         {
             string dataToJson = JsonUtility.ToJson(target);
             string path = Application.dataPath + profileFilePath;
-            File.WriteAllText(path, dataToJson);
+            if(target !=null)
+                File.WriteAllText(path, dataToJson);
 
             Debug.Log("Profile Save Sucess");
-
-
         }
-        public void UpdateAsset(PlayerProfile p)
+        public static void SaveLogFile(string log)
+        {            
+            string path = Application.dataPath + logFilePath;
+            if(log !=null)
+            {
+                if(!File.Exists(path))
+                {
+                    Debug.Log("Can't Find LogFile");
+                    File.Create(path);
+                    return;
+                }
+                File.WriteAllText(path, log);
+                Debug.Log("LogFileSave");
+            }
+        }
+        public static void UpdateAsset(PlayerProfile p)
         {
             ConvertPlayerProfileToAsset a = Resources.Load("PlayerProfile/PlayerProfile") as ConvertPlayerProfileToAsset;
             if (a != null)

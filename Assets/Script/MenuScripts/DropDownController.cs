@@ -14,7 +14,6 @@ namespace GH
     {
         public Dropdown myDropdown;
 
-        FileBridge fileBridge = new FileBridge();
         void Start()
         {
             myDropdown.ClearOptions();
@@ -25,7 +24,7 @@ namespace GH
         }
         private List<string> CallDeck()
         {
-            PlayerProfile p = fileBridge.LoadProfile();
+            PlayerProfile p = FileBridge.LoadProfile();
             List<string> deckLists = new List<string>();
             if (p == null)
                 return null;

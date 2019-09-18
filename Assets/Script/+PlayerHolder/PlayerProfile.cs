@@ -3,6 +3,8 @@ using System;
 using GH.GameCard;
 
 using GH.Player.ProfileData;
+using UnityEngine.UI;
+
 namespace GH.Player
 {
     [Serializable]
@@ -36,6 +38,7 @@ namespace GH.Player
                     Debug.LogFormat("Deck using for game is sat: {0}", v.Name); 
                 }
             }
+            Debug.Log("SelectedDeck is "+_DeckToPlay.Name); //If this is logged as null, the deck isn't sat.
         }
         public string GetCardIds(int i)
         {
@@ -43,7 +46,8 @@ namespace GH.Player
                 Debug.LogErrorFormat("{0}: DeckToPlayIsNull", name);
             if (_DeckToPlay.Cards[i] == null)
                 Debug.LogErrorFormat("{0}: CardInDeckIsNull",name);
-            return _DeckToPlay.Cards[i].Data.Name;
+            Debug.Log("Get CARD " + _DeckToPlay.Cards[i].name);
+            return _DeckToPlay.Cards[i].name;
         }
         
         public string Name

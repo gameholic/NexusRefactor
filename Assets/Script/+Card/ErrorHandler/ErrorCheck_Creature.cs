@@ -82,7 +82,10 @@ namespace GH.GameCard.ErrorCheck
         {
             bool result = false;
             if (a == null)
+            {
                 Debug.LogError("AreaIsNUll");
+                return result;
+            }
             if (a.gameObject.transform.childCount > 0)           //Check if there is other object in Area
                 Debug.LogError("There is something in Area");
             else

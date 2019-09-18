@@ -112,10 +112,12 @@ namespace GH
             return null;
 
         }
+        public PlayerHolder SetLocalPlayer { set { localPlayer = value; } }
         public PlayerHolder LocalPlayer
         {
             get { return localPlayer; }
         }
+        public PlayerHolder SetClientPlayer {set{ clientPlayer = value; } }
         public PlayerHolder ClientPlayer
         {
             get { return clientPlayer; }
@@ -153,15 +155,10 @@ namespace GH
             
             
         }
-        public void InitGame(int startingPlayer)
+        public void InitGame()
         {
             Debug.Log("INITIALISING GAME...");
 
-            NetworkPrint nwp = MultiplayManager.singleton.GetPlayer(LocalPlayer.InGameData.PhotonId);
-            localPlayer = nwp.ThisPlayer;        //This is where local player's profile should be changed
-            //Debug.Log(localPlayer.player);                            /
-
-            //Turn[] _tmpTurn = new Turn[2];
             for (int i = 0; i < _Players.Length; i++)
             {
                 GetPlayer(i).Init();
@@ -237,7 +234,7 @@ namespace GH
                 startTurn = false;
             }     
             turnCountTextVariable.value = turnCounter.ToString();
-            updatePlayer.UpdatePlayerText(CurrentPlayer);
+            //updatePlayer.UpdatePlayerText(CurrentPlayer);
             isComplete = GetTurns(turnIndex).Execute();
             if (!IsMultiplay)
             {
