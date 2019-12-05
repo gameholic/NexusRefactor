@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4981c183a7eb7d04781782c455eef1ad, type: 3}
+  m_Name: M_Desert Warrior
+  m_EditorClassIdentifier: 
+  _CardData:
+    _Name: Desert Warrior
+    _Description: Demacia's desert warriors
+    _AbilityDescript: Get +1/+1 when same card is on field
+    _ManaCost: 1
+    _Art: {fileID: 21300000, guid: 72ddf749f4e49a5409b9a08ce193aa52, type: 3}
+    _Region: 1
+  _Ability:
+    _IncreaseAtk: 0
+    _IncreaseDef: 0
+    _abilityType: 0
+  _UniqueData:
+    _Attack: 1
+    _Defend: 1
+    _Class: 
+  armedWeapon: []

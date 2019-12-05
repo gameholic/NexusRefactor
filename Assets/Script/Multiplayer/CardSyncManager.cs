@@ -9,10 +9,10 @@ using System.Collections.Generic;
 namespace GH.Multiplay
 {
 
-    public class CardPlayManager : Photon.MonoBehaviour
+    public class CardSyncManager : Photon.MonoBehaviour
     {
 
-        public static CardPlayManager singleton;
+        public static CardSyncManager singleton;
         private static MultiplayManager multiplayManager = MultiplayManager.singleton;
         private void Awake()
         {
@@ -23,7 +23,7 @@ namespace GH.Multiplay
         #region GraveLogics
         public void SetCardToGrave(Card c)
         {
-            photonView.RPC("RPC_SetCardDead", PhotonTargets.All, c.Data.UniqueId, c.User.InGameData.PhotonId);
+            photonView.RPC("RPC_SetCardDead", PhotonTargets.All, c.GetCardData.UniqueId, c.User.InGameData.PhotonId);
         }
         [PunRPC]
         private void RPC_SetCardDead(int cardInstId, int playerPhotonId)
@@ -36,7 +36,7 @@ namespace GH.Multiplay
                 Debug.LogError("COULDN'T FIND CARDINSTANCE");
                 return;
             }
-            cardOwner.CardManager.deadCards.Add(card.Data.UniqueId);          //dead card should be added here.
+            cardOwner.CardManager.deadCards.Add(card.GetCardData.UniqueId);          //dead card should be added here.
             for (int i = 0; i < 2; i++)
             {
                 if (card.User == Setting.gameController.GetPlayer(i))
@@ -51,7 +51,7 @@ namespace GH.Multiplay
                 return;
             }
             //Should check owner to move card to graveyard
-            photonView.RPC("RPC_CleanCardData", PhotonTargets.All, card.Data.UniqueId, cardOwner.InGameData.PhotonId);
+            photonView.RPC("RPC_CleanCardData", PhotonTargets.All, card.GetCardData.UniqueId, cardOwner.InGameData.PhotonId);
         }
 
         /// <summary>
@@ -69,18 +69,18 @@ namespace GH.Multiplay
             //After Refactoring, Try to reduce below codes
             if (thisPlayer.CardManager.CheckCardContainer(Player.CardContainer.Field, card))
             {
-                thisPlayer.CardManager.fieldCards.Remove(card.Data.UniqueId);
-                Debug.LogFormat("CardGraveyard, {0}'s {1} is removed from fieldCard", cardOwner, card.Data.Name);
+                thisPlayer.CardManager.fieldCards.Remove(card.GetCardData.UniqueId);
+                Debug.LogFormat("CardGraveyard, {0}'s {1} is removed from fieldCard", cardOwner, card.GetCardData.Name);
             }
             if (thisPlayer.CardManager.CheckCardContainer(Player.CardContainer.Hand, card))
             {
-                thisPlayer.CardManager.handCards.Remove(card.Data.UniqueId);
-                Debug.LogFormat("CardGraveyard, {0}'s {1} is removed from handCards", cardOwner, card.Data.Name);
+                thisPlayer.CardManager.handCards.Remove(card.GetCardData.UniqueId);
+                Debug.LogFormat("CardGraveyard, {0}'s {1} is removed from handCards", cardOwner, card.GetCardData.Name);
             }
             if (thisPlayer.CardManager.CheckCardContainer(Player.CardContainer.Attack, card))
             {
-                thisPlayer.CardManager.attackingCards.Remove(card.Data.UniqueId);
-                Debug.LogFormat("CardGraveyard, {0}'s {1} is removed from attackingCards", cardOwner, card.Data.Name);
+                thisPlayer.CardManager.attackingCards.Remove(card.GetCardData.UniqueId);
+                Debug.LogFormat("CardGraveyard, {0}'s {1} is removed from attackingCards", cardOwner, card.GetCardData.Name);
             }
             card.PhysicalCondition.GetOriginFieldLocation().GetComponentInParent<Area>().SetIsPlaced(false);
             card.CardCondition.IsDead = true;
@@ -114,8 +114,9 @@ namespace GH.Multiplay
             Debug.Log("CardPlayDrop");
             tmp.Add(1,a);
             photonView.RPC("RPC_DropCard", PhotonTargets.All,
-                    c.Data.UniqueId, 1);
+                    c.GetCardData.UniqueId, 1);
         }
+
         [PunRPC]
         public void RPC_DropCard(int cardId, int areaID)
         {
@@ -124,7 +125,7 @@ namespace GH.Multiplay
             tmp.TryGetValue(areaID, out a);
             c.PhysicalCondition.SetOriginFieldLocation(a.transform);
             MoveCardInstance.DropCreatureCard(c);
-            c.User.InGameData.ManaManager.UpdateCurrentMana(-(c.Data.ManaCost));
+            c.User.InGameData.ManaManager.UpdateCurrentMana(-(c.GetCardData.ManaCost));
             Debug.Log("CardDroped");
 
         }
@@ -133,9 +134,10 @@ namespace GH.Multiplay
         public void CardPlayAttack(CreatureCard c)
         {
             photonView.RPC("RPC_Attack", PhotonTargets.All,
-                   c.Data.UniqueId);
-
+                   c.GetCardData.UniqueId);
         }
+
+
         [PunRPC]
         private void RPC_Attack(int cardId)
         {
@@ -144,19 +146,19 @@ namespace GH.Multiplay
             PlayerHolder currentPlayer = c.User;
             if (c.User.CardManager.CheckCardContainer(CardContainer.Field, c))
             {
-                currentPlayer.CardManager.attackingCards.Add(c.Data.UniqueId);
+                currentPlayer.CardManager.attackingCards.Add(c.GetCardData.UniqueId);
                 currentPlayer.CardTransform.SetCardOnBattleLine(c);
             }
             else if (c.User.CardManager.CheckCardContainer(CardContainer.Attack, c))    //Return to Original Place = Cancel Attack
             {
-                currentPlayer.CardManager.attackingCards.Remove(c.Data.UniqueId);
+                currentPlayer.CardManager.attackingCards.Remove(c.GetCardData.UniqueId);
                 MoveCardInstance.SetParentForCard(c.PhysicalCondition.transform, c.PhysicalCondition.GetOriginFieldLocation());
             }
         }
         public void CardPlayBlock(CreatureCard blockingCard, CreatureCard attackingCard)
         {
-            int defendInstId = blockingCard.Data.UniqueId;
-            int attackInstId = attackingCard.Data.UniqueId;
+            int defendInstId = blockingCard.GetCardData.UniqueId;
+            int attackInstId = attackingCard.GetCardData.UniqueId;
 
             int defendUser = blockingCard.User.PlayerProfile.PhotonId;
             int attackUser = attackingCard.User.PlayerProfile.PhotonId;

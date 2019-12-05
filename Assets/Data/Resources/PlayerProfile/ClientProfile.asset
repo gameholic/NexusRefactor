@@ -19,30 +19,17 @@ MonoBehaviour:
     deckList:
     - Name: Deck1
       Cards:
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 11400000, guid: 5ec002355abbb4c4cb3a7398c04d78c2, type: 2}
     - Name: Deck2
       Cards:
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 11400000, guid: 01872ed588d08cc41b1ec6a1d34c7990, type: 2}
+      - {fileID: 11400000, guid: 5de9950ae778f63459c7ec48e29671d3, type: 2}
     - Name: Deck3
       Cards:
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
-    - Name: Deck4
-      Cards:
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
-    - Name: Deck5
-      Cards:
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
     _DeckToPlay:
-      Name: Deck1
+      Name: test
       Cards:
-      - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+      - {fileID: 11400000, guid: 7b45feba1352d54469e7fba8f0917b9b, type: 2}

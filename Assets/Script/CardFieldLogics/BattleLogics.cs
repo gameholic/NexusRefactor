@@ -28,8 +28,8 @@ namespace GH.CardBattle
             Element defElement = mainData.HealthElement;
             //Element abilityElement = maindData.AbilityElement;
 
-            int atkLife = atkInst.Data.Defend;
-            int atkAttack = atkInst.Data.Attack;
+            int atkLife = atkInst.CreatureData.Defend;
+            int atkAttack = atkInst.CreatureData.Attack;
             //CardProperties atkAbility = atkInst.viz.card.GetProperties(abilityElement);
 
 
@@ -49,9 +49,9 @@ namespace GH.CardBattle
             {
                 for (int index = 0; index < blockInstance.defenders.Count; index++)
                 {
-                    Card defInst = blockInstance.defenders[index];
-                    int defLife = defInst.Data.Defend;
-                    int defAttack = defInst.Data.Attack;
+                    CreatureCard defInst = blockInstance.defenders[index];
+                    int defLife = defInst.CreatureData.Defend;
+                    int defAttack = defInst.CreatureData.Attack;
                     if (defLife == 0)
                     {
                         Debug.LogWarning("You are trying to block with a card with no health element");
@@ -77,13 +77,13 @@ namespace GH.CardBattle
                     if (defLife <= atkAttack)
                     {
                         Debug.LogFormat("CardBattle: Defender( {0} )'s Card {1} Killed by {2}",
-                            defInst.User.PlayerProfile.UniqueId, defInst.Data.Name, atkInst.Data.Name);
+                            defInst.User.PlayerProfile.UniqueId, defInst.GetCardData.Name, atkInst.GetCardData.Name);
                         SetCardToGrave(defInst);
                     }
                     if (atkLife <= 0)
                     {
                         Debug.LogFormat("CardBattle: Attacker( {0} )'s Card {1} is Killed by {2} during attack ",
-                            atkInst.User.PlayerProfile.UniqueId, atkInst.Data.Name, defInst.Data.Name);
+                            atkInst.User.PlayerProfile.UniqueId, atkInst.GetCardData.Name, defInst.GetCardData.Name);
                         atkLife = 0;
                         SetCardToGrave(atkInst);
                         break;

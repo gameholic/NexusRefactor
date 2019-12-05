@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using GH.GameCard;
 using GH.GameCard.CardInfo;
+using System.Collections.Generic;
 
 namespace GH.Editor
 {
@@ -46,20 +47,35 @@ namespace GH.Editor
                     //ShowSubWin();
                     subWindow.SearchCard(cardName);
                 }
-                if (GUILayout.Button("AddCard"))
+                if (GUILayout.Button("Add Card"))
                 {
-                    //ShowSubWin();
-                    subWindow.ResetCardNData();
+                    
                     addingMode = true;
                 }
+
+
                 if (GUILayout.Button("DeleteCard"))
                 {
                     subWindow.DeleteCard();
                 }
-
             }
             else if (addingMode)
             {
+                if (GUILayout.Button("AddCreature"))
+                {
+                    CreatureCard c = new CreatureCard();
+                    subWindow.ResetCardNData<CreatureCard>(c);
+                }
+                if (GUILayout.Button("AddSpellCard"))
+                {
+                    SpellCard c = new SpellCard();
+                    subWindow.ResetCardNData<SpellCard>(c);
+                }
+                if (GUILayout.Button("AddWeaponCard"))
+                {
+                    WeaponCard c = new WeaponCard();
+                    subWindow.ResetCardNData<WeaponCard>(c);
+                }
                 if (GUILayout.Button("SaveCard"))
                 {
                     subWindow.SaveCard();
@@ -75,26 +91,8 @@ namespace GH.Editor
                     subWindow.ClearCard();
                 }
             }
-            EditorGUILayout.EndScrollView();
-            //if(subWinMode)
-            //{
-            //    if(GUILayout.Button("CloseWindow"))
-            //    {
-            //        CloseSubWin();
-            //    }
-            //}
+            EditorGUILayout.EndScrollView();       
         }
-        //void CloseSubWin()
-        //{
-        //    subWindow.Close();
-        //    subWinMode = false;
-
-        //}
-        //void ShowSubWin()
-        //{
-        //    subWindow.Show();
-        //    subWinMode = true;
-        //}        
     }
 
 
@@ -103,22 +101,26 @@ namespace GH.Editor
         bool initialised = false;
 
         SerializedObject serializedObject;
-        SerializedProperty serializedProperty;
-
+        SerializedProperty cardProperty;
+        SerializedProperty uniqueProperty;
+        SerializedProperty abilityProperty;
         Card currentCard = null;
-        CardData cardData = null;
+        CardData cardData = null; 
 
 
         public void ShowCard()
         {
             if (!initialised)
             {
-                Debug.Log("hey");
                 serializedObject = new SerializedObject(currentCard);
-                serializedProperty = serializedObject.FindProperty("_Data");
+                cardProperty = serializedObject.FindProperty("_CardData");
+                uniqueProperty = serializedObject.FindProperty("_UniqueData");
+                abilityProperty = serializedObject.FindProperty("_Ability");
                 initialised = true;
             }
-            EditorGUILayout.PropertyField(serializedProperty, true);
+            EditorGUILayout.PropertyField(cardProperty, true);
+            EditorGUILayout.PropertyField(uniqueProperty, true);
+            EditorGUILayout.PropertyField(abilityProperty, true);
             serializedObject.ApplyModifiedProperties();
 
             if (GUILayout.Button("Revert"))
@@ -134,21 +136,38 @@ namespace GH.Editor
             else
                 return false;
         }
-        public void ResetCardNData()
+        public void ResetCardNData<T> (T card) where T : Card
         {
             cardData = new CardData();
-            currentCard = CreateInstance<Card>();
-            currentCard.SetCardData = cardData;
+            currentCard = null;
+            if (card is CreatureCard)
+            {
+                CreatureData creatureData = new CreatureData();
+            }
+            else if (card is SpellCard)
+            {
+                SpellData spellData = new SpellData();
+            }
+            else if (card is WeaponCard)
+            {
+                WeaponData weponData = new WeaponData();
+            }
+
+            currentCard = CreateInstance<T>();
+            currentCard.SetCardData(cardData);
         }
         public void SaveCard()
         {
-            cardData = currentCard.Data;
+            cardData = currentCard.GetCardData;
             if (cardData != null)
             {
-                AssetDatabase.CreateAsset(currentCard, "Assets/Resources/Card/" + cardData.Name + ".asset");
+                Debug.Log(cardData.Name);
+                //Check if there is directory folder for card. And If there isn't send warning and make new folder
+                AssetDatabase.CreateAsset(currentCard, "Assets/CardResources/" + cardData.Name + ".asset");
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
-                ResetCardNData();
+
+                //ResetCardNData<Card>();
             }
             else
             {
@@ -157,7 +176,7 @@ namespace GH.Editor
         }
         public void DeleteCard()
         {
-            AssetDatabase.DeleteAsset("Assets/Resources/Card/" + currentCard.Data.Name + ".asset");
+            AssetDatabase.DeleteAsset("Assets/Resources/Card/" + currentCard.GetCardData.Name + ".asset");
             AssetDatabase.Refresh();
             Debug.Log("CardDeleted");
             ClearCard();
@@ -175,7 +194,7 @@ namespace GH.Editor
             if (c != null)
             {
                 currentCard = c;
-                cardData = c.Data;
+                cardData = c.GetCardData;
             }
             else
             {

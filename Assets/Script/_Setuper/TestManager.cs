@@ -10,20 +10,21 @@ namespace GH.Nexus.Manager
 {
     public class TestManager : MonoBehaviour
     {
+#pragma warning disable 0649
         public Card[] targetCard;
-
         [SerializeField]
         private GameObject _CardPrefab;
         [SerializeField]
         private GameObject _Hand;
         public Phase controlPhase;
         int count = 0;
+#pragma warning restore 0649
         private void Start()
         {
             for( count = 0; count < targetCard.Length; count++)
             {
                 targetCard[count] = Instantiate(targetCard[count]);
-                targetCard[count].Data.TestSetUniqueId = count;
+                targetCard[count].GetCardData.TestSetUniqueId = count;
                 LoadCard(targetCard[count]);
             }
             InitForTest();
@@ -45,7 +46,7 @@ namespace GH.Nexus.Manager
                 v.LoadCard(c, go);
                 c.Init(go);
                 c.User = Setting.gameController.LocalPlayer;
-                c.User.CardManager.handCards.Add(c.Data.UniqueId);
+                c.User.CardManager.handCards.Add(c.GetCardData.UniqueId);
                 go.transform.SetParent(_Hand.transform);
                 go.transform.localPosition = Vector3.zero;
                 go.transform.localScale = Vector3.one;

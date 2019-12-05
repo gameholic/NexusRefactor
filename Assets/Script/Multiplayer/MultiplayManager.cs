@@ -15,6 +15,7 @@ namespace GH.Multiplay
     /// </summary>
     public class MultiplayManager : Photon.MonoBehaviour
     {
+#pragma warning  disable 0649
         #region Variables
         [SerializeField]
         private MainDataHolder _MainDataHolder;
@@ -31,6 +32,7 @@ namespace GH.Multiplay
         private bool gameStarted;
         private bool countPlayers; // To check game scene is loaded.
         #endregion  
+#pragma warning restore 0649
 
         public bool CountPlayer
         {
@@ -120,6 +122,7 @@ namespace GH.Multiplay
             {
                 if (Players.Count > 1)
                 {
+                    Debug.Log("MultiplayerManager:StartMatch");
                     gameStarted = true;
                     StartMatch();
                 }
@@ -176,7 +179,7 @@ namespace GH.Multiplay
                     {
                         Card c = rm.GetCardInstFromDeck(id);
                         playerId.Add(p.photonId);                        
-                        cardInstId.Add(c.Data.UniqueId);
+                        cardInstId.Add(c.GetCardData.UniqueId);
                         cardName.Add(id);
 
                         if (p.IsLocal)
@@ -261,7 +264,7 @@ namespace GH.Multiplay
             {
                 Debug.LogError("CardNameNotFound: " + cardName);
             }
-            c.Data.SetUniqueId = cardId;
+            c.GetCardData.SetUniqueId = cardId;
             NetworkPrint p = GetPlayer(photonId);
             p.ThisPlayer.CardManager.AddCardInDeck(c);
         }
@@ -330,7 +333,7 @@ namespace GH.Multiplay
                 c = p.CardDeck[0];
                 p.CardDeck.RemoveAt(0);
                 Debug.Log("Draw card");
-                photonView.RPC("RPC_PlayerPickCard", PhotonTargets.All, c.Data.UniqueId, p.photonId);
+                photonView.RPC("RPC_PlayerPickCard", PhotonTargets.All, c.GetCardData.UniqueId, p.photonId);
             }
             else
                 Debug.Log("There is no card in deck");
@@ -353,7 +356,7 @@ namespace GH.Multiplay
             card.User = currentPlayer;
             MoveCardInstance.SetParentForCard(go.transform, currentPlayer.CardTransform.HandGrid.value);
             if (currentPlayer.CardManager.handCards.Count <= 7)
-                currentPlayer.CardManager.handCards.Add(card.Data.UniqueId);
+                currentPlayer.CardManager.handCards.Add(card.GetCardData.UniqueId);
             else
                 Setting.RegisterLog("Can't add card. Next card is deleted", Color.black);
         }
@@ -443,12 +446,13 @@ namespace GH.Multiplay
             {
                 if (c.CardCondition.IsDead)
                 {
-                    Debug.LogWarningFormat("BattleResolve_BlockDictionary: {0} is dead", c.Data.Name);
+                    Debug.LogWarningFormat("BattleResolve_BlockDictionary: {0} is dead", c.GetCardData.Name);
                     continue;
                 }
                 else
                 {
-                    Debug.LogFormat("BattleResolveForPlayer_BattleFinished: Card ( {0} ) Reset. Move Card to its original field location", c.Data.Name);
+                    Debug.LogFormat("BattleResolveForPlayer_BattleFinished: Card ( {0} ) Reset. Move Card to its original field location",
+                        c.GetCardData.Name);
                     c.CardCondition.CanUse  = true;
                     MoveCardInstance.SetParentForCard(c.PhysicalCondition.transform, c.PhysicalCondition.GetOriginFieldLocation());
                 }
@@ -460,13 +464,13 @@ namespace GH.Multiplay
                     Card c = enemyPlayer.CardManager.SearchCard(id);
                     if(c.CardCondition.IsDead)
                     {
-                        Debug.LogErrorFormat("BattleResolve_EnemyFieldCardError: {0} is dead__owner is {1}", c.Data.Name
+                        Debug.LogErrorFormat("BattleResolve_EnemyFieldCardError: {0} is dead__owner is {1}", c.GetCardData.Name
                             ,c.User.PlayerProfile.UniqueId);
                         continue;
                     }
                     else
                     {
-                        Debug.LogFormat("BattleResolveForPlayer_ResetEnemyCard__{0}", c.Data.Name);
+                        Debug.LogFormat("BattleResolveForPlayer_ResetEnemyCard__{0}", c.GetCardData.Name);
                         MoveCardInstance.SetParentForCard(c.PhysicalCondition.transform, c.PhysicalCondition.GetOriginFieldLocation());
                     }
                 }
@@ -493,8 +497,8 @@ namespace GH.Multiplay
                 Card c = p.CardManager.SearchCard(id);
                 Transform graveyardTransform = c.User.CardTransform.Graveyard.value;
                 Debug.LogFormat("RPC_SendCardToGrave: Player({0})'s {1} is dead. It's going to graveyard: {2}", 
-                    p.PlayerProfile.UniqueId, c.Data.Name,graveyardTransform);
-                CardPlayManager.MoveCardToGrave(c, graveyardTransform);
+                    p.PlayerProfile.UniqueId, c.GetCardData.Name,graveyardTransform);
+                CardSyncManager.MoveCardToGrave(c, graveyardTransform);
             }
         }
 
@@ -516,7 +520,7 @@ namespace GH.Multiplay
                 foreach (int instId in p.ThisPlayer.CardManager.attackingCards)
                 {
                     Card c = p.ThisPlayer.CardManager.SearchCard(instId);
-                    Debug.LogFormat("{0} was attacking. Call back", c.Data.Name);
+                    Debug.LogFormat("{0} was attacking. Call back", c.GetCardData.Name);
                     p.ThisPlayer.CardTransform.SetCardBackToOrigin(c);
 
                     c.CardCondition.CanUse = false;
@@ -549,12 +553,12 @@ namespace GH.Multiplay
                 {
                     if(!c.CardCondition.IsDead)
                     {
-                        Debug.LogFormat("RPC_BattleResolveCallBack: {0} go back to origin field location",c.Data.Name);
+                        Debug.LogFormat("RPC_BattleResolveCallBack: {0} go back to origin field location",c.GetCardData.Name);
                         c.User.CardTransform.SetCardBackToOrigin(c);
                     }
                     else
                     {
-                        Debug.LogWarningFormat("{0} is dead. Cant go back to origin", c.Data.Name);
+                        Debug.LogWarningFormat("{0} is dead. Cant go back to origin", c.GetCardData.Name);
                     }
                 }
 
@@ -649,7 +653,7 @@ namespace GH.Multiplay
                 {
                     c.CardCondition.CanUse = true;
                     Debug.LogFormat("PlayerCanUseCard: {0} can use {1} to Attack ",
-                        nw_Player.ThisPlayer.PlayerProfile.UniqueId,c.Data.Name);
+                        nw_Player.ThisPlayer.PlayerProfile.UniqueId,c.GetCardData.Name);
                 }
             }
 

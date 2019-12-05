@@ -19,33 +19,33 @@ MonoBehaviour:
     deckList:
     - Name: Deck1
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 5de9950ae778f63459c7ec48e29671d3, type: 2}
     - Name: Deck2
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 5de9950ae778f63459c7ec48e29671d3, type: 2}
+      - {fileID: 11400000, guid: 01872ed588d08cc41b1ec6a1d34c7990, type: 2}
     - Name: Deck3
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
     - Name: Deck4
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
     - Name: Deck5
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
     _DeckToPlay:
       Name: Deck1
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 0}
   _InGameData: {fileID: 11400000, guid: 5520661304ff0c14facd8c7e3c3d6c38, type: 2}
   _CardTransform: {fileID: 11400000, guid: 50bb2e06831500e4189ba714c74e700e, type: 2}
   _CardManager: {fileID: 11400000, guid: 954b3be40c234344cab63a0bd8c6740c, type: 2}

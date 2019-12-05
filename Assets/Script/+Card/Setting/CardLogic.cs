@@ -11,7 +11,7 @@ namespace GH.GameCard.CardLogics
     {
         private GameController gc = Setting.gameController;
         private ErrorCheck_Creature error = new ErrorCheck_Creature();
-        private CardPlayManager cardPlayManager = CardPlayManager.singleton;
+        private CardSyncManager cardPlayManager = CardSyncManager.singleton;
 
         /// <summary>
         /// Block attacking card using selected card(def)
@@ -23,18 +23,17 @@ namespace GH.GameCard.CardLogics
             bool ret = true;
             CreatureCard atkCard = null;
             PhysicalAttribute attackInst = null;
-
-
-
-            if (!def.UseCard())
-                ret = false;
-            attackInst = Setting.RayCastCard(def.PhysicalCondition);
+            
+            if (def.UseCard() == false)     //If defend card can't be used, can't be blocked
+                return false; 
+            else
+                attackInst = Setting.RayCastCard(def.PhysicalCondition);
             if (attackInst!=null)
             {
                 atkCard = (CreatureCard)attackInst.OriginCard;
                 if (!error.CheckAttackingCard(def, atkCard))
                     ret = false;
-                Debug.LogFormat("AttackingCard: {0}, DefendingCard: {1}", atkCard.Data.Name, def.Data.Name);
+                Debug.LogFormat("AttackingCard: {0}, DefendingCard: {1}", atkCard.GetCardData.Name, def.GetCardData.Name);
             }
             return ret;
         }
@@ -58,10 +57,50 @@ namespace GH.GameCard.CardLogics
             return true;
         }
 
-        public void UseSpell()
+        public void UseSpell(SpellCard spell)
         {
 
+            //Check if this card is available. If it can't be used, return
+            if(!spell.CanUseCard())
+            {
+                return;
+            }
+            CreatureCard targetCard = null;
+            //Ray cast target Instance
+            PhysicalAttribute targetInst = Setting.RayCastCard(spell.PhysicalCondition);
+            if (targetInst)
+            {
+                if (targetInst.OriginCard is CreatureCard)
+                    targetCard = (CreatureCard)targetInst.OriginCard;
+            }
+            else
+                return;
+
+            //Based on Spell Card type, run it's spell to card.
+            //How to build that logic?
+            
+            switch(spell.GetType)
+            {
+                //Modify Target Card stats
+                case SpellType.Attack:
+                    targetCard.CreatureData.ModifyHealth = -(spell._HealthChange);
+                    break;
+                case SpellType.Debuff:
+                    targetCard.CreatureData.ModifyAttack = -(spell._AttackChange);
+                    targetCard.CreatureData.ModifyHealth = -(spell._HealthChange);
+                    break;
+                case SpellType.Buff:
+                    targetCard.CreatureData.ModifyAttack =  spell._AttackChange;
+                    targetCard.CreatureData.ModifyHealth =  spell._HealthChange;
+                    break;
+                default:
+                    Debug.LogError("This Spell don't have any type");
+                    break;
+            }
+
+
         }
+
         public void SetToAttack(CreatureCard attackCard)
         {
             if (!error.CheckCanAttack(attackCard))

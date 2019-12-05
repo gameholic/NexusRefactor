@@ -45,7 +45,7 @@ namespace GH.GameCard.CardInfo
             if (fieldTransform == null)  //This might occur if card instance is called by its id
             {
                 Debug.LogErrorFormat("GetOriginalFieldLocationError: {0}'s {1} Field Location isn't saved",
-                    this.OriginCard.User, this.OriginCard.Data.Name);
+                    this.OriginCard.User, this.OriginCard.GetCardData.Name);
                 return null;
             }
             return fieldTransform;
@@ -53,7 +53,7 @@ namespace GH.GameCard.CardInfo
         public bool IsOnField()
         {
             bool v = false;
-            int id = _OriginCard.Data.UniqueId;
+            int id = _OriginCard.GetCardData.UniqueId;
             if(OriginCard is CreatureCard)
             {
                 v = _OriginCard.User.CardManager.CheckCardContainer(Player.CardContainer.Field, this.OriginCard);

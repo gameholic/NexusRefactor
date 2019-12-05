@@ -42,8 +42,7 @@ namespace GH.Player
         /// <param name="c"></param>
         public void AddCardInDeck(Card c)
         {
-            int id = c.Data.UniqueId;
-          
+            int id = c.GetCardData.UniqueId;          
         }
         public void InitAllCards(Card[] deck)
         {
@@ -51,12 +50,12 @@ namespace GH.Player
             for (int i = 0; i < deck.Length; i++)
             {
                 allCards.Add(i, deck[i]);
-                deck[i].Data.SetUniqueId = i;
+                deck[i].GetCardData.SetUniqueId = i;
             }
         }
         public void DropCardOnField(CreatureCard c)
         {
-            int id = c.Data.UniqueId;
+            int id = c.GetCardData.UniqueId;
 
             if (handCards.Contains(id))
             {
@@ -64,7 +63,7 @@ namespace GH.Player
                 fieldCards.Add(id);
             }
             else
-                Debug.LogErrorFormat("CantDropCard: Player Dont have {0} on hand",c.Data.Name);
+                Debug.LogErrorFormat("CantDropCard: Player Dont have {0} on hand",c.GetCardData.Name);
 
         }
 
@@ -79,7 +78,7 @@ namespace GH.Player
             bool v = false;
             List<int> tmp = null;
             tmp = CheckCardContainer(position);
-            if(tmp.Contains(c.Data.UniqueId))
+            if(tmp.Contains(c.GetCardData.UniqueId))
             {
                 v = true;
             }
@@ -123,7 +122,7 @@ namespace GH.Player
         private Card FindCardIn(List<int> list, Card card)
         {
             Card v = null;
-            int id = card.Data.UniqueId;
+            int id = card.GetCardData.UniqueId;
             if(list.Contains(id))
             {
                 v = SearchCard(id);

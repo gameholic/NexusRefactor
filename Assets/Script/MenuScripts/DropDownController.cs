@@ -35,7 +35,7 @@ namespace GH
             {
                 if (v.Name != null)
                 {
-                    Debug.Log(v.Name);
+                    //Debug.Log(v.Name);
                     deckLists.Add(v.Name);
                 }
             }

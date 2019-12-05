@@ -7,12 +7,12 @@ namespace GH.GameCard.CardAbility
     [Serializable]
     public class AbilityManager
     {
-        private enum AbilityType { Buff, Nerf, Damage, Heal, DemonShade}
+        private enum AbilityType { None, Buff, Nerf, Damage, Heal, DemonShade}
 #pragma warning disable 0649
         [SerializeField]
-        private int _Health;
+        private int _IncreaseAtk;
         [SerializeField]
-        private int _Life;
+        private int _IncreaseDef;
         [SerializeField]
         private AbilityType _abilityType;
         //[SerializeField]

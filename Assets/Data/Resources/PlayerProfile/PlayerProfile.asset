@@ -13,36 +13,25 @@ MonoBehaviour:
   m_Name: PlayerProfile
   m_EditorClassIdentifier: 
   playerProfile:
-    uniqueId: FrejordHunter
-    name: Ashe
-    playerAvatar: {fileID: 21300002, guid: b0d5f51a5e642374b8202326f1558048, type: 3}
+    uniqueId: GameHolic
+    name: Tester
+    playerAvatar: {fileID: 21300000, guid: 9cce416f9c1c98a4d94bb8dbdd33625b, type: 3}
     deckList:
-    - Name: Deck1
+    - Name: MinionDeck
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-    - Name: Deck2
+      - {fileID: 11400000, guid: bf125ac0211b4524f88bca47c6d9762f, type: 2}
+      - {fileID: 11400000, guid: 414ab35962fc2c84ea1eda5315e6dcd6, type: 2}
+      - {fileID: 11400000, guid: 6a253d0f941817a4f97e7782dfcec2ed, type: 2}
+    - Name: WeaponDeck
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-    - Name: Deck3
+      - {fileID: 11400000, guid: 01872ed588d08cc41b1ec6a1d34c7990, type: 2}
+      - {fileID: 11400000, guid: 5ec002355abbb4c4cb3a7398c04d78c2, type: 2}
+      - {fileID: 11400000, guid: 5de9950ae778f63459c7ec48e29671d3, type: 2}
+    - Name: Composition
       Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-    - Name: Deck4
-      Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-    - Name: Deck5
-      Cards:
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-      - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
+      - {fileID: 11400000, guid: 414ab35962fc2c84ea1eda5315e6dcd6, type: 2}
+      - {fileID: 11400000, guid: 7b45feba1352d54469e7fba8f0917b9b, type: 2}
+      - {fileID: 11400000, guid: 5de9950ae778f63459c7ec48e29671d3, type: 2}
     _DeckToPlay:
-      Name: Deck1
-      Cards:
-      - {fileID: 0}
+      Name: DeckToPlay
+      Cards: []

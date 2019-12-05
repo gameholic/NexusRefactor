@@ -17,7 +17,7 @@ namespace GH.GameCard.CardLogics
             card.CardCondition.CanUse = false;
             card.PhysicalCondition.gameObject.SetActive(true);
             card.PhysicalCondition.SetOriginFieldLocation(fieldTransform.transform);
-            gameController.CurrentPlayer.InGameData.ManaManager.UseMana(card.Data.ManaCost);
+            gameController.CurrentPlayer.InGameData.ManaManager.UseMana(card.GetCardData.ManaCost);
             gameController.CurrentPlayer.CardManager.DropCardOnField(card);
         }
          
@@ -76,9 +76,11 @@ namespace GH.GameCard.CardLogics
         
         public static void SetCardToGrave(Card inst)
         {
-            CardPlayManager grave = new CardPlayManager();
+            CardSyncManager grave = new CardSyncManager();
             //card die
-            Debug.LogFormat("SetCardToGrave: {0}'s {1} died", inst.User.PlayerProfile.Name, inst.Data.Name);
+            if (inst is CreatureCard)
+                inst = (CreatureCard)inst;
+            Debug.LogFormat("SetCardToGrave: {0}'s {1} died", inst.User.PlayerProfile.Name, inst.GetCardData.Name);
             inst.CardCondition.CanUse = false;
             grave.SetCardToGrave(inst);
         }

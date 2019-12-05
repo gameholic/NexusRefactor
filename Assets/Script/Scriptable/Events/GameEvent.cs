@@ -11,11 +11,13 @@ namespace GH
 
         public void Register(GameEventListener l)
         {
+            //Debug.Log(this.name + " Registered");
             listeners.Add(l);
         }
 
         public void UnRegister(GameEventListener l)
         {
+            //Debug.Log(this.name + " Removed");
             listeners.Remove(l);
         }
 
@@ -23,6 +25,7 @@ namespace GH
         {
             for (int i = 0; i < listeners.Count; i++)
             {
+                //Debug.Log(this.name + " Raised");
                 listeners[i].Response();
             }
         }

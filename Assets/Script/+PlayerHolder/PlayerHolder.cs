@@ -10,6 +10,7 @@ namespace GH.Player
     [CreateAssetMenu(menuName ="Holders/Player Holder")]
     public class PlayerHolder : ScriptableObject
     {
+#pragma warning  disable 0649
         [SerializeField]            //To Check The Data. Needs To Be Deleted
         private PlayerProfile _ProfileInfo;
 
@@ -20,6 +21,7 @@ namespace GH.Player
         [SerializeField]                //Needs To Be Deleted
         private PlayerCardManager _CardManager;
 
+#pragma warning restore 0649
 
         public void Init()
         {

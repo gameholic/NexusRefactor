@@ -11,8 +11,8 @@ namespace GH
     /// </summary>
     public class BlockInstance
     {
-        public Card attacker;
-        public List<Card> defenders = new List<Card>();
+        public CreatureCard attacker;
+        public List<CreatureCard> defenders = new List<CreatureCard>();
     }
 
 }

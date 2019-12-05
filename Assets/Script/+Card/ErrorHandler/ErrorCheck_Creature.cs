@@ -8,7 +8,7 @@ namespace GH.GameCard.ErrorCheck
         public bool IsAttacking(CreatureCard c)
         {
             bool result = false;
-            if (c.User.CardManager.attackingCards.Contains(c.Data.UniqueId))
+            if (c.User.CardManager.attackingCards.Contains(c.GetCardData.UniqueId))
                 result = true;
             if(!result)
                 Debug.LogErrorFormat("IsAttackingError: {0} is not in  the  attacking card list");
@@ -23,15 +23,15 @@ namespace GH.GameCard.ErrorCheck
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        public bool CheckCanDrop(CreatureCard c)
+        public bool CheckCanDrop(Card c)
         {
             Debug.Log("Check Card Can Be dropped");
             bool result = false;
             Player.PlayerHolder p = c.User;
-            int card = c.Data.UniqueId;
+            int card = c.GetCardData.UniqueId;
             if (!p.CardManager.handCards.Contains(card))
                 Debug.LogError("This Card Isn't In Hand");
-            if (c.User.InGameData.ManaManager.CurrentMana < c.Data.ManaCost)      //if card's mana cost is higher than current mana
+            if (c.User.InGameData.ManaManager.CurrentMana < c.GetCardData.ManaCost)      //if card's mana cost is higher than current mana
                 Debug.LogError("CurrentMana Can't afford the card cost");
             else
                 result = true;
@@ -101,7 +101,7 @@ namespace GH.GameCard.ErrorCheck
             bool ret = false;
             if (atk.User == def.User)
                 Debug.Log("You can't block your own card");
-            else if (atk.Data.UniqueId == def.Data.UniqueId)
+            else if (atk.GetCardData.UniqueId == def.GetCardData.UniqueId)
                 Debug.Log("Attacking Card's unique Id is same as defending Card's unique Id");
             else if (!IsAttacking(atk))
                 Debug.Log("This card isn't attacking now");

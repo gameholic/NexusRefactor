@@ -14,7 +14,7 @@ namespace GH
         private static ResourceManager resmanager;
         private static ConsoleHook _consoleHook;
         public static GameController gameController;
-        public readonly static CardPlayManager graveLogic;
+        public readonly static CardSyncManager graveLogic;
 
 
         /// <summary>

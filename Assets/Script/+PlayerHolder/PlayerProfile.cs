@@ -28,7 +28,7 @@ namespace GH.Player
         {
             get { return uniqueId; }
         }
-        public void SetDeckName(string name)
+        public void SetDeckToPlay(string name)
         {
             foreach (ProfileData_Deck v in deckList)
             {
@@ -44,7 +44,7 @@ namespace GH.Player
         {
             if (_DeckToPlay == null)
                 Debug.LogErrorFormat("{0}: DeckToPlayIsNull", name);
-            if (_DeckToPlay.Cards[i] == null)
+            else if (_DeckToPlay.Cards[i] == null)
                 Debug.LogErrorFormat("{0}: CardInDeckIsNull",name);
             Debug.Log("Get CARD " + _DeckToPlay.Cards[i].name);
             return _DeckToPlay.Cards[i].name;

@@ -5,34 +5,25 @@ using UnityEngine;
 
 namespace GH.GameCard
 {
-    public abstract class Card : ScriptableObject
+    public abstract class Card: ScriptableObject
     {
 #pragma warning disable 0649
         [SerializeField]
-        private CardData[] _Data;
+        protected CardData _CardData;
         [SerializeField]
         protected AbilityManager _Ability;
         protected PhysicalAttribute _PhysicInstance;
-        protected ConditionAttribute _ConditionAttribute;
+        protected ConditionAttribute _ConditionAttribute;        
         protected Player.PlayerHolder _User;
 #pragma warning restore 0649
-
-
         public PlayerHolder User
         {
             set { _User = value; }
             get { return _User; }
         }
-        public CardData SetCardData
-        {
-            set { _Data[0] = value; }
-        }
+        public abstract void SetCardData(CardData data);
+        public abstract CardData GetCardData { get; }
 
-
-        public CardData Data
-        {
-            get { return _Data[0]; }
-        }
         public PhysicalAttribute PhysicalCondition
         {
             get { return _PhysicInstance; }

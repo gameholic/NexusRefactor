@@ -75,7 +75,7 @@ namespace GH.Player.Assists
             bool result = false;
 
             int currentMana = manaResourceManager.CurrentMana;
-            if (c.Data.ManaCost <= currentMana)
+            if (c.GetCardData.ManaCost <= currentMana)
                 result = true;
             else
                 Setting.RegisterLog("Not Enough Mana", Color.black);

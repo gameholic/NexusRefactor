@@ -138,7 +138,7 @@ namespace GH.Multiplay
         public Card CreateCardMaster(string cardId)
         {
             Card card = rm.GetCardInstFromDeck(cardId);
-            card.Data.SetUniqueId = CardInstId;
+            card.GetCardData.SetUniqueId = CardInstId;
             CardInstId = CardInstId + 1;
             return card;
         }
@@ -163,6 +163,7 @@ namespace GH.Multiplay
         #region Phton Callbacks
         public override void OnConnectedToMaster()
         {
+            Debug.Log("Connected");
             base.OnConnectedToMaster(); 
             SetLoggerAsString("Connected");
             //logger.value = "Connected"
@@ -171,6 +172,8 @@ namespace GH.Multiplay
         }
         public override void OnFailedToConnectToPhoton(DisconnectCause cause)
         {
+
+            Debug.Log("Failed to Connected");
             base.OnFailedToConnectToPhoton(cause);
             SetLoggerAsString("Failed to Connect");
             loggerUpdated.Raise();
@@ -178,6 +181,7 @@ namespace GH.Multiplay
         }
         public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
         {
+            Debug.Log("RandomRoomNotFound: Create  new Room");
             base.OnPhotonRandomJoinFailed(codeAndMsg);
             CreateRoom();
         }
@@ -185,6 +189,7 @@ namespace GH.Multiplay
         {
             base.OnCreatedRoom();
             IsMaster = true;
+            Debug.Log("Room Created: I'm Master");
         }
         public override void OnJoinedRoom()
         {
@@ -193,27 +198,39 @@ namespace GH.Multiplay
             loggerUpdated.Raise();
             waitingForPlayer.Raise();
         }
+
+        /// <summary>
+        /// Set player's playing deck and Enters the game.
+        /// Player setting(Deck, ID, Avatar etc) is loaded and used in battle.
+        /// </summary>
+        /// <param name="newPlayer"></param>
         public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
         {
             if (IsMaster)
             {
-                if(PhotonNetwork.playerList.Length > 1)
+                if (PhotonNetwork.playerList.Length > 1)
                 {
                     SetLoggerAsString("Ready for game");
                     string deckName = dropDown.options[dropDown.value].text;
                     PlayerProfile p = FileBridge.LoadProfile();
-                    if (p!=null)
+                    if (p != null)
                     {
                         Debug.Log("Set Deck To Play");
-                        p.SetDeckName(deckName);
+                        p.SetDeckToPlay(deckName);
                         FileBridge.SaveProfile(p);
                         FileBridge.UpdateAsset(p);
                     }
+                    else
+                        Debug.LogError("OnPhtonPlayerConnected: Can'tFindPlayer");
                     loggerUpdated.Raise();
                     PhotonNetwork.room.IsOpen = false;
                     PhotonNetwork.Instantiate("Multiplay Manager", Vector3.zero, Quaternion.identity, 0);
                 }
+                else
+                    Debug.Log("OnPhotonPlayerConnectedLog: PlayerListIsLessThan2");
             }
+            else
+                Debug.Log("OnPhotonPlayerConnectedLog:This Client is not master");
         }
         public void LoadGameScene()
         {
@@ -259,7 +276,7 @@ namespace GH.Multiplay
         }
         public void RegisterCard(Card c)
         {
-            cards.Add(c.Data.UniqueId, c);
+            cards.Add(c.GetCardData.UniqueId, c);
         }
         public Card GetCard(int instId)
         {

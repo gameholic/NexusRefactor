@@ -4,24 +4,45 @@ using GH.GameCard.ErrorCheck;
 using GH.GameElements;
 using GH.GameTurn;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace GH.GameCard
 {
-    [CreateAssetMenu(menuName = "Card/CreatureCard")]
-    public class CreatureCard : Card
+    [CreateAssetMenu(menuName = "Card/Creature Card")]
+    public class CreatureCard : Card 
     {
-        #region Serialized
-        //private CreatureAbility _Ability;
+        #region Serialized        
+        //[SerializeField]
+        //private CardData _CardData;
+        [SerializeField]
+        private CreatureData _UniqueData;
+
         private ErrorCheck_Creature errorCheck = new ErrorCheck_Creature();
 
+        
         #endregion
+
         #region Properties
-        #endregion
-        #region Init
+        public List<WeaponCard> armedWeapon = new List<WeaponCard>();
+
+        public override CardData GetCardData
+        {
+            get { return _CardData; }
+        }
+        public CreatureData CreatureData
+        {
+            set { _UniqueData = value; }
+            get { return _UniqueData; }
+        }
+
+        public override void SetCardData(CardData data)
+        {
+            _CardData = data;
+        }
         #endregion
         /// Below codes are run after considering state and phases are checked
         #region ManipulateCard
-
+            
         ///<summary>
         ///Initialise Card. Set Physical, Condition Attributes and connect them
         ///</summary>
@@ -86,6 +107,8 @@ namespace GH.GameCard
             else { Debug.LogWarningFormat("UseCard: Current Phase is Neither block or battle"); }
             return result;
         }
+
+
 
         #endregion
 

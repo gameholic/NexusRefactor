@@ -63,11 +63,8 @@ namespace GH.Multiplay
         }
         void OnPhotonInstantiate(PhotonMessageInfo info)
         {
-
             photonId = photonView.ownerId;
             isLocal = photonView.isMine;
-
-
             Debug.Log("Intantiate Photon Network Print // photon id is " + photonId);
             //Master is always Ashe.
             if (NetworkManager.IsMaster)
@@ -99,9 +96,6 @@ namespace GH.Multiplay
                     _Profile = null;
                 }
             }
-
-
-
             MultiplayManager.singleton.AddPlayer(this);
         }
 

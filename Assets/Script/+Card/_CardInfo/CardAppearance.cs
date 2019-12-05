@@ -30,7 +30,6 @@ namespace GH.GameCard.CardInfo
             if (c == null)
                 return;
             c.Init(go);
-            CardData data = c.Data;
             card = c;
             DisableCard();
             for (int i = 0; i < property.Length; i++)
@@ -38,15 +37,56 @@ namespace GH.GameCard.CardInfo
                 CardAppearPropoerty p = property[i];
                 if (p == null)
                     continue;
-                ApplyText(p, data);
+                if (c is CreatureCard)
+                {
+                    CreatureCard tmp = (CreatureCard)c;
+
+                    ApplyText(p, tmp.GetCardData);
+                    ApplyCreature(p, tmp.CreatureData);//Apply Creature elements
+
+                }
+                else if (c is WeaponCard)
+                {
+                    WeaponCard tmp = (WeaponCard)c;
+                    WeaponData wData = tmp.WeaponData;
+
+                }
+           //Apply weapon  elements
+                else if (c is SpellCard)
+                {
+                    SpellCard tmp = (SpellCard)c;
+                    SpellData sData = tmp.SpellData;
+                }
 
             }
         }
-        public void ApplyText(CardAppearPropoerty p, CardData data)
+        private void ApplyCreature(CardAppearPropoerty p, CreatureData data )
         {
-            ElementType e = new ElementType();
+            ElementType e = p.element.type;
+            switch (e)
+            {
+                case ElementType.Attack:
+                    p.text.text = data.Attack.ToString();
+                    p.text.gameObject.SetActive(true);
+                    break;
+                case ElementType.Defend:
+                    p.text.text = data.Defend.ToString();
+                    p.text.gameObject.SetActive(true);
+                    break;
+                case ElementType.Class:
+                    p.text.text = data.Class;
+                    p.text.gameObject.SetActive(true);
+                    break;
+                case ElementType.CardType:
+                    p.text.text = "Creature";
+                    p.text.gameObject.SetActive(true);
+                    break;
 
-            e = p.element.type;
+            }
+        }
+        private void ApplyText(CardAppearPropoerty p, CardData data)
+        {
+            ElementType e = p.element.type;
             switch (e)
             {
                 case ElementType.Art:
@@ -68,28 +108,11 @@ namespace GH.GameCard.CardInfo
                 case ElementType.Mana:
                     p.text.text = data.ManaCost.ToString();
                     p.text.gameObject.SetActive(true);
-                    break;
-                case ElementType.Attack:
-                    p.text.text = data.Attack.ToString();
-                    p.text.gameObject.SetActive(true);
-                    break;
-                case ElementType.Defend:
-                    p.text.text = data.Defend.ToString();
-                    p.text.gameObject.SetActive(true);
-                    break;
-                case ElementType.CardType:
-                    p.text.text = data.CardType.ToString();
-                    p.text.gameObject.SetActive(true);
-                    break;
+                    break;                    
                 case ElementType.Region:
-                    p.text.text = data.Region;
+                    p.text.text = data.Region.ToString();
                     p.text.gameObject.SetActive(true);
                     break;
-                case ElementType.Class:
-                    p.text.text = data.Class;
-                    p.text.gameObject.SetActive(true);
-                    break;
-
                 default:
                     break;
             }

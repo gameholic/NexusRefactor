@@ -9,8 +9,10 @@ using UnityEngine;
 
 namespace GH.MouseLogics
 {
+    public enum MouseState { Holding,Releasing}
     public class MouseOperation : MonoBehaviour
     {
+        private MouseState mouseState;
         private bool dragging = false;
         private PhysicalAttribute selectedCard = null;
         private void Awake()
@@ -28,38 +30,41 @@ namespace GH.MouseLogics
             CardLogic cardLogic = new CardLogic();
             HandleCardDetection();
 
+            if (selectedCard == null)
+                return;
+
             Phase currentPhase = Setting.gameController.CurrentPhase;
             if (isMouseDown)       //Mouse is Pressed
             {
-                if (selectedCard == null)
-                    return;
-
-                if (!dragging)
+                if (mouseState == MouseState.Releasing)
                     selectedCard.OldPos = selectedCard.transform.position;
-                else
+                else if (mouseState == MouseState.Holding)
                     HandleMouseClick(selectedCard, currentPhase); // Start holding card
-
                 Debug.Log("HoldingCard");
-                dragging = true;
-                
+                mouseState = MouseState.Holding;
             }
+
             if (!isMouseDown)       //Mouse is relased
             {
-                if (dragging && selectedCard != null)
+                if (mouseState == MouseState.Holding) 
+                    // Below codes handle when mouse was holding or clicking something.
                 {
+                    bool canDropCard = false;
                     if (!(selectedCard.OriginCard is CreatureCard))
                         return;
-                    CreatureCard c = (CreatureCard)selectedCard.OriginCard;
-                    bool ret = false;
-                    ret = DropAfterDrag(currentPhase.GetPhaseId, c);
-                    if (ret == false)
-                        cardLogic.ReturnToOldPos(c);        //This should work when it failed to defend or drop
-                    dragging = false;
-                    Debug.Log("Return card");
-                    
-                }
-            }
+                    Card c = selectedCard.OriginCard;
+                    canDropCard = DropAfterDrag(currentPhase.GetPhaseId, c);
 
+                    if (canDropCard == false)
+                    {
+                        cardLogic.ReturnToOldPos(c);        //This should work when it failed to defend or drop                    
+                        Debug.Log("Return card");
+                    }
+                                       
+                }
+                mouseState = MouseState.Releasing;
+            }
+                
         }
 
         private void HandleMouseClick(PhysicalAttribute inst, Phase currentPhase)
@@ -97,7 +102,7 @@ namespace GH.MouseLogics
         }
         public void HandleCreatureClick(CreatureCard c, Phase currentPhase)
         {
-            int uniqueId = c.Data.UniqueId;
+            int uniqueId = c.GetCardData.UniqueId;
             if(currentPhase.GetPhaseId == PhaseId.Battle)
             {
                 //Click To Attack
@@ -127,36 +132,48 @@ namespace GH.MouseLogics
         private GameObject[] handObj = new GameObject[2];
 
         /// <summary>
+        /// Drop Creature Card On Field. 
         /// Navigate Card Instance to appropriate logics.
-        /// Check If This is Creature
         /// </summary>
         /// <param name="logic"></param>
         /// <param name="target"></param>
-        private bool DropAfterDrag(PhaseId logic, CreatureCard target)
+        private bool DropAfterDrag(PhaseId logic, Card target)
         {
             SpellCard spell = null;
+            CreatureCard creature = null;
             CardLogic cardLogic = new CardLogic();
-            CardPlayManager cardPlayManager = CardPlayManager.singleton;
+            CardSyncManager cardPlayManager = CardSyncManager.singleton;
             bool ret = false;
+
+            if (target is SpellCard)
+                spell = (SpellCard)target;
+            else if (target is CreatureCard)
+                creature = (CreatureCard)target;
 
             if (logic == PhaseId.Control)
             {
-                ret = cardLogic.DropCard(target);
-                if(ret)
+                if(spell)
                 {
-                    Area a = target.PhysicalCondition.GetOriginFieldLocation().GetComponent<Area>();
-                    cardPlayManager.CardPlayDrop(target, a);                    
+                    cardLogic.UseSpell(spell);
+                }   
+                else if(creature)
+                {
+                    ret = cardLogic.DropCard(creature);
+                    if (ret)
+                    {
+                        Area a = target.PhysicalCondition.GetOriginFieldLocation().GetComponent<Area>();
+                        cardPlayManager.CardPlayDrop(creature, a);
+                    }
                 }
             }
             else if (logic == PhaseId.Block)
             {
-                ret= cardLogic.BlockCard(target);
+                ret= cardLogic.BlockCard(creature);
                 if(ret)
                 {
                     CreatureCard atkCard = cardLogic.GetAttackingCard;
-                    cardPlayManager.CardPlayBlock(target, atkCard);                    
+                    cardPlayManager.CardPlayBlock(creature, atkCard);                    
                 }
-
             }
 
             return ret;

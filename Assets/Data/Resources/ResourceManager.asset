@@ -13,5 +13,10 @@ MonoBehaviour:
   m_Name: ResourceManager
   m_EditorClassIdentifier: 
   allCards:
-  - {fileID: 11400000, guid: 4725be2833a568e47842937076680e01, type: 2}
-  - {fileID: 11400000, guid: 1f5eec786b436e0419085a7f8171456d, type: 2}
+  - {fileID: 11400000, guid: bf125ac0211b4524f88bca47c6d9762f, type: 2}
+  - {fileID: 11400000, guid: 414ab35962fc2c84ea1eda5315e6dcd6, type: 2}
+  - {fileID: 11400000, guid: 6a253d0f941817a4f97e7782dfcec2ed, type: 2}
+  - {fileID: 11400000, guid: 7b45feba1352d54469e7fba8f0917b9b, type: 2}
+  - {fileID: 11400000, guid: 5ec002355abbb4c4cb3a7398c04d78c2, type: 2}
+  - {fileID: 11400000, guid: 01872ed588d08cc41b1ec6a1d34c7990, type: 2}
+  - {fileID: 11400000, guid: 5de9950ae778f63459c7ec48e29671d3, type: 2}

@@ -51,7 +51,7 @@ namespace GH.Setup
             }
             else
             {
-                Debug.LogWarningFormat("BlockInst For Attacker, {0} AlreadyExist", attk.Data.Name);
+                Debug.LogWarningFormat("BlockInst For Attacker, {0} AlreadyExist", attk.GetCardData.Name);
             }
             //If 'def' isn't in the 'defenders' of the BlockInstance 'b', add it in list
             if (!b.defenders.Contains(def))
@@ -59,7 +59,7 @@ namespace GH.Setup
                 b.defenders.Add(def);                
             }
             count = b.defenders.Count;
-            Debug.LogErrorFormat("Current Blocking Card Count for {0}  is {1}",b.attacker.Data.Name, count);
+            Debug.LogErrorFormat("Current Blocking Card Count for {0}  is {1}",b.attacker.GetCardData.Name, count);
         }
         public bool SearchBlockInstanceOfDefender(Card defend)
         {
