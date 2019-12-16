@@ -246,7 +246,6 @@
     <Compile Include="Assets\Photon\Plugins\WebSocket\WebSocket.cs" />
     <Compile Include="Assets\Script\_DisplayUI\PlayerStatsUI.cs" />
     <Compile Include="Assets\Script\_Editor\CardEditor.cs" />
-    <Compile Include="Assets\Script\_Editor\Class1.cs" />
     <Compile Include="Assets\Script\_Editor\ConvertPlayerProfileToAsset.cs" />
     <Compile Include="Assets\Script\_Editor\PlayerProfileEditor.cs" />
     <Compile Include="Assets\Script\_Setuper\BlockInstanceManager.cs" />
@@ -378,7 +377,6 @@
     <None Include="Assets\Materials\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\Materials\TextMesh Pro\Examples &amp; Extras\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\Materials\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
-    <None Include="Assets\StreamingAssets\ErrorLog.txt" />
     <None Include="Assets\Photon\Photon Unity Networking\Demos\Shared Assets\Skin\3dText.shader" />
     <None Include="Assets\Materials\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\Photon\Photon Unity Networking\readme.txt" />

@@ -35,10 +35,13 @@ namespace GH.Player
                 if(v.Name==name)
                 {
                     _DeckToPlay = v;
-                    Debug.LogFormat("Deck using for game is sat: {0}", v.Name); 
+                    Debug.LogFormat("{1}: Player's Deck using for game is sat: {0}", v.Name, Name); 
                 }
             }
-            Debug.Log("SelectedDeck is "+_DeckToPlay.Name); //If this is logged as null, the deck isn't sat.
+            if(_DeckToPlay == null)
+            {
+                Debug.LogError("DeckToPlaySettingError");
+            }
         }
         public string GetCardIds(int i)
         {
@@ -46,7 +49,6 @@ namespace GH.Player
                 Debug.LogErrorFormat("{0}: DeckToPlayIsNull", name);
             else if (_DeckToPlay.Cards[i] == null)
                 Debug.LogErrorFormat("{0}: CardInDeckIsNull",name);
-            Debug.Log("Get CARD " + _DeckToPlay.Cards[i].name);
             return _DeckToPlay.Cards[i].name;
         }
         

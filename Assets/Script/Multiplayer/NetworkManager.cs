@@ -226,11 +226,7 @@ namespace GH.Multiplay
                     PhotonNetwork.room.IsOpen = false;
                     PhotonNetwork.Instantiate("Multiplay Manager", Vector3.zero, Quaternion.identity, 0);
                 }
-                else
-                    Debug.Log("OnPhotonPlayerConnectedLog: PlayerListIsLessThan2");
             }
-            else
-                Debug.Log("OnPhotonPlayerConnectedLog:This Client is not master");
         }
         public void LoadGameScene()
         {
@@ -244,7 +240,6 @@ namespace GH.Multiplay
         void OnGameSceneLoaded()
         {
             MultiplayManager.singleton.CountPlayer = true;
-
         }
 
         public override void OnDisconnectedFromPhoton()

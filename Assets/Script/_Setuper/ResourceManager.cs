@@ -10,8 +10,9 @@ namespace GH
     [CreateAssetMenu(menuName = "Manager/Resource manager")]
     public class ResourceManager : ScriptableObject
     {
-
-        public Card[] allCards;
+        // This variable should be private in future.
+        // Or Maybe this variable is not necessary.
+        public Card[] allCards; 
         Dictionary<string, Card> cardDict = new Dictionary<string, Card>();
         private int cardInstIndex;
 

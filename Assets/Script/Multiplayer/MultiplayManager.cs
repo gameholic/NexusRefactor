@@ -20,8 +20,9 @@ namespace GH.Multiplay
         [SerializeField]
         private MainDataHolder _MainDataHolder;
         public static MultiplayManager singleton;
+        [SerializeField]  //This is for debugging. Should be deleted.
         private List<NetworkPrint> _Players = new List<NetworkPrint>();
-        private NetworkPrint localPlayerNWPrint;
+
         private Transform _MultiplayerReferences;
         //Now the game is on between two players so List might not be best way.
 
@@ -45,12 +46,13 @@ namespace GH.Multiplay
         }
         public void AddPlayer(NetworkPrint nw_print)
         {
+            Debug.Log("Add Network Print");
             if (nw_print.IsLocal)
             {
-                Debug.Log("AddNetworkPrint: Set local network print");
-                localPlayerNWPrint = nw_print;
+                Debug.Log("Local network print");
             }
 
+            Debug.LogWarning("Player is Added " + nw_print);
             _Players.Add(nw_print);
             nw_print.transform.parent = MultiplayerReferences;
         }
@@ -79,16 +81,16 @@ namespace GH.Multiplay
         }
         #region Init
 
-        private int AnotherPrint()
+        private NetworkPrint CheckClientPrint()
         {
-            int ret = -1;
+            NetworkPrint ret = null;
             Debug.Log("Players count: " + Players.Count);
             foreach (NetworkPrint v in Players)
             {
-                if(v.PlayerProfile == null)               // This is NetworkPrint for client 
+                if(!v.IsLocal)               // This is NetworkPrint for client 
                 {
-                    ret = v.photonId;
-                    Debug.Log("Garen Network Print ID is " + ret);
+                    ret = v;
+                    Debug.Log("Client Network Print ID is " + ret.PlayerProfile.Name);                
                 }       
             }
             return ret;
@@ -97,19 +99,26 @@ namespace GH.Multiplay
         {
             singleton = this;
             DontDestroyOnLoad(this.gameObject);
+
+
             InstantiateNetworkPrint();
-            
+            //Use CustomProperty here
+            Debug.Log("Current Player Count: " + Players.Count);
 
             Debug.Log("***MultiplayManager Instantiated***");
+            //if(Players.Count==2)
+
             NetworkManager.singleton.LoadGameScene();
+
         }
 
+        
         /// <summary>
         /// Respoonsible for adding / assigning Photon id to our player
         /// </summary>
 
         void InstantiateNetworkPrint() 
-        {            
+        {                    
             PhotonNetwork.Instantiate("NetworkPrint", Vector3.zero, Quaternion.identity, 0/*, data*/);
         }        
 
@@ -118,13 +127,17 @@ namespace GH.Multiplay
         #region Tick
         private void Update()
         {
-            if (!gameStarted && countPlayers)//countPlayer is to make logic works after game scene is loaded
+            if (!gameStarted && CountPlayer)//countPlayer is to make logic works after game scene is loaded
             {
                 if (Players.Count > 1)
                 {
                     Debug.Log("MultiplayerManager:StartMatch");
                     gameStarted = true;
-                    StartMatch();
+                    SetupPlayer();
+                }
+                else
+                {
+                    Debug.LogErrorFormat("Can'tStartMatch: CurrentPlayer: {0}", Players.Count);
                 }
             }
         }
@@ -136,34 +149,17 @@ namespace GH.Multiplay
         {
             if (Players.Count > 1)
             {
-                int emptyPrint = AnotherPrint();     //Find MasterPrint.
-                if (emptyPrint == -1)
-                {
-                    Debug.LogError("FailedToLoad Client");
-                    return;
-                }
-                GetPlayer(emptyPrint).SetPlayerProfile = MainData.GetClientProfile;
-                GetPlayer(emptyPrint).SetProfile();
+                NetworkPrint clientPrint = CheckClientPrint();
+                clientPrint.SetProfile();
+                
                 Debug.Log("****** ClientPlayer Profile is ready ******");
             }
-
         }
-        public void StartMatch()
+        public void SetupPlayer()
         {
             ResourceManager rm = GC.ResourceManager;
 
             SetOpponentClient();
-
-            foreach(NetworkPrint p in  Players)
-            {
-                Debug.Log("**********************Check Player Profile********************");
-                Debug.Log(p.PlayerProfile.UniqueId);
-                if (p.IsLocal)
-                    Debug.Log("Which is Local");
-                else
-                    Debug.Log("Which is Client");
-            }
-
 
             if (NetworkManager.IsMaster)
             {
@@ -173,8 +169,6 @@ namespace GH.Multiplay
                 List<string> cardName = new List<string>();
                 foreach (NetworkPrint p in Players)
                 {
-                    Debug.LogFormat("N/W Print OF {0} is On", p.PlayerProfile.UniqueId);
-                    Debug.LogFormat("Starting Cards:  {0} / IsLocal: {1} ", p.GetStartingCardids.Count, p.isLocal);
                     foreach (string id in p.GetStartingCardids)
                     {
                         Card c = rm.GetCardInstFromDeck(id);
@@ -184,26 +178,22 @@ namespace GH.Multiplay
 
                         if (p.IsLocal)
                         {
-                            Debug.Log("This is Local And Manager");
-                            p.ThisPlayer=GC.LocalPlayer;
+                            //p.ThisPlayer=GC.LocalPlayer;
+                            GC.SetLocalPlayer = p.ThisPlayer;
                             p.ThisPlayer.InGameData.SetPhotonId = p.photonId;
                             p.ThisPlayer.SetPlayerProfile(p.PlayerProfile);
-                            p.ThisPlayer.PlayerProfile.Name = "Room Manager";
+                            //p.ThisPlayer.PlayerProfile.Name = "Room Manager";
 
-                            GC.SetLocalPlayer = p.ThisPlayer;
                         }
                         else
                         {
-                            Debug.Log("This is Client Of Manager");
-                            p.ThisPlayer = GC.ClientPlayer;
+                            //p.ThisPlayer = GC.ClientPlayer;
+                            GC.SetClientPlayer = p.ThisPlayer;
                             p.ThisPlayer.InGameData.SetPhotonId = p.photonId;
-
-                            Debug.Log("CheckGaren. This N/W print ID is  "+ p.PlayerProfile.UniqueId);
                             p.ThisPlayer.SetPlayerProfile(p.PlayerProfile);
                            
-                            p.ThisPlayer.PlayerProfile.Name = "Room Member_Client";
+                            //p.ThisPlayer.PlayerProfile.Name = "Room Member_Client";
 
-                            GC.SetClientPlayer = p.ThisPlayer;
                         }
                     }
                 }
@@ -213,41 +203,28 @@ namespace GH.Multiplay
                     photonView.RPC("RPC_PlayerCreatesCard", PhotonTargets.All, playerId[i], cardInstId[i], cardName[i]);
                 }
             }
-
             else
             {
                 Debug.Log("NOTIFICATION: This client is room guest client");                
                 foreach (NetworkPrint p in Players)
                 {
-                    Debug.LogFormat("N/W Print OF {0} is On", p.PlayerProfile.UniqueId);
                     if (p.IsLocal)
-                    {
-                        Debug.Log("This is Local But Not Manager");                        
-                        p.ThisPlayer = GC.LocalPlayer;
-                        p.ThisPlayer.InGameData.SetPhotonId = p.photonId;
-                        Debug.Log("CheckGaren. This N/W print ID is  " + p.PlayerProfile.UniqueId);
-                        p.ThisPlayer.SetPlayerProfile(p.PlayerProfile);
-                        p.ThisPlayer.PlayerProfile.Name = "Room Member";
-
+                    {                     
+                        //p.ThisPlayer = GC.LocalPlayer;
                         GC.SetLocalPlayer = p.ThisPlayer;
+                        p.ThisPlayer.InGameData.SetPhotonId = p.photonId;
+                        p.ThisPlayer.SetPlayerProfile(p.PlayerProfile);
+
                     }
                     else
                     {
-                        Debug.Log("This is Client But Manager");
-                        p.ThisPlayer = GC.ClientPlayer;
-                        p.ThisPlayer.InGameData.SetPhotonId = p.photonId;
-                        Debug.Log("CheckAshe. This N/W print ID is  " + p.PlayerProfile.UniqueId);
-                        p.ThisPlayer.SetPlayerProfile(p.PlayerProfile);
-                        p.ThisPlayer.PlayerProfile.Name = "Room Manager_Client";
-                        
-
+                        //p.ThisPlayer = GC.ClientPlayer;
                         GC.SetClientPlayer = p.ThisPlayer;
+                        p.ThisPlayer.InGameData.SetPhotonId = p.photonId;
+                        p.ThisPlayer.SetPlayerProfile(p.PlayerProfile);
                     }
                 }
             }
-
-            Debug.Log("Check: LocalPlayer is " + GC.LocalPlayer.PlayerProfile.UniqueId);
-            Debug.Log("Check: ClientPlayer is " + GC.ClientPlayer.PlayerProfile.UniqueId);
         }
 
         /// <summary>
@@ -529,7 +506,7 @@ namespace GH.Multiplay
                 //Find Current Player NetworkPrint
                 if (p.photonId == photonId)
                 {
-                    if (p == localPlayerNWPrint)
+                    if (p.IsLocal)
                     {
                         Debug.Log("RPC_BattleResolvesCallBack: End");
                         //As Current Player, who is defender don't have attacking card, can finish phase here

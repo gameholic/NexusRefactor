@@ -1,8 +1,12 @@
-﻿using GH.GameCard;
+﻿
+using UnityEditor;
+using UnityEngine;
+using GH.GameCard;
 using GH.Player;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
+using GH.AssetEditor;
+
 namespace GH.Multiplay
 {
     public class NetworkPrint : Photon.MonoBehaviour
@@ -10,7 +14,7 @@ namespace GH.Multiplay
 
         //Below Variables should be Private
         public int photonId;
-        public bool isLocal;
+        private bool isLocal;
         public List<string> cardIds = new List<string>();
         public List<Card> _CardDeck = new List<Card>();       
         public PlayerHolder _PlayerHolder;
@@ -44,6 +48,7 @@ namespace GH.Multiplay
         public PlayerProfile SetPlayerProfile { set { _Profile = value; } }
 
         private string playerProfileFilePath = "/StreamingAssets/playerProfile.json";
+        
         PlayerProfile ReadPlayerProfileJSON()
         {
             string filePath = Application.dataPath + playerProfileFilePath;
@@ -66,35 +71,45 @@ namespace GH.Multiplay
             photonId = photonView.ownerId;
             isLocal = photonView.isMine;
             Debug.Log("Intantiate Photon Network Print // photon id is " + photonId);
-            //Master is always Ashe.
+
+
+            //if (this.isLocal)
+            //{
+            //    Debug.Log("Manager Client: My print");
+            //    _Profile = FileBridge.LoadProfile();
+            //    SetProfile();
+            //}         
+            //When NetworkPrint bugs get fixed, delete below codes and use above codes
             if (NetworkManager.IsMaster)
             {
                 if (this.isLocal)
                 {
-                    Debug.Log("--- Ashe Profile Is Intantiated in Master ---");
+                    Debug.Log("Manager Client: My print");
                     _Profile = FileBridge.LoadProfile();
                     SetProfile();
+                    //USING RPC TO SEND DATA
                 }
                 else
                 {
-                    Debug.Log("This client is  not Local, but it's networkmanager master");
-                    _Profile = null;
+                    Debug.Log("Manager Client: opponent print");
+                    //How to call oppponent information?
                 }
-
             }
             else
             {
-                if(!this.isLocal)
+                //if(!this.isLocal)
+                if(this.isLocal)
                 {
-                    Debug.Log("--- Ashe Profile Is Intantiated in Client ---");
+                    Debug.Log("Member Client: My print");
                     _Profile = FileBridge.LoadProfile();
                     SetProfile();
                 }
                 else
                 {
-                    Debug.Log("This client is local, but it's not networkmanager master");
-                    _Profile = null;
+                    Debug.Log("Manager Client: Opponent print");
+
                 }
+               
             }
             MultiplayManager.singleton.AddPlayer(this);
         }
@@ -105,15 +120,8 @@ namespace GH.Multiplay
             for (int i = 0; i < PlayerProfile._DeckToPlay.Cards.Length; i++)
             {
                 if (PlayerProfile.GetCardIds(i) != null)
-                {
-                    Debug.LogFormat("Card( {0}) added", PlayerProfile.GetCardIds(i));
                     cardIds.Add(PlayerProfile.GetCardIds(i));
-                }
-                else
-                    break;
-                
             }
         }
     }
-
 }
