@@ -357,6 +357,7 @@
     <Compile Include="Assets\Script\Turns\ControlPhase.cs" />
     <Compile Include="Assets\Script\Turns\Phase.cs" />
     <Compile Include="Assets\Script\Turns\Turn.cs" />
+    <Compile Include="Assets\TestScript\PhotonCustomSample.cs" />
     <None Include="Assets\Materials\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\Materials\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\Photon\Plugins\changes-library.txt" />

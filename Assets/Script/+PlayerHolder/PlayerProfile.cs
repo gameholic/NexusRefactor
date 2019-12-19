@@ -64,5 +64,18 @@ namespace GH.Player
         }
         public Sprite PlayerAvatar
         { get { return playerAvatar; } }
+
+        public byte byteId { get; set; }  
+        public static object Deserialize(byte[] data)
+        {
+            var result = new PlayerProfile();
+            result.byteId = data[0];
+            return result;
+        }
+        public static byte[] Serialize(object customType)
+        {
+            var c = (PlayerProfile)customType;
+            return new byte[] { c.byteId };
+        }
     }
 }

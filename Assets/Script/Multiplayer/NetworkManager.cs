@@ -114,12 +114,14 @@ namespace GH.Multiplay
             PhotonNetwork.CreateRoom(RandomString(256), room, TypedLobby.Default);
         }
         private System.Random random = new System.Random();
+
         private string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
         public void PlayerJoined(int photonId,string[] cards)
         {
             MultiplayerHolder m = new MultiplayerHolder();
