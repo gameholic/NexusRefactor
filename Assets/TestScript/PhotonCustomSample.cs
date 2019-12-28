@@ -43,49 +43,39 @@ public class PhotonCustomSample : Photon.PunBehaviour
         return new string(Enumerable.Repeat(chars, length)
             .Select(s => s[random.Next(s.Length)]).ToArray());
     }
+
+
     public override void OnCreatedRoom()
     {
         base.OnCreatedRoom();
         isMaster = true;
         Debug.Log("Room Created: I'm Master");
         initPlayer();
-        Debug.Log("FinalCheckPlayerName: "+thisPlayer.Name);
+        setCustomProperties();
+    }
+    private void setCustomProperties()
+    {
         int playerPhotonId = photonView.ownerId;
-        string playerId = thisPlayer.UniqueId;
+        string playerName = thisPlayer.Name;
         Sprite playerAvatar = thisPlayer.PlayerAvatar;
-        //byte[] player = PlayerProfile.Serialize(thisPlayer);
-        //Debug.Log("Serialized Player: " + player);
-
-        //player = (byte[])PhotonNetwork.room.CustomProperties["MasterProfile"];
-        //thisPlayer = (PlayerProfile)PhotonNetwork.room.CustomProperties["MasterProfile"];
-        //Debug.Log("Check Player: " + thisPlayer);
 
         Hashtable hash = new Hashtable();
-        hash.Add("MasterProfile", player);
-        //hash.Add("MasterProfile", thisPlayer);
 
+        hash.Add("YAYA", playerName);
+        //hash.Add(2, playerPhotonId);
+        Debug.Log(hash["YAYA"]);
         PhotonNetwork.player.SetCustomProperties(hash);
-        PhotonNetwork.room.SetCustomProperties(hash);
 
+        Hashtable test = PhotonNetwork.player.CustomProperties;
+
+        Debug.Log(test.Count);
+        Debug.Log("Test = " + test["YAYA"]);
     }
-
 
     public override void OnPhotonPlayerPropertiesChanged(object[] playerAndUpdatedProps)
     {
         base.OnPhotonPlayerPropertiesChanged(playerAndUpdatedProps);
         Debug.Log("CustomPlayerProperties Changed");
-
-
-        Hashtable testPlayer = PhotonNetwork.player.CustomProperties;
-
-
-        if (testPlayer.ContainsKey("MasterProfile"))
-        {
-            Debug.Log("MasterProfile added succesfully");
-            Debug.Log(testPlayer["MasterProfile"]);
-        }
-        else
-            Debug.Log("PlayerFail");
     }
 
 
@@ -96,14 +86,22 @@ public class PhotonCustomSample : Photon.PunBehaviour
         text.text = "PhotonConnected";
         //Use this to add something in future
     }
+
     private void initPlayer()
     {
         thisPlayer = new PlayerProfile();
+        Debug.Log("PlayerInitialised");
         if (isMaster)
+        {
             thisPlayer.Name = "GameHolic";
+            PhotonNetwork.player.UserId = "GameHolic";
+        }
         else
+        {
             thisPlayer.Name = "FitnessHolic";
-        Debug.Log(thisPlayer.Name);
+            PhotonNetwork.player.UserId = "FitnessHolic";
+        }
+        setCustomProperties();
     }
     private void Start()
     {
@@ -121,8 +119,9 @@ public class PhotonCustomSample : Photon.PunBehaviour
 
     private void Update()
     {
-        
-        if(Input.GetMouseButtonDown(0) && !PhotonNetwork.inRoom)
+
+        //text.text =  PhotonNetwork.otherPlayers[0].UserId;
+        if (Input.GetMouseButtonDown(0) && !PhotonNetwork.inRoom)
         {
             Debug.Log("MouseButtonOn");
             RoomInfo[] rooms = PhotonNetwork.GetRoomList();
@@ -140,33 +139,23 @@ public class PhotonCustomSample : Photon.PunBehaviour
         else if (Input.GetMouseButtonDown(0) && PhotonNetwork.inRoom)
         {
             text.text = "Im in room already";
-            //Hashtable hash = PhotonNetwork.player.CustomProperties;
-            Hashtable hash = PhotonNetwork.room.CustomProperties;
-
-
+            //Hashtable hash = PhotonNetwork.otherPlayers[0].CustomProperties;
+            Hashtable hash = PhotonNetwork.otherPlayers[0].CustomProperties;
             if (hash.Count > 0)
+            {
                 Debug.LogWarning("Hash count : " + hash.Count);
-            else
-                Debug.Log(hash.Keys);
+                for (int i = 0; i < hash.Count; i++)
+                {
 
-            if(hash.ContainsKey("MasterProfile"))
-            {
-                Debug.Log(hash["MasterProfile"]);
-                text.text = "MasterProfile";
+                    Debug.Log(hash["YAYA"]);
+                }
             }
             else
             {
-                Debug.LogWarning("There is no value for MasterProfile");
+                
+                Debug.Log(hash.Count);
+                text.text = "CustomProperty set";
             }
-            if (hash.ContainsKey("ClientProfile"))
-            {
-                PlayerProfile p = (PlayerProfile)hash["Clientprofile"];
-                text.text = "Client Profile is " + p.Name;
-            }
-            else
-            {
-                Debug.LogWarning("There is no value for ClientProfile");
-            }   
         }
     }
 
@@ -184,18 +173,7 @@ public class PhotonCustomSample : Photon.PunBehaviour
         text.text = "Waiting other player";
         if(!isMaster)
         {
-            initPlayer();
-            //Hashtable masterHash = PhotonNetwork.otherPlayers[0].CustomProperties;
-            Hashtable masterHash = PhotonNetwork.room.CustomProperties;
-            Debug.Log("MasterHash count: " + masterHash.Count);
-            //thisPlayer = (PlayerProfile)PhotonNetwork.player.CustomProperties["ClientProfile"]; Hashtable hash = new Hashtable();
-            if (thisPlayer.Name == null)
-                thisPlayer.Name = "ClientHolic";
-            thisPlayer = (PlayerProfile)PhotonNetwork.room.CustomProperties["ClientProfile"]; Hashtable hash = new Hashtable();
-            masterHash.Add("ClientProfile", thisPlayer);
-            if (masterHash.ContainsKey("ClientProfile"))
-                text.text = "ClientProfile added succesfully";
-            PhotonNetwork.room.SetCustomProperties(masterHash);
+            initPlayer();            
         }
         
     }
